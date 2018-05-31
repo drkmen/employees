@@ -38,24 +38,24 @@ RSpec.describe EmployeesController, type: :controller do
     it 'returns a success response' do
       expect do
         post :create, params: {
-          employee: { first_name: 'qwe-qwe', last_name: 'qwe-qwe', email: 'email@example.com', role: 1, password: '123123' }
+            employee: { first_name: 'qwe-qwe', last_name: 'qwe-qwe', email: 'email@example.com', role: 1, password: '123123' }
         }
       end.to(change { Employee.count }.by(1)) &&
-        redirect_to(Employee.last &&
-        have_http_status(302)) &&
-        render_template('show') &&
-        eq(Employee.last)
+          redirect_to(Employee.last &&
+                          have_http_status(302)) &&
+          render_template('show') &&
+          eq(Employee.last)
     end
 
     it 'returns a fail response and render #new' do
       expect do
         post :create, params: {
-          employee: { first_name: 'qwe-qwe', last_name: 'qwe-qwe', email: 'email@example.com' }
+            employee: { first_name: 'qwe-qwe', last_name: 'qwe-qwe', email: 'email@example.com' }
         }
       end.to(change { Employee.count }.by(0)) &&
-        redirect_to(Employee.last &&
-        have_http_status(200)) &&
-        render_template('new')
+          redirect_to(Employee.last &&
+                          have_http_status(200)) &&
+          render_template('new')
     end
   end
 
@@ -71,7 +71,7 @@ RSpec.describe EmployeesController, type: :controller do
   describe 'PUT #update' do
     it 'returns a success response' do
       put :update, params: {
-        id: Employee.last.id, employee: { first_name: 'qweqwe', last_name: 'qweqwe' }
+          id: Employee.last.id, employee: { first_name: 'qweqwe', last_name: 'qweqwe' }
       }
       expect(response.status).to eq(302)
       expect(redirect_to(Employee.last)).to be_truthy
@@ -86,8 +86,8 @@ RSpec.describe EmployeesController, type: :controller do
       expect do
         post :destroy, params: { id: Employee.last.id }
       end.to(change { Employee.count }.by(-1)) &&
-        have_http_status(302) &&
-        render_template('index')
+          have_http_status(302) &&
+          render_template('index')
     end
   end
 end

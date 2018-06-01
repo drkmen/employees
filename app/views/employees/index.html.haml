@@ -1,6 +1,8 @@
-- if employee_signed_in?
-  %li
-    = link_to 'Logout', destroy_employee_session_path, method: :delete
-- else
-  %li
-    = link_to 'Login', new_employee_session_path
+.employees
+  .row
+    .col-3
+      = render 'skills'
+    .col-3
+      = render 'employee_list'
+    .section.last.profile.col-6
+      = yield

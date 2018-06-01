@@ -1,0 +1,26 @@
+!!!
+%html
+  %head
+    %title Employees
+    = csrf_meta_tags
+    = csp_meta_tag
+    = stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload'
+    = javascript_include_tag 'application', 'data-turbolinks-track': 'reload'
+  %body
+    %header
+      %nav.navbar.navbar-light.bg-light
+        %a.navbar-brand FaceIT
+        %form.form-inline
+          .search
+            %input.form-control.mr-sm-2{'aria-label' => 'Search', type: 'search'}/
+          %button.btn.btn-outline-secondary.my-2.my-sm-0{type: 'submit'} Search
+        %div
+          - if current_employee
+            = link_to 'Logout', destroy_employee_session_path, method: :delete
+            &nbsp;
+            = image_tag current_employee.image, size: '25x25', class: 'rounded'
+          - else
+            = link_to 'Login', new_employee_session_path
+
+    .container-fluid
+      = yield

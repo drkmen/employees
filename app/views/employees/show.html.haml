@@ -1,0 +1,17 @@
+.employees
+  .row
+    .col-3
+      = render 'skills'
+    .col-3
+      = render 'employee_list'
+    .col-6
+      .section.last.profile
+        %h3 Profile
+        .row
+          .col-5
+            = image_tag @employee.image, size: '200x200'
+          .col-7
+            %h2
+              = @employee.name
+              .float-right
+                = @employee.role

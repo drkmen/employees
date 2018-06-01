@@ -1,0 +1,5 @@
+.section.skills
+  %h3 Filters
+
+  - @skills.each do |skill|
+    = link_to skill.name, '#', class: 'btn btn-outline'

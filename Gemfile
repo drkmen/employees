@@ -34,11 +34,13 @@ gem 'jbuilder', '~> 2.5'
 # gem 'capistrano-rails', group: :development
 
 gem 'devise'
-gem 'bootstrap'
 gem 'haml-rails'
-gem 'jquery-rails'
 gem 'carrierwave'
 gem 'acts_as_paranoid', git: 'https://github.com/ActsAsParanoid/acts_as_paranoid', branch: 'master'
+
+gem 'jquery-rails'
+gem 'font-awesome-rails'
+gem 'bootstrap'
 
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.1.0', require: false

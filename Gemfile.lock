@@ -1,13 +1,4 @@
 GIT
-  remote: https://github.com/ActsAsParanoid/acts_as_paranoid
-  revision: d643738e1373850d4225d4678a129ef4e648e719
-  branch: master
-  specs:
-    acts_as_paranoid (1.0.0.beta)
-      activerecord (>= 4.2, < 6.0)
-      activesupport (>= 4.2, < 6.0)
-
-GIT
   remote: https://github.com/stympy/faker.git
   revision: d2d2b270e1f302adbe72b56e2dc7b11a9e2a11bf
   branch: master
@@ -286,7 +277,6 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  acts_as_paranoid!
   better_errors
   bootsnap (>= 1.1.0)
   bootstrap
@@ -319,4 +309,4 @@ RUBY VERSION
    ruby 2.4.1p111
 
 BUNDLED WITH
-   1.16.1
+   1.16.2

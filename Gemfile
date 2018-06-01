@@ -40,6 +40,7 @@ gem 'carrierwave'
 gem 'jquery-rails'
 gem 'font-awesome-rails'
 gem 'bootstrap'
+gem 'friendly_id'
 
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.1.0', require: false

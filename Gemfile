@@ -34,9 +34,9 @@ gem 'jbuilder', '~> 2.5'
 # gem 'capistrano-rails', group: :development
 
 gem 'devise'
+gem 'devise_invitable'
 gem 'haml-rails'
 gem 'carrierwave'
-
 gem 'jquery-rails'
 gem 'font-awesome-rails'
 gem 'bootstrap'

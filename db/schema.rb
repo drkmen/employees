@@ -36,6 +36,9 @@ ActiveRecord::Schema.define(version: 2018_06_04_080143) do
     t.datetime "last_sign_in_at"
     t.inet "current_sign_in_ip"
     t.inet "last_sign_in_ip"
+    t.string "skype"
+    t.string "slug"
+    t.boolean "deleted", default: false
     t.string "invitation_token"
     t.datetime "invitation_created_at"
     t.datetime "invitation_sent_at"
@@ -43,9 +46,6 @@ ActiveRecord::Schema.define(version: 2018_06_04_080143) do
     t.integer "invitation_limit"
     t.integer "invited_by_id"
     t.string "invited_by_type"
-    t.string "skype"
-    t.boolean "deleted", default: false
-    t.string "slug"
     t.index ["deleted"], name: "index_employees_on_deleted"
     t.index ["email"], name: "index_employees_on_email", unique: true
     t.index ["first_name", "last_name", "main_skill"], name: "index_employees_on_first_name_and_last_name_and_main_skill", unique: true

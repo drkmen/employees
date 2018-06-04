@@ -1,4 +1,7 @@
 class Employee < ApplicationRecord
+  default_scope { where(deleted: false) }
+  scope :deleted, -> { unscoped.where(deleted: true) }
+
   devise :database_authenticatable, :recoverable,
          :rememberable, :trackable, :validatable
 
@@ -12,5 +15,9 @@ class Employee < ApplicationRecord
 
   def image
     super || 'user.png'
+  end
+
+  def delete
+    update(deleted: true)
   end
 end

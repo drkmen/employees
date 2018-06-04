@@ -4,20 +4,3 @@
       = render 'skills'
     .col-3
       = render 'employee_list'
-    -#.section.last.profile.col-6
-    -#  = yield
-
-  .modal.fade#loginModal{tabindex: -1, role: :dialog, 'aria-hidden': true, 'data-backdrop': :static}
-    .modal-dialog{role: :document}
-      .modal-content
-        .modal-header
-          %h5.modal-title Log in
-          %button.close{'aria-label': 'Close', 'data-dismiss': :modal, type: 'button'}
-            %span{'aria-hidden': true} ×
-        .modal-body
-          = form_for :employee, url: employee_session_path, method: :post do |f|
-            = f.email_field :email, class: 'form-control'
-            = f.password_field :password, class: 'form-control'
-            = f.submit 'Sign in', class: 'btn btn-success'
-        .modal-footer
-          = link_to 'Forgot your password?', new_password_path(:employee)

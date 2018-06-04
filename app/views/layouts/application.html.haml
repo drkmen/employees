@@ -22,7 +22,26 @@
             &nbsp;
             = image_tag current_employee.image, size: '25x25', class: 'rounded'
           - else
-            = link_to 'Login', new_employee_session_path
+            %span.link.pointable{'data-target' => '#loginModal', 'data-toggle' => 'modal', type: 'button'}
+              Login
+
+            .modal.fade#loginModal{'aria-labelledby' => 'myModalLabel', role: 'dialog', tabindex: '-1'}
+              .modal-dialog{role: :document}
+                .modal-content
+                  .modal-header
+                    %h5.modal-title Log in
+                    %button.close{'aria-label' => 'Close', 'data-dismiss' => :modal, type: 'button'}
+                      %span{'aria-hidden' => true} ×
+                  .modal-body
+                    = form_for :employee, url: employee_session_path, method: :post do |f|
+                      .form-group
+                        = f.email_field :email, class: 'form-control', placeholder: 'Email'
+                      .form-group
+                        = f.password_field :password, class: 'form-control', placeholder: 'Password'
+                      .form-group
+                        = f.submit 'Sign in', class: 'btn btn-success'
+                  .modal-footer
+                    = link_to 'Forgot your password?', new_password_path(:employee)
 
     .container-fluid
       = yield

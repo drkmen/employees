@@ -37,12 +37,25 @@ ActiveRecord::Schema.define(version: 2018_06_04_080143) do
     t.inet "current_sign_in_ip"
     t.inet "last_sign_in_ip"
     t.string "skype"
+    t.string "slug"
     t.boolean "deleted", default: false
     t.index ["deleted"], name: "index_employees_on_deleted"
     t.index ["email"], name: "index_employees_on_email", unique: true
     t.index ["first_name", "last_name", "main_skill"], name: "index_employees_on_first_name_and_last_name_and_main_skill", unique: true
     t.index ["reset_password_token"], name: "index_employees_on_reset_password_token", unique: true
     t.index ["skype"], name: "index_employees_on_skype", unique: true
+  end
+
+  create_table "friendly_id_slugs", force: :cascade do |t|
+    t.string "slug", null: false
+    t.integer "sluggable_id", null: false
+    t.string "sluggable_type", limit: 50
+    t.string "scope"
+    t.datetime "created_at"
+    t.index ["slug", "sluggable_type", "scope"], name: "index_friendly_id_slugs_on_slug_and_sluggable_type_and_scope", unique: true
+    t.index ["slug", "sluggable_type"], name: "index_friendly_id_slugs_on_slug_and_sluggable_type"
+    t.index ["sluggable_id"], name: "index_friendly_id_slugs_on_sluggable_id"
+    t.index ["sluggable_type"], name: "index_friendly_id_slugs_on_sluggable_type"
   end
 
   create_table "images", force: :cascade do |t|

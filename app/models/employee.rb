@@ -1,6 +1,10 @@
 class Employee < ApplicationRecord
+  extend FriendlyId
+  friendly_id :name, use: :slugged
+
   default_scope { where(deleted: false) }
   scope :deleted, -> { unscoped.where(deleted: true) }
+
 
   devise :database_authenticatable, :recoverable,
          :rememberable, :trackable, :validatable

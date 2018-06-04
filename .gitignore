@@ -33,3 +33,4 @@
 .ruby-version
 .ruby-gemset
 config/database.yml
+db/seed.rb

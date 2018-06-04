@@ -27,6 +27,7 @@ ActiveRecord::Schema.define(version: 2018_06_01_131941) do
     t.jsonb "additional", default: {}
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.datetime "deleted_at"
     t.string "encrypted_password", default: "", null: false
     t.string "reset_password_token"
     t.datetime "reset_password_sent_at"
@@ -36,9 +37,13 @@ ActiveRecord::Schema.define(version: 2018_06_01_131941) do
     t.datetime "last_sign_in_at"
     t.inet "current_sign_in_ip"
     t.inet "last_sign_in_ip"
+    t.string "skype"
+    t.datetime "deleted_at"
+    t.index ["deleted_at"], name: "index_employees_on_deleted_at"
     t.index ["email"], name: "index_employees_on_email", unique: true
     t.index ["first_name", "last_name", "main_skill"], name: "index_employees_on_first_name_and_last_name_and_main_skill", unique: true
     t.index ["reset_password_token"], name: "index_employees_on_reset_password_token", unique: true
+    t.index ["skype"], name: "index_employees_on_skype", unique: true
   end
 
   create_table "images", force: :cascade do |t|

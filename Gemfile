@@ -38,7 +38,6 @@ gem 'bootstrap'
 gem 'haml-rails'
 gem 'jquery-rails'
 gem 'carrierwave'
-gem 'acts_as_paranoid', git: 'https://github.com/ActsAsParanoid/acts_as_paranoid', branch: 'master'
 
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.1.0', require: false

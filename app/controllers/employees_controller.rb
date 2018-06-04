@@ -1,11 +1,18 @@
 class EmployeesController < ApplicationController
   before_action :find_employee, only: %i[show edit update destroy]
 
+  # TODO
   def index
+    @skills = Skill.all
     @employees = Employee.all
   end
 
-  def show; end
+  # TODO
+  def show
+    @skills = Skill.all
+    @employees = Employee.all
+    @employee = Employee.find(params[:id])
+  end
 
   def new
     @employee = Employee.new

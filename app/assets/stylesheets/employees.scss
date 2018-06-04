@@ -1,3 +1,19 @@
-// Place all the styles related to the Employees controller here.
-// They will automatically be included in application.css.
-// You can use Sass (SCSS) here: http://sass-lang.com/
+.employees {
+  padding-top: 25px;
+
+  .section {
+    position: relative;
+    border-right: 1px solid $dark-grey;
+    height: calc(90vh - 50px);
+
+    ul {
+      height: calc(100% - 42px);
+      overflow: auto;
+    }
+
+    &.last {
+      border-right: none;
+      padding-right: 50px;
+    }
+  }
+}

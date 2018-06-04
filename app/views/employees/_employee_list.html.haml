@@ -1,0 +1,5 @@
+.section.list
+  %h3 List
+  %ul
+    - @employees.each do |employee|
+      %li= link_to employee.name, employee_path(employee)

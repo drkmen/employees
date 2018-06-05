@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_06_04_080143) do
+ActiveRecord::Schema.define(version: 2018_06_05_120217) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -36,6 +36,9 @@ ActiveRecord::Schema.define(version: 2018_06_04_080143) do
     t.datetime "last_sign_in_at"
     t.inet "current_sign_in_ip"
     t.inet "last_sign_in_ip"
+    t.string "skype"
+    t.integer "department"
+    t.string "slug"
     t.string "invitation_token"
     t.datetime "invitation_created_at"
     t.datetime "invitation_sent_at"
@@ -43,9 +46,7 @@ ActiveRecord::Schema.define(version: 2018_06_04_080143) do
     t.integer "invitation_limit"
     t.integer "invited_by_id"
     t.string "invited_by_type"
-    t.string "skype"
     t.boolean "deleted", default: false
-    t.string "slug"
     t.index ["deleted"], name: "index_employees_on_deleted"
     t.index ["email"], name: "index_employees_on_email", unique: true
     t.index ["first_name", "last_name", "main_skill"], name: "index_employees_on_first_name_and_last_name_and_main_skill", unique: true
@@ -88,16 +89,16 @@ ActiveRecord::Schema.define(version: 2018_06_04_080143) do
   end
 
   create_table "resource_skills", force: :cascade do |t|
-    t.string "skillable_type"
-    t.bigint "skillable_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["skillable_type", "skillable_id"], name: "index_resource_skills_on_skillable_type_and_skillable_id"
+    t.integer "level"
+    t.integer "skill_id"
+    t.integer "project_id"
+    t.integer "employee_id"
   end
 
   create_table "skills", force: :cascade do |t|
     t.string "name"
-    t.integer "level"
     t.string "experience"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

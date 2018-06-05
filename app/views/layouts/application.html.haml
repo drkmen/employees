@@ -10,10 +10,11 @@
     %header
       %nav.navbar.navbar-light.bg-light
         .navbar-brand= link_to 'FaceIT', root_path
-        %form.form-inline
+        = form_tag( '', method: :get, enforce_utf8: false, class: 'form-inline') do
           .search
-            %input.form-control.mr-sm-2{'aria-label' => 'Search', type: 'search'}/
-          %button.btn.btn-outline-secondary.my-2.my-sm-0{type: 'submit'} Search
+            = text_field_tag :term, params[:term], class: 'form-control mr-sm-2', aria: { label: 'Search' }
+          .my-2.my-sm-0
+            = submit_tag 'Search', class: 'btn btn-outline-secondary my-2 my-sm-0', name: nil
         %div
           - if current_employee&.admin?
             %span.link.pointable{'data-target' => '#inviteModal', 'data-toggle' => 'modal'}

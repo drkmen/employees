@@ -4,4 +4,5 @@ class Project < ApplicationRecord
   has_many :skills, through: :resource_skills
   validates :name, presence: true
 
+  belongs_to :employee
 end

@@ -16,7 +16,14 @@
           %button.btn.btn-outline-secondary.my-2.my-sm-0{type: 'submit'} Search
         %div
           - if current_employee&.admin?
-            = link_to 'Invite Employee', new_employee_invitation_path
+            -#= link_to 'Invite Employee', new_employee_invitation_path
+            %span.link.pointable{'data-target' => '#inviteModal', 'data-toggle' => 'modal', type: 'button'}
+              Invite Employee
+            |
+            = render 'layouts/modal', { modal_id: 'inviteModal', modal_title: 'Send invitation' } do
+              .modal-body
+                Devise invite
+                -#= render template: 'devise/invitations/new'
           - if current_employee
             = link_to 'Logout', destroy_employee_session_path, method: :delete
             &nbsp;
@@ -25,23 +32,17 @@
             %span.link.pointable{'data-target' => '#loginModal', 'data-toggle' => 'modal', type: 'button'}
               Login
 
-            .modal.fade#loginModal{'aria-labelledby' => 'myModalLabel', role: 'dialog', tabindex: '-1'}
-              .modal-dialog{role: :document}
-                .modal-content
-                  .modal-header
-                    %h5.modal-title Log in
-                    %button.close{'aria-label' => 'Close', 'data-dismiss' => :modal, type: 'button'}
-                      %span{'aria-hidden' => true} ×
-                  .modal-body
-                    = form_for :employee, url: employee_session_path, method: :post do |f|
-                      .form-group
-                        = f.email_field :email, class: 'form-control', placeholder: 'Email'
-                      .form-group
-                        = f.password_field :password, class: 'form-control', placeholder: 'Password'
-                      .form-group
-                        = f.submit 'Sign in', class: 'btn btn-success'
-                  .modal-footer
-                    = link_to 'Forgot your password?', new_password_path(:employee)
+            = render 'layouts/modal', { modal_id: 'loginModal', modal_title: 'Log in' } do
+              .modal-body
+                = form_for :employee, url: employee_session_path, method: :post do |f|
+                  .form-group
+                    = f.email_field :email, class: 'form-control', placeholder: 'Email'
+                  .form-group
+                    = f.password_field :password, class: 'form-control', placeholder: 'Password'
+                  .form-group
+                    = f.submit 'Sign in', class: 'btn btn-success'
+              .modal-footer
+                = link_to 'Forgot your password?', new_password_path(:employee)
 
     .container-fluid
       = yield

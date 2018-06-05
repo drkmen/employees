@@ -3,5 +3,6 @@ Rails.application.routes.draw do
 
   resources :employees
   resources :projects, except: [ :show, :index ]
+  resources :skills, except: [ :show, :index ]
   root to: 'employees#index'
 end

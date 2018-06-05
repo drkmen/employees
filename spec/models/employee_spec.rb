@@ -1,5 +1,7 @@
 # frozen_string_literal: true
-
+# scope :role, -> (role) { where role: role }
+# scope :office, -> (office) { where office: office }
+# scope :department, -> (department) { where department: department }
 require 'rails_helper'
 
 RSpec.describe Project, type: :model do

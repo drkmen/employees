@@ -3,6 +3,13 @@
 require 'rails_helper'
 
 RSpec.describe EmployeesController, type: :controller do
+  let(:employee_1) { FactoryBot.create(:employee, office: 1, role: 1, department: 1) }
+  let(:employee_2) { FactoryBot.create(:employee, office: 2, role: 2, department: 1) }
+  let(:employee_3) { FactoryBot.create(:employee, office: 2, role: 3, department: 0) }
+  let(:employee_4) { FactoryBot.create(:employee, office: 3, role: 4, department: 3) }
+  let(:skill_1) { FactoryBot.create(:skill, name: 'API development ', skill_type: 'other_skill') }
+  let(:skill_2) { FactoryBot.create(:skill, name: 'AWS', skill_type: 'service') }
+  let(:skill_3) { FactoryBot.create(:skill, name: 'Active Admin', skill_type: 'library') }
   before do
     FactoryBot.create(:employee, :admin_full)
   end
@@ -12,6 +19,53 @@ RSpec.describe EmployeesController, type: :controller do
       get :index
       expect(response.status).to eq(200)
       expect(response).to render_template('index')
+      expect(assigns(:employees).size).to be 1
+    end
+  end
+
+  describe 'GET #index with filters' do
+    before do
+      ResourceSkill.create(skill_id: skill_1.id, employee_id: employee_2.id)
+      ResourceSkill.create(skill_id: skill_3.id, employee_id: employee_2.id)
+      ResourceSkill.create(skill_id: skill_1.id, employee_id: employee_3.id)
+      ResourceSkill.create(skill_id: skill_2.id, employee_id: employee_4.id)
+    end
+    it 'only office' do
+      get :index, params: { office: 2}
+      expect(assigns(:employees).size).to be 2
+    end
+    it 'office and role' do
+      get :index, params: { office: 2, role:3}
+      expect(assigns(:employees).size).to be 1
+    end
+    it 'all filters with skills' do
+      get :index, params: { office: 2, role:3, department: 0}
+      expect(assigns(:employees).size).to be 1
+    end
+
+    it 'returns a success response' do
+      get :index, params: { skills: ['API development '] }
+      expect(assigns(:employees).size).to be 2
+    end
+    it 'returns a success response' do
+      get :index, params: { skills: ['AWS'] }
+      expect(assigns(:employees).size).to be 1
+    end
+    it 'returns a success response' do
+      get :index, params: { skills: ['Active Admin'] }
+      expect(assigns(:employees).size).to be 1
+    end
+
+    it 'returns a success response' do
+      get :index, params: { office: 2, skills: ['API development '] }
+      expect(assigns(:employees).size).to be 2
+    end
+    it 'returns a success response' do
+      get :index, params: { office: 3, role: 4, skills: ['AWS'] }
+      expect(assigns(:employees).size).to be 1
+    end
+    it 'returns a success response' do
+      get :index, params: { office: 2, role: 2, department: 1, skills: ['Active Admin'] }
       expect(assigns(:employees).size).to be 1
     end
   end

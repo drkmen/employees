@@ -1,11 +1,11 @@
-= form_for Employee.new, url: invitation_path(:employee) do |f|
+= form_for(Employee.new, url: invitation_path(:employee), format: :json, remote: true) do |f|
   .form-group
     = f.label :first_name
-    = f.text_field :first_name, class: 'form-control'
+    = f.text_field :first_name, class: 'form-control', required: true
   .form-group
     = f.label :last_name
-    = f.text_field :last_name, class: 'form-control'
+    = f.text_field :last_name, class: 'form-control', required: true
   .form-group
     = f.label :email
-    = f.email_field :email, class: 'form-control'
+    = f.email_field :email, class: 'form-control', required: true
   = f.submit t("devise.invitations.new.submit_button"), class: 'btn btn-success'

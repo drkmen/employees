@@ -17,14 +17,17 @@
                 = render template: 'employees/edit'
             |
             = link_to 'Delete', employee_path(@employee), method: :delete
+
             %h2
               = @employee.name
               .float-right
                 = @employee.main_skill
-                = @employee.role.humanize
+                = role(@employee)
+
             %h5
               Office:
               = @employee.office
+
             %p
               Email:
               = @employee.email
@@ -34,3 +37,39 @@
               %br
               Skype:
               = @employee.skype
+              %p
+                = @employee.description
+
+        %h3 Skills
+        %hr
+        .row
+          .col-12
+            - @employee.skills.each do |skill|
+              .skill= skill.name
+
+        %h3 Projects
+        %hr
+        .row
+          .col-12
+            - @employee.projects.each do |project|
+              .row
+                .col-4
+                  = project.image
+                .col-8
+                  %h3
+                    = project.name
+                    - if project.client
+                      .float-right
+                        %small
+                          Client:
+                          = project.client
+                  %br
+                  = "#{project.start_date.strftime('%d/%m/%Y')} - #{project.end_date.strftime('%d/%m/%Y')}"
+                  %br
+                  = project.description
+
+              .row
+                .col-12
+                  - project.skills.each do |skill|
+                    .skill.ruby= skill.name
+              %hr

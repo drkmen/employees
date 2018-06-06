@@ -1,17 +1,11 @@
 class EmployeesController < ApplicationController
   before_action :find_employee, only: %i[show edit update destroy]
+  before_action :employees, only: %i[index show]
+  before_action :skills, only: %i[index show]
 
-  # TODO
-  def index
-    @skills = Skill.all
-    @employees = Employee.all
-  end
+  def index; end
 
-  # TODO
-  def show
-    @skills = Skill.all
-    @employees = Employee.all
-  end
+  def show; end
 
   def new
     @employee = Employee.new
@@ -41,10 +35,10 @@ class EmployeesController < ApplicationController
   end
 
   def destroy
-    if @employee.destroy
-      flash[:notice] = 'Successfully destroyed'
+    if @employee.delete
+      flash[:notice] = 'Successfully deleted'
     else
-      flash[:danger] = 'Is not destroyed'
+      flash[:danger] = 'Is not deleted'
     end
     redirect_to employees_path
   end
@@ -53,6 +47,14 @@ class EmployeesController < ApplicationController
 
   def find_employee
     @employee = Employee.friendly.find(params[:id])
+  end
+
+  def skills
+    @skills = Skill.all
+  end
+
+  def employees
+    @employees = Employee.all
   end
 
   def employee_params

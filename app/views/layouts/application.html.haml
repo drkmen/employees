@@ -16,16 +16,15 @@
           %button.btn.btn-outline-secondary.my-2.my-sm-0{type: 'submit'} Search
         %div
           - if current_employee&.admin?
-            -#= link_to 'Invite Employee', new_employee_invitation_path
             %span.link.pointable{'data-target' => '#inviteModal', 'data-toggle' => 'modal', type: 'button'}
               Invite Employee
             |
             = render 'layouts/modal', { modal_id: 'inviteModal', modal_title: 'Send invitation' } do
               .modal-body
                 Devise invite
-                -#= render template: 'devise/invitations/new'
-            = link_to 'Invite Employee', new_employee_invitation_path
+                = render template: 'devise/invitations/new'
             = link_to 'Archive', archive_index_path
+            |
           - if current_employee
             = link_to 'Logout', destroy_employee_session_path, method: :delete
             &nbsp;

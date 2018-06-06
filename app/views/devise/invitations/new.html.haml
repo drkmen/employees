@@ -1,6 +1,5 @@
 %h2= t "devise.invitations.new.header"
-= form_for resource, as: resource_name, url: invitation_path(resource_name), html: { method: :post } do |f|
-  = devise_error_messages!
+= form_for :employee, url: invitation_path(:employee) do |f|
   .form-group
     = f.label :first_name
     = f.text_field :first_name, class: 'form-control'

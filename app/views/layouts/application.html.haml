@@ -24,6 +24,8 @@
               .modal-body
                 Devise invite
                 -#= render template: 'devise/invitations/new'
+            = link_to 'Invite Employee', new_employee_invitation_path
+            = link_to 'Archive', archive_index_path
           - if current_employee
             = link_to 'Logout', destroy_employee_session_path, method: :delete
             &nbsp;

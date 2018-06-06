@@ -21,6 +21,13 @@ RSpec.describe Project, type: :model do
       expect(Employee.deleted.size).to be(1)
     end
 
+    it 'restore method test' do
+      Employee.last.delete
+      Employee.deleted.last.restore
+      expect(Employee.all.size).to be(2)
+      expect(Employee.deleted.size).to be(0)
+    end
+
   end
 
 end

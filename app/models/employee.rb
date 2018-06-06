@@ -27,4 +27,8 @@ class Employee < ApplicationRecord
   def delete
     update(deleted: true)
   end
+
+  def restore
+    update(deleted: false)
+  end
 end

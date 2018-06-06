@@ -1,19 +1,23 @@
+# frozen_string_literal: true
+
 class ProjectsController < ApplicationController
-  before_action :find_project, only: %i[ edit update destroy ]
+  before_action :find_project, only: %i[edit update destroy]
 
   def new
     @project = Project.new
+    @project.skills.new
+    @project.image = Image.new
+    @skills = Skill.all
   end
 
   def create
-    @project = Project.new project_params
-    if @project.save
+    @project = current_employee.projects.new project_params
+    if @project.save!
       flash[:notice] = 'Successfully created'
-      redirect_to project_path(@project)
     else
       flash[:danger] = 'Is not created'
-      render :new
     end
+    redirect_to new_project_path
   end
 
   def edit; end

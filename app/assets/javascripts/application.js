@@ -17,3 +17,8 @@
 //= require jquery3
 //= require popper
 //= require bootstrap-sprockets
+//= require select2-full
+
+$(document).ready(function() {
+    $( "#skillsSelector" ).select2();
+});

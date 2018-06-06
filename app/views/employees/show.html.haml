@@ -6,12 +6,31 @@
       = render 'employee_list'
     .col-6
       .section.last.profile
-        %h3 Profile
         .row
           .col-5
             = image_tag @employee.image, size: '200x200'
           .col-7
+            %span.link.pointable{'data-target' => '#editModal', 'data-toggle' => 'modal', type: 'button'}
+              Edit
+            = render 'layouts/modal', { modal_id: 'editModal', modal_title: 'Edit Employee' } do
+              .modal-body
+                = render template: 'employees/edit'
+            |
+            = link_to 'Delete', employee_path(@employee), method: :delete
             %h2
               = @employee.name
               .float-right
-                = @employee.role
+                = @employee.main_skill
+                = @employee.role.humanize
+            %h5
+              Office:
+              = @employee.office
+            %p
+              Email:
+              = @employee.email
+              %br
+              Phone:
+              = @employee.phone
+              %br
+              Skype:
+              = @employee.skype

@@ -1,6 +1,6 @@
 class Employee < ApplicationRecord
   extend FriendlyId
-  friendly_id :name, use: :slugged
+  friendly_id :friendly_name, use: :slugged
 
   default_scope { where(deleted: false) }
   scope :deleted, -> { unscoped.where(deleted: true) }
@@ -18,6 +18,10 @@ class Employee < ApplicationRecord
 
   def name
     "#{first_name} #{last_name}"
+  end
+
+  def friendly_name
+    email.split('@').first.tr('.', '_')
   end
 
   def image

@@ -11,7 +11,6 @@ class EmployeesController < ApplicationController
   def show
     @skills = Skill.all
     @employees = Employee.all
-    @employee = Employee.find(params[:id])
   end
 
   def new
@@ -53,7 +52,7 @@ class EmployeesController < ApplicationController
   private
 
   def find_employee
-    @employee = Employee.find(params[:id])
+    @employee = Employee.friendly.find(params[:id])
   end
 
   def employee_params

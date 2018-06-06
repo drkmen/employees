@@ -1,5 +1,4 @@
-%h2= t "devise.invitations.new.header"
-= form_for :employee, url: invitation_path(:employee) do |f|
+= form_for Employee.new, url: invitation_path(:employee) do |f|
   .form-group
     = f.label :first_name
     = f.text_field :first_name, class: 'form-control'

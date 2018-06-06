@@ -65,14 +65,16 @@ a {
   cursor: pointer;
 }
 
-.skill {
-  border: 1px solid $grey;
-  border-radius: 20%;
-  padding: 10px 20px;
-  @include transition(0.2s, ease-in-out);
-
-  &:hover {
+.filters {
+  .skill {
     border: 1px solid $grey;
+    border-radius: 20%;
+    padding: 10px 20px;
     @include transition(0.2s, ease-in-out);
+
+    &:hover {
+      border: 1px solid $grey;
+      @include transition(0.2s, ease-in-out);
+    }
   }
 }

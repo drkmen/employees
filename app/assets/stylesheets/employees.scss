@@ -5,15 +5,24 @@
     position: relative;
     border-right: 1px solid $dark-grey;
     height: calc(90vh - 50px);
-
-    ul {
-      height: calc(100% - 42px);
-      overflow: auto;
-    }
+    overflow: auto;
 
     &.last {
       border-right: none;
       padding-right: 50px;
+    }
+  }
+
+  .skill {
+    display: inline-block;
+    border-radius: 30%;
+    padding: 10px 15px;
+    border: 1px solid $grey;
+    @include transition(0.2s, ease-in-out);
+
+    &:hover {
+      opacity: 1;
+      @include transition(0.2s, ease-in-out);
     }
   }
 }

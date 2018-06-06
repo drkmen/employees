@@ -9,7 +9,7 @@
   %body
     %header
       %nav.navbar.navbar-light.bg-light
-        %a.navbar-brand FaceIT
+        .navbar-brand= link_to 'FaceIT', root_path
         %form.form-inline
           .search
             %input.form-control.mr-sm-2{'aria-label' => 'Search', type: 'search'}/
@@ -21,7 +21,6 @@
             |
             = render 'layouts/modal', { modal_id: 'inviteModal', modal_title: 'Send invitation' } do
               .modal-body
-                Devise invite
                 = render template: 'devise/invitations/new'
             = link_to 'Archive', archive_index_path
             |

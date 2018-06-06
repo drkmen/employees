@@ -8,7 +8,7 @@
       .section.last.profile
         .row
           .col-5
-            = image_tag @employee.image, size: '200x200'
+            -#= image_tag @employee.image, size: '200x200'
           .col-7
             %span.link.pointable{'data-target' => '#editModal', 'data-toggle' => 'modal', type: 'button'}
               Edit

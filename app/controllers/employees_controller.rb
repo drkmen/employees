@@ -3,7 +3,12 @@ class EmployeesController < ApplicationController
   before_action :employees, only: %i[index show]
   before_action :skills, only: %i[index show]
 
-  def index; end
+  # TODO
+  def index
+      @employees = Employee.filter(params.reject { |_, v| v.blank? }.slice(:role, :office, :department))
+      @employees = Employee.filter_skills(@employees, params[:skills]) if params[:skills]
+      @employees = @employees.to_a.group_by { |s| s.department } unless params.present?
+  end
 
   def show
     @employee.build_image unless @employee.image

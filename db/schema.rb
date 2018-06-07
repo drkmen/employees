@@ -22,7 +22,7 @@ ActiveRecord::Schema.define(version: 2018_06_06_072730) do
     t.string "description"
     t.string "email", null: false
     t.string "phone"
-    t.string "office"
+    t.integer "office", default: 0
     t.integer "role", default: 0, null: false
     t.jsonb "additional", default: {}
     t.datetime "created_at", null: false
@@ -37,7 +37,7 @@ ActiveRecord::Schema.define(version: 2018_06_06_072730) do
     t.inet "current_sign_in_ip"
     t.inet "last_sign_in_ip"
     t.string "skype"
-    t.integer "department"
+    t.integer "department", default: 0, null: false
     t.string "slug"
     t.string "invitation_token"
     t.datetime "invitation_created_at"

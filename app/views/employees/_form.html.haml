@@ -1,7 +1,28 @@
 = form_for @employee do |f|
   .form-group
-    = f.text_field :first_name, class: 'form-control'
+    = f.text_field :first_name, placeholder: true, class: 'form-control'
   .form-group
-    = f.text_field :last_name, class: 'form-control'
+    = f.text_field :last_name, placeholder: true, class: 'form-control'
+  .form-group
+    = f.text_field :main_skill, placeholder: true, class: 'form-control'
+  .form-group
+    = f.text_field :email, placeholder: true, class: 'form-control'
+  .form-group
+    = f.text_field :phone, placeholder: true, class: 'form-control'
+  .form-group
+    = f.text_field :office, placeholder: true, class: 'form-control'
+  .form-group
+    = f.text_field :skype, placeholder: true, class: 'form-control'
+  .form-group
+    = label_tag 'role'
+    = f.select :role, Employee.roles.keys, class: 'form-control'
+  .form-group
+    = label_tag 'department'
+    = f.select :department, Employee.departments.keys, class: 'form-control'
+  .form-group
+    = f.fields_for :image do |image_fields|
+      = image_fields.file_field :image
+  .form-group
+    = f.text_area :description, placeholder: true, cols: 12, rows: 5, class: 'form-control'
   .form-group
     = f.submit

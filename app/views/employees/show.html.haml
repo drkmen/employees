@@ -46,8 +46,11 @@
           .row
             .col-12
               - @employee.skills.each do |skill|
-                .skill= skill.name
-
+                %span.link.pointable{'data-target': '#editSkillModal', 'data-toggle': :modal}
+                  .skill= skill.name
+                = render 'layouts/modal', { modal_id: 'editSkillModal', modal_title: "Edit Skill [#{skill.name}]" } do
+                  .modal-body
+                    = render 'employees/resource_skill_form', resource_skill: skill.resource_skills.find_by(employee_id: @employee.id)
         - if @employee.projects.present?
           %h3 Projects
           %hr

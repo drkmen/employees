@@ -14,7 +14,7 @@ class Employee < ApplicationRecord
   has_many :projects
 
   enum role: { other: 0, programmer: 1, manager: 2, team_lead: 3, admin: 4 }
-  enum department: { ruby: 0, php: 1, js: 2, other_department: 3 }
+  enum department: { ruby: 0, php: 1, js: 2, sys_admins: 3, managers: 4, other_department: 5 }
 
   accepts_nested_attributes_for :image
 
@@ -26,9 +26,9 @@ class Employee < ApplicationRecord
     email.split('@').first.tr('.', '_')
   end
 
-  # def image
-  #   super || 'user.png'
-  # end
+  def avatar
+    image&.image_url || 'user.png'
+  end
 
   def delete
     update(deleted: true)

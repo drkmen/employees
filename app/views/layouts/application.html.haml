@@ -27,7 +27,7 @@
           - if current_employee
             = link_to 'Logout', destroy_employee_session_path, method: :delete
             &nbsp;
-            -#= image_tag current_employee.image, size: '25x25', class: 'rounded'
+            = image_tag current_employee.avatar, size: '25x25', class: 'rounded'
           - else
             %span.link.pointable{'data-target' => '#loginModal', 'data-toggle' => 'modal', type: 'button'}
               Login

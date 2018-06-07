@@ -5,4 +5,7 @@ class Project < ApplicationRecord
   validates :name, presence: true
 
   belongs_to :employee
+
+  accepts_nested_attributes_for :skills
+  accepts_nested_attributes_for :image
 end

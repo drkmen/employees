@@ -2,6 +2,7 @@
 @import "bootstrap";
 @import "font-awesome";
 @import url('https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300,700&subset=cyrillic');
+@import "select2";
 
 // modules
 @import "base/variables";
@@ -77,4 +78,9 @@ a {
       @include transition(0.2s, ease-in-out);
     }
   }
+}
+
+/*Custom size for select2 field*/
+.select2-container {
+  width: 100% !important;
 }

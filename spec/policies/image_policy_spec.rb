@@ -4,6 +4,7 @@ RSpec.describe ImagePolicy do
 
   let(:other) { FactoryBot.create(:employee, :other) }
   let(:programmer) { FactoryBot.create(:employee, :programmer) }
+  let(:system_administrator) { FactoryBot.create(:employee, :system_administrator) }
   let(:manager) { FactoryBot.create(:employee, :manager) }
   let(:team_lead) { FactoryBot.create(:employee, :team_lead) }
   let(:admin) { FactoryBot.create(:employee, :admin) }
@@ -26,6 +27,12 @@ RSpec.describe ImagePolicy do
       it 'denies access if employee other CUD programmer image' do
         programmer = FactoryBot.create(:employee, :programmer)
         image = programmer.create_image(image: 'test.png')
+        expect(subject).not_to permit(other, image)
+      end
+
+      it 'denies access if employee other CUD system_administrator image' do
+        system_administrator = FactoryBot.create(:employee, :system_administrator)
+        image = system_administrator.create_image(image: 'test.png')
         expect(subject).not_to permit(other, image)
       end
 
@@ -66,6 +73,12 @@ RSpec.describe ImagePolicy do
         expect(subject).not_to permit(programmer, image)
       end
 
+      it 'denies access if employee programmer CUD system_administrator image' do
+        system_administrator = FactoryBot.create(:employee, :system_administrator)
+        image = system_administrator.create_image(image: 'test.png')
+        expect(subject).not_to permit(programmer, image)
+      end
+
       it 'denies access if employee programmer CUD manager image' do
         manager = FactoryBot.create(:employee, :manager)
         image = manager.create_image(image: 'test.png')
@@ -85,6 +98,49 @@ RSpec.describe ImagePolicy do
       end
     end
 
+    describe 'system_administrator CUD image' do
+      it 'denies access if employee system_administrator CUD other image' do
+        other = FactoryBot.create(:employee, :other)
+        image = other.create_image(image: 'test.png')
+        expect(subject).not_to permit(system_administrator, image)
+      end
+
+      it 'grants access if employee system_administrator CUD his image' do
+        image = system_administrator.create_image(image: 'test.png')
+        expect(subject).to permit(system_administrator, image)
+      end
+
+      it 'denies access if employee system_administrator CUD programmer image' do
+        programmer = FactoryBot.create(:employee, :programmer)
+        image = programmer.create_image(image: 'test.png')
+        expect(subject).not_to permit(system_administrator, image)
+      end
+
+      it 'denies access if employee system_administrator CUD else system_administrator image' do
+        else_system_administrator = FactoryBot.create(:employee, :system_administrator)
+        image = else_system_administrator.create_image(image: 'test.png')
+        expect(subject).not_to permit(system_administrator, image)
+      end
+
+      it 'denies access if employee system_administrator CUD manager image' do
+        manager = FactoryBot.create(:employee, :manager)
+        image = manager.create_image(image: 'test.png')
+        expect(subject).not_to permit(system_administrator, image)
+      end
+
+      it 'denies access if employee system_administrator CUD team_lead image' do
+        team_lead = FactoryBot.create(:employee, :team_lead)
+        image = team_lead.create_image(image: 'test.png')
+        expect(subject).not_to permit(system_administrator, image)
+      end
+
+      it 'denies access if employee system_administrator CUD admin image' do
+        admin = FactoryBot.create(:employee, :admin)
+        image = admin.create_image(image: 'test.png')
+        expect(subject).not_to permit(system_administrator, image)
+      end
+    end
+
     describe 'manager CUD image' do
       it 'denies access if employee manager CUD other image' do
         other = FactoryBot.create(:employee, :other)
@@ -96,6 +152,12 @@ RSpec.describe ImagePolicy do
         programmer = FactoryBot.create(:employee, :programmer)
         image = programmer.create_image(image: 'test.png')
         expect(subject).to permit(manager, image)
+      end
+
+      it 'denies access if employee manager CUD system_administrator image' do
+        system_administrator = FactoryBot.create(:employee, :system_administrator)
+        image = system_administrator.create_image(image: 'test.png')
+        expect(subject).not_to permit(manager, image)
       end
 
       it 'grants access if employee manager CUD his image' do
@@ -143,13 +205,19 @@ RSpec.describe ImagePolicy do
         expect(subject).not_to permit(team_lead, image)
       end
 
+      it 'denies access if employee team_lead CUD system_administrator image' do
+        system_administrator = FactoryBot.create(:employee, :system_administrator)
+        image = system_administrator.create_image(image: 'test.png')
+        expect(subject).not_to permit(team_lead, image)
+      end
+
       it 'denies access if employee team_lead CUD manager image' do
         manager = FactoryBot.create(:employee, :manager)
         image = manager.create_image(image: 'test.png')
         expect(subject).not_to permit(team_lead, image)
       end
 
-      it 'grants access if employee team_lead CUD his imagel' do
+      it 'grants access if employee team_lead CUD his image' do
         image = team_lead.create_image(image: 'test.png')
         expect(subject).to permit(team_lead, image)
       end
@@ -170,6 +238,12 @@ RSpec.describe ImagePolicy do
 
       it 'grants access if employee admin CUD programmer image' do
         programmer = FactoryBot.create(:employee, :programmer)
+        image = programmer.create_image(image: 'test.png')
+        expect(subject).to permit(admin, image)
+      end
+
+      it 'grants access if employee admin CUD system_administrator' do
+        system_administrator = FactoryBot.create(:employee, :system_administrator)
         image = programmer.create_image(image: 'test.png')
         expect(subject).to permit(admin, image)
       end

@@ -4,6 +4,7 @@ RSpec.describe ProjectPolicy do
 
   let(:other) { FactoryBot.create(:employee, :other) }
   let(:programmer) { FactoryBot.create(:employee, :programmer) }
+  let(:system_administrator) { FactoryBot.create(:employee, :system_administrator) }
   let(:manager) { FactoryBot.create(:employee, :manager) }
   let(:team_lead) { FactoryBot.create(:employee, :team_lead) }
   let(:admin) { FactoryBot.create(:employee, :admin) }
@@ -32,6 +33,12 @@ RSpec.describe ProjectPolicy do
       it 'denies access if employee programmer CUD else programmers project' do
         else_programmer = FactoryBot.create(:employee, :programmer)
         project = else_programmer.projects.create(name: 'Project name')
+        expect(subject).not_to permit(programmer, project)
+      end
+
+      it 'denies access if employee system_administrator CUD system_administrator project' do
+        system_administrator = FactoryBot.create(:employee, :system_administrator)
+        project = system_administrator.projects.create(name: 'Project name')
         expect(subject).not_to permit(programmer, project)
       end
 
@@ -65,6 +72,12 @@ RSpec.describe ProjectPolicy do
         programmer = FactoryBot.create(:employee, :programmer)
         project = programmer.projects.create(name: 'Project name')
         expect(subject).to permit(manager, project)
+      end
+
+      it 'denies access if employee manager CUD system_administrator project' do
+        system_administrator = FactoryBot.create(:employee, :system_administrator)
+        project = system_administrator.projects.create(name: 'Project name')
+        expect(subject).not_to permit(manager, project)
       end
 
       it 'denies access if employee manager CUD his project' do
@@ -106,6 +119,12 @@ RSpec.describe ProjectPolicy do
         expect(subject).not_to permit(team_lead, project)
       end
 
+      it 'denies access if employee team_lead CUD system_administrator project' do
+        system_administrator = FactoryBot.create(:employee, :system_administrator)
+        project = system_administrator.projects.create(name: 'Project name')
+        expect(subject).not_to permit(team_lead, project)
+      end
+
       it 'denies access if employee team_lead CUD manager project' do
         manager = FactoryBot.create(:employee, :manager)
         project = manager.projects.create(name: 'Project name')
@@ -143,6 +162,11 @@ RSpec.describe ProjectPolicy do
         expect(subject).to permit(admin, project)
       end
 
+      it 'denies access if employee admin CUD system_administrator project' do
+        system_administrator = FactoryBot.create(:employee, :system_administrator)
+        project = system_administrator.projects.create(name: 'Project name')
+        expect(subject).not_to permit(admin, project)
+      end
 
       it 'denies access if employee admin CUD manager project' do
         manager = FactoryBot.create(:employee, :manager)

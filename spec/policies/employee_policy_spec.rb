@@ -4,6 +4,7 @@ RSpec.describe EmployeePolicy do
 
   let(:other) { FactoryBot.create(:employee, :other) }
   let(:programmer) { FactoryBot.create(:employee, :programmer) }
+  let(:system_administrator) { FactoryBot.create(:employee, :system_administrator) }
   let(:manager) { FactoryBot.create(:employee, :manager) }
   let(:team_lead) { FactoryBot.create(:employee, :team_lead) }
   let(:admin) { FactoryBot.create(:employee, :admin) }
@@ -21,6 +22,10 @@ RSpec.describe EmployeePolicy do
 
     it 'denies access if employee programmer' do
       expect(subject).not_to permit(programmer)
+    end
+
+    it 'denies access if employee system_administrator' do
+      expect(subject).not_to permit(system_administrator)
     end
 
     it 'denies access if employee manager' do
@@ -85,6 +90,34 @@ RSpec.describe EmployeePolicy do
       end
 
       it 'denies access if employee programmer edit employee admin' do
+        expect(subject).not_to permit(programmer, admin)
+      end
+    end
+
+    describe 'system_administrator edit employee' do
+      it 'grants access if employee system_administrator edit self' do
+        system_administrator = FactoryBot.create(:employee, :system_administrator)
+        expect(subject).to permit(system_administrator, system_administrator)
+      end
+
+      it 'denies access if employee system_administrator edit other employee system_administrator' do
+        edit_system_administrator = FactoryBot.create(:employee, :system_administrator)
+        expect(subject).not_to permit(system_administrator, edit_system_administrator)
+      end
+
+      it 'denies access if employee system_administrator edit employee programmer' do
+        expect(subject).not_to permit(system_administrator, programmer)
+      end
+
+      it 'denies access if employee system_administrator edit employee manager' do
+        expect(subject).not_to permit(programmer, manager)
+      end
+
+      it 'denies access if employee system_administrator edit employee team_lead' do
+        expect(subject).not_to permit(programmer, team_lead)
+      end
+
+      it 'denies access if employee system_administrator edit employee admin' do
         expect(subject).not_to permit(programmer, admin)
       end
     end

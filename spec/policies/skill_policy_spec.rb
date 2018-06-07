@@ -3,6 +3,7 @@ require 'rails_helper'
 RSpec.describe SkillPolicy do
   let(:other) { FactoryBot.create(:employee, :other) }
   let(:programmer) { FactoryBot.create(:employee, :programmer) }
+  let(:system_administrator) { FactoryBot.create(:employee, :system_administrator) }
   let(:manager) { FactoryBot.create(:employee, :manager) }
   let(:team_lead) { FactoryBot.create(:employee, :team_lead) }
   let(:admin) { FactoryBot.create(:employee, :admin) }
@@ -18,6 +19,10 @@ RSpec.describe SkillPolicy do
 
     it 'grants access if employee programmer' do
       expect(subject).to permit(programmer, skill)
+    end
+
+    it 'grants access if employee system_administrator' do
+      expect(subject).to permit(system_administrator, skill)
     end
 
     it 'grants access if employee manager' do

@@ -12,8 +12,8 @@ class Employee < ApplicationRecord
   has_many :resource_skills
   has_many :skills, through: :resource_skills
   has_many :projects
-
-  enum role: { other: 0, programmer: 1, manager: 2, team_lead: 3, admin: 4 }
+  
+  enum role: { other: 0, programmer: 1, manager: 2, team_lead: 3, admin: 4, system_administrator: 5 }
   enum department: { ruby: 0, php: 1, js: 2, sys_admins: 3, managers: 4, other_department: 5 }
 
   accepts_nested_attributes_for :image

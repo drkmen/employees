@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class EmployeesController < ApplicationController
   before_action :find_employee, only: %i[show edit update destroy]
   before_action :employees, only: %i[index show]
@@ -5,9 +7,9 @@ class EmployeesController < ApplicationController
 
   # TODO
   def index
-      @employees = Employee.filter(params.reject { |_, v| v.blank? }.slice(:role, :office, :department))
-      @employees = Employee.filter_skills(@employees, params[:skills]) if params[:skills]
-      @employees = @employees.to_a.group_by { |s| s.department } unless params.present?
+    @employees = Employee.filter(params.reject { |_, v| v.blank? }.slice(:role, :office, :department))
+    @employees = Employee.filter_skills(@employees, params[:skills]) if params[:skills]
+    @employees = @employees.to_a.group_by(&:department) if params.present?
   end
 
   def show
@@ -57,11 +59,11 @@ class EmployeesController < ApplicationController
   end
 
   def skills
-    @skills = Skill.all.to_a.group_by { |s| s.skill_type }
+    @skills = Skill.all.to_a.group_by(&:skill_type)
   end
 
   def employees
-    @employees = Employee.all.to_a.group_by { |s| s.department }
+    @employees = Employee.all.to_a.group_by(&:department)
   end
 
   def employee_params

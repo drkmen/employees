@@ -41,4 +41,9 @@
   .form-group
     = f.text_area :description, placeholder: true, cols: 12, rows: 5, class: 'form-control'
   .form-group
-    = f.submit class: 'btn btn-success'
+    %btn.btn.btn-outline-success#addAdditionalField Add additional field
+  .form-group
+    = f.fields_for :additional, multiple: :multiple do
+      #additionalFields
+  .form-group
+    = f.submit class: 'btn btn-outline-success'

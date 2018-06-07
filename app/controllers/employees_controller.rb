@@ -57,7 +57,7 @@ class EmployeesController < ApplicationController
     @employees = Employee.filter_skills(@employees, params[:skills]) if params[:skills]
     @employees = @employees.to_a.group_by(&:department) unless @employees.empty?
 
-    @skills = Skill.all.to_a.group_by(&:skill_type)
+    @skills = Skill.all
   end
 
   def employee_params

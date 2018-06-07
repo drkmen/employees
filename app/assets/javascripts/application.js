@@ -19,6 +19,3 @@
 //= require select2-full
 //= require_tree .
 
-$(document).ready(function() {
-    $( "#skillsSelector" ).select2();
-});

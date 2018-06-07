@@ -1,5 +1,8 @@
 .section.list
-  %h3 List
+  %h3.text-center List
   %ul
-    - @employees.each do |employee|
-      %li= link_to employee.name, employee_path(employee)
+    - @employees.each do |department, employees|
+      %h4= department.humanize
+      - employees.each do |employee|
+        %li= link_to employee.name, employee_path(employee)
+      &nbsp;

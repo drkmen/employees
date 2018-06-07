@@ -48,15 +48,15 @@ class EmployeesController < ApplicationController
   private
 
   def find_employee
-    @employee = Employee.friendly.find(params[:id])
+    @employee = Employee.includes(:projects, :skills).friendly.find(params[:id])
   end
 
   def skills
-    @skills = Skill.all
+    @skills = Skill.all.to_a.group_by { |s| s.skill_type }
   end
 
   def employees
-    @employees = Employee.all
+    @employees = Employee.all.to_a.group_by { |s| s.department }
   end
 
   def employee_params

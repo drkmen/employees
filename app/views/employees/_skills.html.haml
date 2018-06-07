@@ -1,5 +1,8 @@
 .section.filters
-  %h3 Filters
-
-  - @skills.each do |skill|
-    = link_to skill.name, '#', class: 'skill'
+  %h3.text-center Filters
+  - @skills.each do |skill_type, skills|
+    %h4= skill_type.humanize
+    %p
+      - skills.each do |skill|
+        = link_to skill.name, '#', class: ''
+    %hr

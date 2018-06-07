@@ -11,6 +11,18 @@
       border-right: none;
       padding-right: 50px;
     }
+
+    &.list {
+      ul {
+        list-style: none;
+
+        li {
+          &:before {
+            content: '| ';
+          }
+        }
+      }
+    }
   }
 
   .skill {

@@ -8,9 +8,9 @@
       .section.last.profile
         .row
           .col-5
-            -#= image_tag @employee.image, size: '200x200'
+            = image_tag @employee.avatar, class: 'img-fluid'
           .col-7
-            %span.link.pointable{'data-target' => '#editModal', 'data-toggle' => 'modal', type: 'button'}
+            %span.link.pointable{'data-target' => '#editModal', 'data-toggle' => 'modal'}
               Edit
             = render 'layouts/modal', { modal_id: 'editModal', modal_title: 'Edit Employee' } do
               .modal-body
@@ -40,36 +40,38 @@
               %p
                 = @employee.description
 
-        %h3 Skills
-        %hr
-        .row
-          .col-12
-            - @employee.skills.each do |skill|
-              .skill= skill.name
+        - if @employee.skills.present?
+          %h3 Skills
+          %hr
+          .row
+            .col-12
+              - @employee.skills.each do |skill|
+                .skill= skill.name
 
-        %h3 Projects
-        %hr
-        .row
-          .col-12
-            - @employee.projects.each do |project|
-              .row
-                .col-4
-                  = project.image
-                .col-8
-                  %h3
-                    = project.name
-                    - if project.client
-                      .float-right
-                        %small
-                          Client:
-                          = project.client
-                  %br
-                  = "#{project.start_date.strftime('%d/%m/%Y')} - #{project.end_date.strftime('%d/%m/%Y')}"
-                  %br
-                  = project.description
+        - if @employee.projects.present?
+          %h3 Projects
+          %hr
+          .row
+            .col-12
+              - @employee.projects.each do |project|
+                .row
+                  .col-4
+                    = project.image
+                  .col-8
+                    %h3
+                      = project.name
+                      - if project.client
+                        .float-right
+                          %small
+                            Client:
+                            = project.client
+                    %br
+                    = "#{project.start_date.strftime('%d/%m/%Y')} - #{project.end_date.strftime('%d/%m/%Y')}"
+                    %br
+                    = project.description
 
-              .row
-                .col-12
-                  - project.skills.each do |skill|
-                    .skill.ruby= skill.name
-              %hr
+                .row
+                  .col-12
+                    - project.skills.each do |skill|
+                      .skill.ruby= skill.name
+                %hr

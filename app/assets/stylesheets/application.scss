@@ -18,7 +18,7 @@ html, body {
   height: 100%;
 }
 
-a {
+a, .link {
   text-decoration: underline;
   border: none;
   outline: none;
@@ -56,10 +56,6 @@ a {
       @include transition(0.2s, ease-in-out);
     }
   }
-}
-
-.link {
-  text-decoration: underline;
 }
 
 .pointable {

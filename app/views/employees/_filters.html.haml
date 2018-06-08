@@ -1,16 +1,19 @@
 .section.filters.container-fluid
   %h3.text-center Filters
+  %p
+  - if params[:office] || params[:role] || params[:department] || params[:skills]
+    = link_to 'Reset filters', employees_path
   = form_tag '', method: :get do
     .form-row
       .col-4
         .form-group
-          = select_tag :office, options_for_select(Employee.offices.map {|k, v| [k.humanize, v]}), prompt: 'Select office', class: 'form-control'
+          = select_tag :office, options_for_select(Employee.offices.map {|k, v| [k.humanize, v]}, params[:office]), prompt: 'Select office', class: 'form-control'
       .col-4
         .form-group
-          = select_tag :role, options_for_select(Employee.roles.map {|k, v| [k.humanize, v]}), prompt: 'Select role', class: 'form-control'
+          = select_tag :role, options_for_select(Employee.roles.map {|k, v| [k.humanize, v]}, params[:role]), prompt: 'Select role', class: 'form-control'
       .col-4
         .form-group
-          = select_tag :department, options_for_select(Employee.departments.map {|k, v| [k.humanize, v]}), prompt: 'Select department', class: 'form-control'
+          = select_tag :department, options_for_select(Employee.departments.map {|k, v| [k.humanize, v]}, params[:department]), prompt: 'Select department', class: 'form-control'
     .form-row
       .col-12
         .form-group
@@ -22,7 +25,7 @@
                   .col-4
                     - skill_slice.each do |skill|
                       %label.form-check-label
-                        = check_box_tag 'skills[]', skill.name
+                        = check_box_tag 'skills[]', skill.name, params[:skills]&.include?(skill.name), id: "skill_#{skill.id}"
                         = skill.name
                       %br
     %p

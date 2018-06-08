@@ -53,7 +53,7 @@ class EmployeesController < ApplicationController
   end
 
   def load_data
-    @employees = Employee.filter(params.reject { |_, v| v.blank? }.slice(:role, :office, :department))
+    @employees = Employee.preload(:skills).filter(params.reject { |_, v| v.blank? }.slice(:role, :office, :department))
     @employees = Employee.filter_skills(@employees, params[:skills]) if params[:skills]
     @employees = @employees.to_a.group_by(&:department) unless @employees.empty?
 

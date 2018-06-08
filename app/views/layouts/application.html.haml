@@ -16,7 +16,7 @@
           %button.btn.btn-outline-secondary.my-2.my-sm-0{type: 'submit'} Search
         %div
           - if current_employee&.admin?
-            %span.link.pointable{'data-target' => '#inviteModal', 'data-toggle' => 'modal', type: 'button'}
+            %span.link.pointable{'data-target' => '#inviteModal', 'data-toggle' => 'modal'}
               Invite Employee
             |
             = render 'layouts/modal', { modal_id: 'inviteModal', modal_title: 'Send invitation' } do
@@ -29,7 +29,7 @@
             &nbsp;
             = image_tag current_employee.avatar, size: '25x25', class: 'rounded'
           - else
-            %span.link.pointable{'data-target' => '#loginModal', 'data-toggle' => 'modal', type: 'button'}
+            %span.link.pointable{'data-target' => '#loginModal', 'data-toggle' => 'modal'}
               Login
 
             = render 'layouts/modal', { modal_id: 'loginModal', modal_title: 'Log in' } do

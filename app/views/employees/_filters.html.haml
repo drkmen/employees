@@ -1,5 +1,5 @@
 .section.filters
-  %h3 Filters
+  %h3.text-center Filters
   = form_tag '', :method => :get do
     %p
       = select_tag :office, options_for_select(Employee.offices.map {|k, v| [k.humanize, v]}), prompt: 'Select office'
@@ -13,8 +13,8 @@
         %p
           - skills.each do |skill|
             = link_to skill.name, '#', class: ''
-            = check_box_tag "skills[]", skill.name
+            = check_box_tag 'skills[]', skill.name
+            = raw ' / '
         %hr
     %p
       = submit_tag 'Filter'
-

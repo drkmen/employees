@@ -1,7 +1,7 @@
 .employees
   .row
     .col-3
-      = render 'skills'
+      = render 'filters'
     .col-3
       = render 'employee_list'
     .col-6
@@ -65,6 +65,7 @@
                           %small
                             Client:
                             = project.client
+                    = project.link
                     %br
                     = "#{project.start_date.strftime('%d/%m/%Y')} - #{project.end_date.strftime('%d/%m/%Y')}"
                     %br

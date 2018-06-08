@@ -8,7 +8,7 @@
     %p
       = select_tag :department, options_for_select(Employee.departments.map {|k, v| [k.humanize, v]}), prompt: 'Select department'
     %p
-      - @skills.each do |skill_type, skills|
+      - @skills.to_a.group_by(&:skill_type).each do |skill_type, skills|
         %h4= skill_type&.humanize
         %p
           - skills.each do |skill|

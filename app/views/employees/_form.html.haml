@@ -46,4 +46,8 @@
     = f.fields_for :additional, multiple: :multiple do
       #additionalFields
   .form-group
-    = f.submit class: 'btn btn-outline-success'
+    = f.label 'Skills'
+    = f.select(:skill_ids, @skills.pluck(:name, :id), {}, {class: 'select2-field', id: 'skillsSelector', multiple: :multiple, placeholder: 'Skills'})
+  .form-group
+    = f.submit class: 'btn btn-success'
+

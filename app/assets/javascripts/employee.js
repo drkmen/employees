@@ -1,5 +1,6 @@
-$(document).ready(function() {
+$( document ).on('turbolinks:load', function() {
     $('#addAdditionalField').on('click', addFields);
+    $( "#skillsSelector" ).select2();
 });
 
 function addFields(e) {

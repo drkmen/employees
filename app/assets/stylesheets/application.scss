@@ -63,14 +63,12 @@ a, .link {
 }
 
 .filters {
-  .skill {
-    border: 1px solid $grey;
-    border-radius: 20%;
-    padding: 10px 20px;
-    @include transition(0.2s, ease-in-out);
+  select {
+    text-decoration: none;
 
-    &:hover {
-      border: 1px solid $grey;
+    &:focus {
+      box-shadow: none;
+      outline: none;
       @include transition(0.2s, ease-in-out);
     }
   }

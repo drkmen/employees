@@ -6,28 +6,24 @@ class ProjectPolicy < ApplicationPolicy
     @project = project
   end
 
+  def edit?
+    false
+  end
+
   def create?
     employee.present? && ((employee == project.employee && (project.employee.programmer? || project.employee.team_lead?)) ||
       (employee.manager? && project.employee.programmer?) ||
       (employee.team_lead? && project.employee.programmer? &&
-        project.employee.department == employee.department) ||
+          project.employee.department == employee.department) ||
       (employee.admin? && (project.employee.programmer? || project.employee.team_lead?)))
   end
 
   def update?
-    employee.present? && ((employee == project.employee && (project.employee.programmer? || project.employee.team_lead?)) ||
-      (employee.manager? && project.employee.programmer?) ||
-      (employee.team_lead? && project.employee.programmer? &&
-        project.employee.department == employee.department) ||
-      (employee.admin? && (project.employee.programmer? || project.employee.team_lead?)))
+    create?
   end
 
   def destroy?
-    employee.present? && ((employee == project.employee && (project.employee.programmer? || project.employee.team_lead?)) ||
-      (employee.manager? && project.employee.programmer?) ||
-      (employee.team_lead? && project.employee.programmer? &&
-        project.employee.department == employee.department) ||
-      (employee.admin? && (project.employee.programmer? || project.employee.team_lead?)))
+    create?
   end
 
   class Scope < Scope

@@ -6,16 +6,20 @@ class SkillPolicy < ApplicationPolicy
     @skill = skill
   end
 
+  def edit?
+    false
+  end
+
   def create?
     employee.present?
   end
 
   def update?
-    employee.present?
+    employee.present? && skill.employee_id == employee.id
   end
 
   def destroy?
-    employee.present?
+    update?
   end
 
   class Scope < Scope

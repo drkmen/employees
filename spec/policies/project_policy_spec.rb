@@ -11,6 +11,36 @@ RSpec.describe ProjectPolicy do
 
   subject { described_class }
 
+  permissions :edit? do
+    it 'denies access if employee other' do
+      expect(subject).not_to permit(other)
+    end
+
+    it 'denies access if employee programmer' do
+      expect(subject).not_to permit(programmer)
+    end
+
+    it 'denies access if employee system_administrator' do
+      expect(subject).not_to permit(system_administrator)
+    end
+
+    it 'denies access if employee manager' do
+      expect(subject).not_to permit(manager)
+    end
+
+    it 'denies access if employee team_lead' do
+      expect(subject).not_to permit(team_lead)
+    end
+
+    it 'denies access if employee admin' do
+      expect(subject).not_to permit(admin)
+    end
+
+    it 'denies access if not employee' do
+      expect(subject).not_to permit
+    end
+  end
+
   permissions :create?, :update?, :destroy? do
     describe 'other CUD project' do
       it 'denies access if employee other' do

@@ -23,7 +23,7 @@ class Employee < ApplicationRecord
   scope :department, -> (department) { where(department: department) }
   scope :deleted, -> { unscoped.where(deleted: true) }
 
-  accepts_nested_attributes_for :image
+  accepts_nested_attributes_for :image, :skills, :resource_skills
 
   def self.filter_skills(employee, skills_array)
     employee.select do |empl|

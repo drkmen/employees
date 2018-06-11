@@ -1,5 +1,7 @@
-class ArchiveController < ApplicationController
+# frozen_string_literal: true
 
+# Archive Controller
+class ArchiveController < ApplicationController
   def index
     @employees = Employee.deleted
   end

@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+# ProjectPolicy
 class ProjectPolicy < ApplicationPolicy
   attr_reader :employee, :project
 

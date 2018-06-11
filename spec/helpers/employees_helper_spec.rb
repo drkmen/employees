@@ -1,15 +1,16 @@
+# frozen_string_literal: true
+
+# Employees Helper Spec
 require 'rails_helper'
 
-# Specs in this file have access to a helper object that includes
-# the EmployeesHelper. For example:
-#
-# describe EmployeesHelper do
-#   describe "string concat" do
-#     it "concats two strings with spaces" do
-#       expect(helper.concat_strings("this","that")).to eq("this that")
-#     end
-#   end
-# end
 RSpec.describe EmployeesHelper, type: :helper do
-  pending "add some examples to (or delete) #{__FILE__}"
+  let(:employee1) { FactoryBot.create(:employee, :admin_full) }
+  let(:employee2) { FactoryBot.create(:employee, :programmer) }
+
+  it "has access to the helper methods defined in the module" do
+    expect(role(employee1)).to eq('Owner')
+  end
+  it "has access to the helper methods defined in the module" do
+    expect(role(employee2)).to eq('Programmer')
+  end
 end

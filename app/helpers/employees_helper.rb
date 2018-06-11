@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+# EmployeeHelper
 module EmployeesHelper
   def role(employee)
     return 'Owner' if employee.admin?

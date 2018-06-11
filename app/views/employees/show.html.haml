@@ -66,18 +66,15 @@
               %div{ class: "col-#{12 / employee_skills.size}" }
                 %h5= skill_type&.humanize
                 - skills.each do |skill|
-                  %span.link.pointable{ 'data-target': "#editSkillModal_#{skill.id}", 'data-toggle': :modal, title: "Experience: #{skill.experience(current_employee)}" }
-                    %span= skill.name
+                  %span.link.pointable{ 'data-target': "#editSkillModal_#{skill.id}", 'data-toggle': :modal, title: "Experience: #{skill.experience(@employee)}" }
+                  - if able_edit?
+                    = link_to skill.name, skill_path(skill, employee_id: @employee.id), remote: true
+                    %br
+                  - else
                     - if skill.experience(@employee)
-                      = raw '/'
-                      = skill.experience(@employee)
-                  %br
-                    
-                  - able_edit do
-                    -# figure out, how to render just one modal
-                    = render 'layouts/modal', { modal_id: "editSkillModal_#{skill.id}", modal_title: "Edit Skill Experience [#{skill.name}]" } do
-                      .modal-body
-                        = render 'employees/resource_skill_form', resource_skill: skill.resource_skills.find_by(employee_id: @employee.id)
+                      %p= "#{skill.name} / #{skill.experience(@employee)}"
+                    - else
+                      %p= skill.name
 
         - if @employee.projects.reject(&:new_record?).present?
           %br

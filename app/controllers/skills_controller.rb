@@ -1,33 +1,47 @@
 # frozen_string_literal: true
 
 # Skills Controller
-class SkillsController < ApplicationController
-  before_action :find_skill, except: %i[new create]
 
-  def edit; end
+class SkillsController < ApplicationController
+  before_action :find_skill, only: %i[update destroy]
+
+  def index
+    @skills = Skill.all
+    @skill = Skill.new
+
+    @employees = Employee.preload(:skills, :resource_skills).filter(params.reject { |_, v| v.blank? }.slice(:role, :office, :department))
+    @employees = Employee.filter_skills(@employees, params[:skills]) if params[:skills]
+    @employees = @employees.to_a.group_by(&:department) unless @employees.empty?
+    @employees = Employee.search(params[:term]).to_a.group_by(&:department) if params[:term]
+  end
+
+  def show
+    @skill = Skill.find(params[:id])
+    respond_to do |format|
+      format.js do
+        @employee = Employee.find(params[:employee_id]) if params[:employee_id]
+        if @skill.present?
+          render status: :found
+        else
+          render status: :not_found
+        end
+      end
+    end
+  end
 
   def update
     if @skill.update skill_params
       flash[:notice] = 'Successfully updated'
-      redirect_to root_path
     else
       flash[:danger] = 'Is not updated'
-      render :edit
     end
-  end
-
-  def new
-    @skill = Skill.new
+    redirect_to skills_path
   end
 
   def create
-    if Skill.create(skill_params)
-      flash[:notice] = 'Successfully created'
-      redirect_to root_path
-    else
-      flash[:danger] = 'Is not created'
-      render :new
-    end
+    Skill.create skill_params
+    flash[:notice] = 'Successfully created'
+    redirect_to skills_path
   end
 
   def destroy
@@ -36,7 +50,7 @@ class SkillsController < ApplicationController
     else
       flash[:danger] = 'Is not destroyed'
     end
-    redirect_to root_path
+    redirect_to skills_path
   end
 
   private

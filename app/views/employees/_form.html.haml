@@ -20,7 +20,7 @@
   .form-row
     .col-6
       .form-group
-        = f.text_field :office, placeholder: true, class: 'form-control'
+        = f.select :office, Employee.offices.keys.map { |o| [o.humanize, o] }, {}, class: 'form-control'
     .col-6
       .form-group
         = f.text_field :skype, placeholder: true, class: 'form-control'
@@ -28,11 +28,11 @@
     .col-6
       .form-group
         = f.label :role
-        = f.select :role, Employee.roles.keys, {}, class: 'form-control'
+        = f.select :role, Employee.roles.keys.map { |r| [r.humanize, r] }, {}, class: 'form-control'
     .col-6
       .form-group
         = f.label :department
-        = f.select :department, Employee.departments.keys, {}, class: 'form-control'
+        = f.select :department, Employee.departments.keys.map { |d| [d.humanize, d] }, {}, class: 'form-control'
   .form-group
     .custom-file
       = f.label :image, class: 'custom-file-label'

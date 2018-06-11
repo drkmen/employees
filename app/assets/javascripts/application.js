@@ -19,3 +19,8 @@
 //= require select2-full
 //= require_tree .
 
+$(function() {
+    setTimeout(function() {
+        $('.notification').fadeOut('slow');
+    }, 5000);
+});

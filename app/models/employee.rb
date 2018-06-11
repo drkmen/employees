@@ -6,7 +6,7 @@ class Employee < ApplicationRecord
   has_many :resource_skills
   has_many :skills, through: :resource_skills
   has_many :projects
-  has_many :own_skills, -> { where(employee_id: self.id) }, class_name: 'Skill'
+  has_many :own_skills, class_name: 'Skill'
 
   friendly_id :friendly_name, use: :slugged
 

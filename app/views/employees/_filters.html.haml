@@ -1,8 +1,12 @@
 .section.filters.container-fluid
   %h3.text-center Filters
+
+  .row
+    .col-12
+      - if params[:office] || params[:role] || params[:department] || params[:skills]
+        .float-right= link_to 'Reset filters', employees_path
+
   %p
-  - if params[:office] || params[:role] || params[:department] || params[:skills]
-    = link_to 'Reset filters', employees_path
   = form_tag '', method: :get, enforce_utf8: false do
     .form-row
       .col-4

@@ -1,4 +1,6 @@
 = form_for 'skill_experience', url: employee_skill_experience_path(@employee), method: :patch do |f|
-  = f.text_field :experience, value: resource_skill.experience, class: 'form-control'
   = f.hidden_field :id, value: resource_skill.id
-  = f.submit class: 'btn btn-outline-success'
+  .form-group
+    = f.text_field :experience, value: resource_skill.experience, class: 'form-control', placeholder: true
+  .form-group
+    = f.submit class: 'btn btn-outline-success'

@@ -44,13 +44,21 @@
           %h3 Skills
           %hr
           .row
-            .col-12
-              - @employee.skills.each do |skill|
-                %span.link.pointable{'data-target': '#editSkillModal', 'data-toggle': :modal}
-                  .skill= skill.name
-                = render 'layouts/modal', { modal_id: 'editSkillModal', modal_title: "Edit Skill [#{skill.name}]" } do
-                  .modal-body
-                    = render 'employees/resource_skill_form', resource_skill: skill.resource_skills.find_by(employee_id: @employee.id)
+            - employee_skills = @employee.skills.to_a.group_by(&:skill_type)
+            - employee_skills.each do |skill_type, skills|
+              %div{class: "col-#{12 / employee_skills.size}"}
+                %h5= skill_type&.humanize
+                - skills.each do |skill|
+                  %span.link.pointable{'data-target': "#editSkillModal_#{skill.id}", 'data-toggle': :modal}
+                    = skill.name
+                    = skill.experience(current_employee)
+                  %br
+
+                  -# figure out, how to render just one modal
+                  = render 'layouts/modal', { modal_id: "editSkillModal_#{skill.id}", modal_title: "Edit Skill Experience [#{skill.name}]" } do
+                    .modal-body
+                      = render 'employees/resource_skill_form', resource_skill: skill.resource_skills.find_by(employee_id: @employee.id)
+
         - if @employee.projects.present?
           %br
           .row
@@ -94,5 +102,6 @@
                 .row
                   .col-12
                     - project.skills.each do |skill|
-                      .skill.ruby= skill.name
+                      = skill.name
+                      = raw '/'
                 %hr

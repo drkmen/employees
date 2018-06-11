@@ -45,6 +45,14 @@
   .form-group
     = f.fields_for :additional, multiple: :multiple do
       #additionalFields
+        - @employee.additional&.each do |key, value|
+          .form-row
+            .col-5
+              %input.form-control{onchange: 'change(this)', placeholder: 'Key', type: 'text', value: key}
+            .col-5
+              %input.form-control.value{name: "employee[additional][#{key}]", placeholder: 'Value', type: 'text', value: value}
+            .col-2
+              %btn.btn.btn-outline-danger{onclick: 'remove(this)'} Remove
   .form-group
     = f.label 'Skills'
     = f.select(:skill_ids, @skills.pluck(:name, :id), {}, {class: 'select2-field', id: 'skillsSelector', multiple: :multiple, placeholder: 'Skills'})

@@ -1,4 +1,6 @@
-= form_for @project do |f|
+= form_for project do |f|
+  .form-group
+    = f.hidden_field :employee_id, value: employee.id
   .form-group
     = f.text_field :name, class: 'form-control', placeholder: 'Name'
   .form-group
@@ -6,8 +8,10 @@
   .form-group
     = f.text_field :client, class: 'form-control', placeholder: 'Client name'
   .form-group
+  = f.text_field :link, class: 'form-control', placeholder: 'Link'
+  .form-group
     = f.label 'Skills'
-    = f.select(:skill_ids, @skills.pluck(:name, :id), {}, {class: 'select2-field', id: 'skillsSelector', multiple: :multiple, placeholder: 'Skills'})
+    = f.select(:skill_ids, @skills.pluck(:name, :id), {}, {class: 'select2-field', multiple: :multiple, placeholder: 'Skills'})
   .form-group
     = f.label 'Picture'
   .form-group

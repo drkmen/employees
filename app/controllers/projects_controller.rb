@@ -1,51 +1,37 @@
 # frozen_string_literal: true
 
 class ProjectsController < ApplicationController
-  before_action :find_project, only: %i[edit update destroy]
-
-  def new
-    @project = Project.new
-    @project.skills.new
-    @project.image = Image.new
-    @skills = Skill.all
-  end
 
   def create
-    @project = current_employee.projects.new project_params
-    if @project.save!
+    if Project.create project_params
       flash[:notice] = 'Successfully created'
     else
       flash[:danger] = 'Is not created'
     end
-    redirect_to new_project_path
+    redirect_to employee_path(project_params[:employee_id])
   end
 
   def edit; end
 
   def update
-    if @project.update(project_params)
+    if Project.find(params[:id]).update(project_params)
       flash[:notice] = 'Successfully updated'
-      redirect_to project_path(@project)
     else
       flash[:danger] = 'Is not updated'
-      render :edit
     end
+    redirect_to employee_path(project_params[:employee_id])
   end
 
   def destroy
-    if @project.destroy
+    if Project.find(params[:id]).destroy
       flash[:notice] = 'Successfully destroyed'
     else
       flash[:danger] = 'Is not destroyed'
     end
-    redirect_to projects_path
+    redirect_to employee_path(params[:employee_id])
   end
 
   private
-
-  def find_project
-    @project = Project.find(params[:id])
-  end
 
   def project_params
     params.require(:project).permit!

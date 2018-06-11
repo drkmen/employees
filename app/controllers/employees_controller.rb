@@ -63,6 +63,7 @@ class EmployeesController < ApplicationController
     @employees = Employee.preload(:skills).filter(params.reject { |_, v| v.blank? }.slice(:role, :office, :department))
     @employees = Employee.filter_skills(@employees, params[:skills]) if params[:skills]
     @employees = @employees.to_a.group_by(&:department) unless @employees.empty?
+    @employees = Employee.search(params[:term]).to_a.group_by(&:department) if params[:term]
 
     @skills = Skill.all
   end

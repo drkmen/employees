@@ -92,7 +92,7 @@ RSpec.describe EmployeesController, type: :controller do
     it 'returns a success response' do
       expect do
         post :create, params: {
-            employee: { first_name: 'qwe-qwe', last_name: 'qwe-qwe', email: 'email@example.com', role: 1, password: '123123' }
+            employee: { first_name: 'qwe-qwe', last_name: 'qwe-qwe', email: 'email@example.com', role: 'programmer', password: '123123' }
         }
       end.to(change { Employee.count }.by(1)) &&
           redirect_to(Employee.last &&

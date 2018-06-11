@@ -50,4 +50,12 @@ class Employee < ApplicationRecord
   def restore
     update(deleted: false)
   end
+
+  def self.search(term)
+    if term
+      where("(first_name ILIKE ?) OR ((first_name || ' ' || last_name) ILIKE ?)", "%#{term}%", "%#{term}%")
+    else
+      all
+    end
+  end
 end

@@ -40,6 +40,16 @@
               %p
                 = @employee.description
 
+        - if @employee.additional.present?
+          %h3 Additional information:
+          .row
+            .col-12
+              - @employee.additional.each do |key, value|
+                %b= key.humanize + ':'
+                = value
+                %br
+
+        %br
         - if @employee.skills.present?
           %h3 Skills
           %hr
@@ -59,18 +69,20 @@
                     .modal-body
                       = render 'employees/resource_skill_form', resource_skill: skill.resource_skills.find_by(employee_id: @employee.id)
 
+
+        %br
+        .row
+          .col-6
+            %h3 Projects
+          .col-6
+            %span.link.pointable{'data-target': '#addProjectToEmployee', 'data-toggle': :modal}
+              .float-right
+                %btn.btn.btn-outline-success Add project
+            = render 'layouts/modal', { modal_id: 'addProjectToEmployee', modal_title: 'Add project' } do
+              .modal-body
+                = render 'projects/form', project: @employee.projects.new, employee: @employee
+
         - if @employee.projects.present?
-          %br
-          .row
-            .col-6
-              %h3 Projects
-            .col-6
-              %span.link.pointable{'data-target': '#addProjectToEmployee', 'data-toggle': :modal}
-                .float-right
-                  %btn.btn.btn-outline-success Add project
-              = render 'layouts/modal', { modal_id: 'addProjectToEmployee', modal_title: 'Add project' } do
-                .modal-body
-                  = render 'projects/form', project: @employee.projects.new, employee: @employee
           %hr
           .row
             .col-12

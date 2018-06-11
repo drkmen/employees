@@ -6,23 +6,23 @@ $( document ).on('turbolinks:load', function() {
 
 function addFields(e) {
     $('#additionalFields').append(
-        "<div class='row'>" +
-        "<div class='col-4'>" +
-        "<input class='form-control' placeholder='Key' type='text' onchange='change(this)'>" +
-        "</div>" +
-        "<div class='col-4'>" +
-        "<input class='form-control value' placeholder='Value' type='text' name='employee[additional][value]'>" +
-        "</div>" +
-        "<div class='col-4'>" +
-        "<btn class='btn btn-outline-danger' onClick='remove(this)'>Remove</btn>" +
-        "</div>" +
+        "<div class='form-row'>" +
+            "<div class='col-5 form-group'>" +
+                "<input class='form-control' placeholder='Field name' type='text' onchange='change(this)'>" +
+            "</div>" +
+            "<div class='col-5 form-group'>" +
+                "<input class='form-control value' placeholder='Value' type='text' name='employee[additional][value]'>" +
+            "</div>" +
+            "<div class='col-2 form-group'>" +
+                "<btn class='btn btn-outline-danger' onClick='remove(this)'>Remove</btn>" +
+            "</div>" +
         "</div>");
 }
 
 function change(node) {
-    $(node).parents('.row').find('input.value').attr('name', 'employee[additional][' + $(node).val() + ']');
+    $(node).parents('.form-row').find('input.value').attr('name', 'employee[additional][' + $(node).val() + ']');
 }
 
 function remove(node) {
-    $(node).parents('.row').remove();
+    $(node).parents('.form-row').remove();
 }

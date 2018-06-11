@@ -26,6 +26,12 @@
             = link_to 'Archive', archive_index_path
             |
           - if current_employee
+            %span.link.pointable{'data-target' => '#createSkillModal', 'data-toggle' => 'modal'}
+              Create skill
+            |
+            = render 'layouts/modal', { modal_id: 'createSkillModal', modal_title: 'Create skill' } do
+              .modal-body
+                = render template: 'skills/new'
             = link_to 'Logout', destroy_employee_session_path, method: :delete
             &nbsp;
             = link_to employee_path(current_employee), title: 'My Profile' do

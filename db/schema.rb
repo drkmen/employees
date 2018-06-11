@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_06_07_135250) do
+ActiveRecord::Schema.define(version: 2018_06_11_082707) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -104,6 +104,9 @@ ActiveRecord::Schema.define(version: 2018_06_07_135250) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "skill_type", default: 0, null: false
+    t.bigint "employee_id"
+    t.index ["employee_id"], name: "index_skills_on_employee_id"
   end
 
+  add_foreign_key "skills", "employees"
 end

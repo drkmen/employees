@@ -1,0 +1,119 @@
+.employees
+  .row
+    .col-3
+      = render 'filters'
+    .col-3
+      = render 'employee_list'
+    .col-6
+      .section.last.profile
+        .row
+          .col-5
+            = image_tag @employee.avatar, class: 'img-fluid'
+          .col-7
+            %span.link.pointable{'data-target' => '#editModal', 'data-toggle' => 'modal'}
+              Edit
+            = render 'layouts/modal', { modal_id: 'editModal', modal_title: 'Edit Employee' } do
+              .modal-body
+                = render template: 'employees/edit'
+            |
+            = link_to 'Delete', employee_path(@employee), method: :delete
+
+            %h2
+              = @employee.name
+              .float-right
+                = @employee.main_skill
+                = role(@employee)
+
+            %h5
+              Office:
+              = @employee.office
+
+            %p
+              Email:
+              = @employee.email
+              %br
+              Phone:
+              = @employee.phone
+              %br
+              Skype:
+              = @employee.skype
+              %p
+                = @employee.description
+
+        - if @employee.additional.present?
+          %h3 Additional information:
+          .row
+            .col-12
+              - @employee.additional.each do |key, value|
+                %b= key.humanize + ':'
+                = value
+                %br
+
+        %br
+        - if @employee.skills.present?
+          %h3 Skills
+          %hr
+          .row
+            - employee_skills = @employee.skills.to_a.group_by(&:skill_type)
+            - employee_skills.each do |skill_type, skills|
+              %div{class: "col-#{12 / employee_skills.size}"}
+                %h5= skill_type&.humanize
+                - skills.each do |skill|
+                  %span.link.pointable{'data-target': "#editSkillModal_#{skill.id}", 'data-toggle': :modal}
+                    = skill.name
+                    = skill.experience(current_employee)
+                  %br
+
+                  -# figure out, how to render just one modal
+                  = render 'layouts/modal', { modal_id: "editSkillModal_#{skill.id}", modal_title: "Edit Skill Experience [#{skill.name}]" } do
+                    .modal-body
+                      = render 'employees/resource_skill_form', resource_skill: skill.resource_skills.find_by(employee_id: @employee.id)
+
+
+        %br
+        .row
+          .col-6
+            %h3 Projects
+          .col-6
+            %span.link.pointable{'data-target': '#addProjectToEmployee', 'data-toggle': :modal}
+              .float-right
+                %btn.btn.btn-outline-success Add project
+            = render 'layouts/modal', { modal_id: 'addProjectToEmployee', modal_title: 'Add project' } do
+              .modal-body
+                = render 'projects/form', project: @employee.projects.new, employee: @employee
+
+        - if @employee.projects.present?
+          %hr
+          .row
+            .col-12
+              - @employee.projects.order('created_at DESC').each do |project|
+                .row
+                  .col-4
+                    = project.image
+                  .col-8
+                    %span.link.pointable{'data-target': "#editProjectAtEmployee_#{project.id}", 'data-toggle': 'modal'}
+                      Edit
+                    = render 'layouts/modal', { modal_id: "editProjectAtEmployee_#{project.id}", modal_title: 'Edit employee project' } do
+                      .modal-body
+                        = render 'projects/form', project: project, employee: @employee
+                    |
+                    = link_to 'Delete', project_path(project.id, employee_id: project.employee_id), method: :delete
+                    %h3
+                      = project.name
+                      - if project.client
+                        .float-right
+                          %small
+                            Client:
+                            = project.client
+                    = project.link
+                    %br
+                    = "#{project.start_date.strftime('%d/%m/%Y')} - #{project.end_date.strftime('%d/%m/%Y')}"
+                    %br
+                    = project.description
+
+                .row
+                  .col-12
+                    - project.skills.each do |skill|
+                      = skill.name
+                      = raw '/'
+                %hr

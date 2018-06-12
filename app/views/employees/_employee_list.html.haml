@@ -1,0 +1,18 @@
+.section.list.container-fluid
+  %h3.text-center List
+
+  - if @employees.present?
+    .row
+      .col-12
+        %small.float-right
+          Employees:
+          = @employees&.values&.flatten&.size
+
+    %ul
+      - @employees.each do |department, employees|
+        %h4= department&.humanize
+        - employees.each do |employee|
+          %li= link_to employee.name, employee_path(employee)
+        &nbsp;
+  - else
+    %h3.text-center No one found :(

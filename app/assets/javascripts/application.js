@@ -13,4 +13,14 @@
 //= require rails-ujs
 //= require activestorage
 //= require turbolinks
+//= require jquery3
+//= require popper
+//= require bootstrap-sprockets
+//= require select2-full
 //= require_tree .
+
+$(function() {
+    setTimeout(function() {
+        $('.notification').fadeOut('slow');
+    }, 5000);
+});

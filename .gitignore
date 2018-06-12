@@ -33,3 +33,6 @@
 .ruby-version
 .ruby-gemset
 config/database.yml
+
+public/uploads
+.env

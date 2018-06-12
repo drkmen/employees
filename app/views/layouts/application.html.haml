@@ -1,0 +1,53 @@
+!!!
+%html
+  %head
+    %title Employees
+    = csrf_meta_tags
+    = csp_meta_tag
+    = stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload'
+    = javascript_include_tag 'application', 'data-turbolinks-track': 'reload'
+  %body
+    %header
+      %nav.navbar.navbar-light.bg-light
+        .navbar-brand= link_to 'FaceIT', root_path
+        = form_tag( '', method: :get, enforce_utf8: false, class: 'form-inline') do
+          .search
+            = text_field_tag :term, params[:term], class: 'form-control mr-sm-2', aria: { label: 'Search' }
+          .my-2.my-sm-0
+            = submit_tag 'Search', class: 'btn btn-outline-secondary my-2 my-sm-0', name: nil
+        %div
+          - if current_employee&.admin?
+            %span.link.pointable{'data-target' => '#inviteModal', 'data-toggle' => 'modal'}
+              Invite Employee
+            |
+            = render 'layouts/modal', { modal_id: 'inviteModal', modal_title: 'Send invitation' } do
+              .modal-body
+                = render template: 'devise/invitations/new'
+            = link_to 'Archive', archive_index_path
+            |
+          - if current_employee
+            = link_to 'Logout', destroy_employee_session_path, method: :delete
+            &nbsp;
+            = link_to employee_path(current_employee), title: 'My Profile' do
+              = image_tag current_employee.avatar, size: '25x25', class: 'rounded'
+          - else
+            %span.link.pointable{'data-target' => '#loginModal', 'data-toggle' => 'modal'}
+              Login
+
+            = render 'layouts/modal', { modal_id: 'loginModal', modal_title: 'Log in' } do
+              .modal-body
+                = form_for(:employee, url: employee_session_path, format: :json, remote: true) do |f|
+                  .form-group
+                    = f.email_field :email, class: 'form-control', placeholder: 'Email', required: true
+                  .form-group
+                    = f.password_field :password, class: 'form-control', placeholder: 'Password', required: true
+                  .form-group
+                    = f.submit 'Sign in', class: 'btn btn-success'
+              .modal-footer
+                = link_to 'Forgot your password?', new_password_path(:employee)
+    .notification
+      - flash.each do |name, message|
+        .alert.alert-secondary.text-center
+          = message
+    .container-fluid
+      = yield

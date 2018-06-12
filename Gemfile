@@ -34,9 +34,18 @@ gem 'jbuilder', '~> 2.5'
 # gem 'capistrano-rails', group: :development
 
 gem 'devise'
-gem 'bootstrap'
+gem 'devise_invitable'
 gem 'haml-rails'
+gem 'carrierwave'
 gem 'jquery-rails'
+gem 'select2-rails'
+gem 'font-awesome-rails'
+gem 'bootstrap'
+gem 'friendly_id'
+# Authorization system
+gem 'pundit'
+gem 'dotenv-rails'
+
 
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.1.0', require: false
@@ -65,6 +74,8 @@ group :test do
   gem 'selenium-webdriver'
   # Easy installation and use of chromedriver to run system tests with Chrome
   gem 'chromedriver-helper'
+  gem 'database_cleaner'
+  gem 'factory_bot_rails'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem

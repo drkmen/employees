@@ -1,0 +1,80 @@
+// third party
+@import "bootstrap";
+@import "font-awesome";
+@import url('https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300,700&subset=cyrillic');
+@import "select2";
+
+// modules
+@import "base/variables";
+@import "base/mixins";
+
+// first party
+@import "employees";
+@import "archive";
+
+html, body {
+  font-family: 'Open Sans Condensed', sans-serif;
+  background: linear-gradient($light-grey, white);
+  height: 100%;
+}
+
+a, .link {
+  text-decoration: underline;
+  border: none;
+  outline: none;
+  color: inherit;
+  @include transition(0.2s, ease-in-out);
+
+  &:hover, &:focus {
+    @include transition(0.2s, ease-in-out);
+    text-decoration: none;
+    border: none;
+    outline: none;
+  }
+}
+
+.search {
+  border-bottom: 1px solid $grey;
+  margin-right: 20px;
+
+  &:before {
+    content: "\f002";
+    font-family: "FontAwesome";
+  }
+
+  input {
+    border: none;
+    border-radius: 0;
+    background-color: $light-grey;
+    width: 350px !important;
+    @include transition(0.2s, ease-in-out);
+
+    &:focus {
+      box-shadow: none;
+      outline: none;
+      background-color: $light-grey;
+      @include transition(0.2s, ease-in-out);
+    }
+  }
+}
+
+.pointable {
+  cursor: pointer;
+}
+
+.filters {
+  select {
+    text-decoration: none;
+
+    &:focus {
+      box-shadow: none;
+      outline: none;
+      @include transition(0.2s, ease-in-out);
+    }
+  }
+}
+
+/*Custom size for select2 field*/
+.select2-container {
+  width: 100% !important;
+}

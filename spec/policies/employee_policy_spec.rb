@@ -11,6 +11,66 @@ RSpec.describe EmployeePolicy do
 
   subject { described_class }
 
+  permissions :index?, :show? do
+    it 'grants access if employee other' do
+      expect(subject).to permit(other)
+    end
+
+    it 'grants access if employee programmer' do
+      expect(subject).to permit(programmer)
+    end
+
+    it 'grants access if employee system_administrator' do
+      expect(subject).to permit(system_administrator)
+    end
+
+    it 'grants access if employee manager' do
+      expect(subject).to permit(manager)
+    end
+
+    it 'grants access if employee team_lead' do
+      expect(subject).to permit(team_lead)
+    end
+
+    it 'grants access if employee admin' do
+      expect(subject).to permit(admin)
+    end
+
+    it 'grants access if not employee' do
+      expect(subject).to permit
+    end
+  end
+
+  permissions :edit? do
+    it 'denies access if employee other' do
+      expect(subject).not_to permit(other)
+    end
+
+    it 'denies access if employee programmer' do
+      expect(subject).not_to permit(programmer)
+    end
+
+    it 'denies access if employee system_administrator' do
+      expect(subject).not_to permit(system_administrator)
+    end
+
+    it 'denies access if employee manager' do
+      expect(subject).not_to permit(manager)
+    end
+
+    it 'denies access if employee team_lead' do
+      expect(subject).not_to permit(team_lead)
+    end
+
+    it 'denies access if employee admin' do
+      expect(subject).not_to permit(admin)
+    end
+
+    it 'denies access if not employee' do
+      expect(subject).not_to permit
+    end
+  end
+
   permissions :create?, :destroy? do
     it 'grants access if employee admin' do
       expect(subject).to permit(admin)
@@ -137,7 +197,7 @@ RSpec.describe EmployeePolicy do
       end
 
       it 'denies access if employee manager edit employee team_lead' do
-        expect(subject).not_to permit(manager, team_lead)
+        expect(subject).to permit(manager, team_lead)
       end
 
       it 'denies access if employee manager edit employee admin' do
@@ -167,6 +227,7 @@ RSpec.describe EmployeePolicy do
       end
 
       it 'denies access if employee team_lead edited employee programmer other department' do
+        team_lead = FactoryBot.create(:employee, :team_lead, department: 'js')
         other_dept_programmer = FactoryBot.create(:employee, :programmer, department: 'ruby')
         expect(subject).not_to permit(team_lead, other_dept_programmer)
       end

@@ -80,7 +80,7 @@
                 %btn.btn.btn-outline-success Add project
             = render 'layouts/modal', { modal_id: 'addProjectToEmployee', modal_title: 'Add project' } do
               .modal-body
-                = render 'projects/form', project: @employee.projects.new, employee: @employee
+                = render 'projects/form', project: @project, employee: @employee, path: employee_projects_path(@employee)
 
         - if @employee.projects.present?
           %hr
@@ -89,15 +89,16 @@
               - @employee.projects.order('created_at DESC').each do |project|
                 .row
                   .col-4
-                    = project.image
+                    = image_tag project.avatar, class: 'img-fluid'
                   .col-8
                     %span.link.pointable{'data-target': "#editProjectAtEmployee_#{project.id}", 'data-toggle': 'modal'}
                       Edit
                     = render 'layouts/modal', { modal_id: "editProjectAtEmployee_#{project.id}", modal_title: 'Edit employee project' } do
                       .modal-body
-                        = render 'projects/form', project: project, employee: @employee
+                        - project.image = Image.new unless project.image.present?
+                        = render 'projects/form', project: project, employee: @employee, path: employee_project_path(@employee, project)
                     |
-                    = link_to 'Delete', project_path(project.id, employee_id: project.employee_id), method: :delete
+                    = link_to 'Delete', employee_project_path(project.id, employee_id: project.employee_id), method: :delete
                     %h3
                       = project.name
                       - if project.client

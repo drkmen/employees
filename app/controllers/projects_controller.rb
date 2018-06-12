@@ -11,8 +11,6 @@ class ProjectsController < ApplicationController
     redirect_to employee_path(project_params[:employee_id])
   end
 
-  def edit; end
-
   def update
     if Project.find(params[:id]).update(project_params)
       flash[:notice] = 'Successfully updated'

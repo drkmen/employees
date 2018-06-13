@@ -1,5 +1,8 @@
+# frozen_string_literal: true
+
+# Skills Controller
 class SkillsController < ApplicationController
-  before_action :find_skill, only: %i[edit update destroy]
+  before_action :find_skill, except: %i[new create]
 
   def edit; end
 

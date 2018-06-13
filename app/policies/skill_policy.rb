@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+# SkillPolicy
 class SkillPolicy < ApplicationPolicy
   attr_reader :employee, :skill
 

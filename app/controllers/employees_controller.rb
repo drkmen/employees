@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
+# Employyes Controller
 class EmployeesController < ApplicationController
-  before_action :find_employee, only: %i[show edit update destroy]
+  before_action :find_employee, except: %i[index create new skill_experience]
   before_action :load_data, only: %i[index show]
 
   def index; end

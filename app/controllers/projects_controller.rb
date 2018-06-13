@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Projects Controller
 class ProjectsController < ApplicationController
 
   def create

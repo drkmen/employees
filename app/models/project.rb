@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+# Project model
 class Project < ApplicationRecord
   has_one :image, as: :imageable
   has_many :resource_skills

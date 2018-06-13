@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+# ImagePolicy
 class ImagePolicy < ApplicationPolicy
   attr_reader :employee, :image
 

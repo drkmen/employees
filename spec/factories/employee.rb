@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+# Factory Employee
 FactoryBot.define do
   factory :employee do
     first_name { Faker::Name.first_name }

@@ -8,7 +8,8 @@ class EmployeesController < ApplicationController
 
   def show
     @employee.build_image unless @employee.image
-    @employee.projects.new.build_image
+    @project = @employee.projects.new
+    @project.image = Image.new
   end
 
   def new

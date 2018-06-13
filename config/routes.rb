@@ -5,8 +5,8 @@ Rails.application.routes.draw do
 
   resources :employees do
     patch :skill_experience
+    resources :projects, except: %i[edit show index]
   end
-  resources :projects, except: %i[show index]
   resources :skills, except: %i[show index]
   resources :archive, only: %i[index destroy]
   root to: 'employees#index'

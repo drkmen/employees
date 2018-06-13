@@ -6,6 +6,9 @@ class Project < ApplicationRecord
 
   belongs_to :employee
 
-  accepts_nested_attributes_for :skills
-  accepts_nested_attributes_for :image
+  accepts_nested_attributes_for :image, :skills
+
+  def avatar
+    image&.image_url || 'project.png'
+  end
 end

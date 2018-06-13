@@ -11,7 +11,7 @@ RSpec.describe ProjectsController, type: :controller do
   describe 'POST #create' do
     it 'returns a success response' do
       expect do
-        post :create, params: { project: { name: 'qweqwe', employee_id: Employee.last.id } }
+        post :create, params: { project: { name: 'qweqwe', employee_id: Employee.last.id }, employee_id: Employee.last.id }
       end.to(change { Project.count }.by(1)) &&
         redirect_to(Employee.last &&
         have_http_status(302)) &&
@@ -21,7 +21,7 @@ RSpec.describe ProjectsController, type: :controller do
 
     it 'returns a fail response and render #new' do
       expect do
-        post :create, params: { project: { name: nil, employee_id: Employee.last.id } }
+        post :create, params: { project: { name: nil, employee_id: Employee.last.id }, employee_id: Employee.last.id }
       end.to(change { Project.count }.by(0)) &&
         redirect_to(Employee.last &&
         have_http_status(302)) &&
@@ -32,7 +32,7 @@ RSpec.describe ProjectsController, type: :controller do
 
   describe 'PATCH #update' do
     it 'returns a success response' do
-      patch :update, params: { id: Project.last.id, project: { employee_id: Employee.last.id, name: 'qweqwe', description: 'qweqwe' } }
+      patch :update, params: { id: Project.last.id, project: { employee_id: Employee.last.id, name: 'qweqwe', description: 'qweqwe' }, employee_id: Employee.last.id  }
       expect(response.status).to eq(302)
       expect(redirect_to(Employee.last)).to be_truthy
       expect(Project.last.name).to eq('qweqwe')

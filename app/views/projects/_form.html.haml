@@ -1,30 +1,43 @@
-= form_for project do |f|
-  .form-group
-    = f.hidden_field :employee_id, value: employee.id
-  .form-group
-    = f.text_field :name, class: 'form-control', placeholder: 'Name'
-  .form-group
-    = f.text_field :description, class: 'form-control', placeholder: 'Description'
-  .form-group
-    = f.text_field :client, class: 'form-control', placeholder: 'Client name'
-  .form-group
-  = f.text_field :link, class: 'form-control', placeholder: 'Link'
-  .form-group
-    = f.label 'Skills'
-    = f.select(:skill_ids, @skills.pluck(:name, :id), {}, {class: 'select2-field', multiple: :multiple, placeholder: 'Skills'})
-  .form-group
-    = f.label 'Picture'
-  .form-group
-    = f.fields_for :image do |image_fields|
-      = image_fields.file_field :image
-  .row
-    .col-6
+= form_for(project, url: path ) do |f|
+  .form-row
+    .form-group
+      = f.hidden_field :employee_id, value: employee.id
+    .col-12
       .form-group
-        = f.label 'Start date'
-        = f.date_field :start_date, class: 'form-control'
-    .col-6
+        = f.text_field :name, class: 'form-control', placeholder: 'Name'
+    .col-12
       .form-group
-        = f.label 'End date'
-        = f.date_field :end_date, class: 'form-control'
-  .form-group
-    = f.submit 'Create project', class: 'btn btn-outline-success'
+        = f.text_field :description, class: 'form-control', placeholder: 'Description'
+    .col-12
+      .form-group
+        = f.text_field :client, class: 'form-control', placeholder: 'Client name'
+    .col-12
+      .form-group
+        = f.text_field :link, class: 'form-control', placeholder: 'Link'
+    .col-12
+      .form-group
+        = f.label 'Skills'
+        = f.select(:skill_ids, @skills.pluck(:name, :id), {}, {class: 'select2-field', multiple: :multiple, placeholder: 'Skills'})
+    .col-12
+      .form-group
+        = f.label 'Picture'
+    .col-12
+      .form-group
+        .custom-file
+          = f.label :image, class: 'custom-file-label'
+          = f.fields_for :image do |image_fields|
+            = image_fields.file_field :image, class: 'custom-file-input'
+    .col-12
+      .form-group
+        .form-row
+          .col-6
+            .form-group
+              = f.label 'Start date'
+              = f.date_field :start_date, class: 'form-control'
+          .col-6
+            .form-group
+              = f.label 'End date'
+              = f.date_field :end_date, class: 'form-control'
+    .col-12
+      .form-group
+        = f.submit class: 'btn btn-outline-success'

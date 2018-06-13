@@ -2,9 +2,12 @@
 
 # Projects Controller
 class ProjectsController < ApplicationController
+  before_action :find_project, only: %i[update destroy]
 
   def create
-    if Project.create project_params
+    @project = Project.new(project_params)
+    authorize @project
+    if @project.save
       flash[:notice] = 'Successfully created'
     else
       flash[:danger] = 'Is not created'
@@ -13,7 +16,8 @@ class ProjectsController < ApplicationController
   end
 
   def update
-    if Project.find(params[:id]).update(project_params)
+    authorize @project
+    if @project.update(project_params)
       flash[:notice] = 'Successfully updated'
     else
       flash[:danger] = 'Is not updated'
@@ -22,7 +26,8 @@ class ProjectsController < ApplicationController
   end
 
   def destroy
-    if Project.find(params[:id]).destroy
+    authorize @project
+    if @project.destroy
       flash[:notice] = 'Successfully destroyed'
     else
       flash[:danger] = 'Is not destroyed'
@@ -34,5 +39,13 @@ class ProjectsController < ApplicationController
 
   def project_params
     params.require(:project).permit!
+  end
+
+  def find_project
+    @project = Project.find(params[:id])
+  end
+
+  def pundit_user
+    current_employee
   end
 end

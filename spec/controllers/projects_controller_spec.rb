@@ -5,8 +5,9 @@ require 'rails_helper'
 
 RSpec.describe ProjectsController, type: :controller do
   before do
-    FactoryBot.create(:employee, :admin_full)
-    FactoryBot.create(:project, employee_id: Employee.last.id)
+    @employee_programmer = FactoryBot.create(:employee, :programmer)
+    FactoryBot.create(:project, employee_id: @employee_programmer.id)
+    sign_in @employee_programmer
   end
 
   describe 'POST #create' do

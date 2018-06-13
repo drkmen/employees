@@ -30,6 +30,7 @@ class SkillsController < ApplicationController
   end
 
   def update
+    authorize @skill
     if @skill.update skill_params
       flash[:notice] = 'Successfully updated'
     else
@@ -45,6 +46,7 @@ class SkillsController < ApplicationController
   end
 
   def destroy
+    authorize @skill
     if @skill.destroy
       flash[:notice] = 'Successfully destroyed'
     else
@@ -61,5 +63,9 @@ class SkillsController < ApplicationController
 
   def skill_params
     params.require(:skill).permit!
+  end
+
+  def pundit_user
+    current_employee
   end
 end

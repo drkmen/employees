@@ -24,7 +24,8 @@ RSpec.describe EmployeesController, type: :controller do
   let(:skill_2) { FactoryBot.create(:skill, name: 'AWS', skill_type: 'service') }
   let(:skill_3) { FactoryBot.create(:skill, name: 'Active Admin', skill_type: 'library') }
   before do
-    FactoryBot.create(:employee, :admin_full)
+    @employee_admin = FactoryBot.create(:employee, :admin_full)
+    sign_in @employee_admin
   end
 
   describe 'GET #index' do

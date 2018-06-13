@@ -14,6 +14,7 @@ class EmployeesController < ApplicationController
   end
 
   def update
+    authorize @employee
     if @employee.update(employee_params)
       flash[:notice] = 'Successfully updated'
     else
@@ -23,6 +24,7 @@ class EmployeesController < ApplicationController
   end
 
   def destroy
+    authorize @employee
     if @employee.delete
       flash[:notice] = 'Successfully deleted'
     else
@@ -59,5 +61,9 @@ class EmployeesController < ApplicationController
 
   def skill_experience_params
     params.require(:skill_experience).permit!
+  end
+
+  def pundit_user
+    current_employee
   end
 end

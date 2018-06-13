@@ -10,7 +10,7 @@ module EmployeesHelper
   end
 
   def able_edit?
-    current_employee == @employee || current_employee.admin? ||
-        current_employee.manager? || current_employee.team_lead?
+    current_employee == @employee || current_employee&.admin? ||
+      current_employee&.manager? || current_employee&.team_lead?
   end
 end

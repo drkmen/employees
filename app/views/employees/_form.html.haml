@@ -25,10 +25,11 @@
       .form-group
         = f.text_field :skype, placeholder: true, class: 'form-control'
   .form-row
-    .col-6
-      .form-group
-        = f.label :role
-        = f.select :role, Employee.roles.keys.map { |r| [r.humanize, r] }, {}, class: 'form-control'
+    - if current_employee.admin?
+      .col-6
+        .form-group
+          = f.label :role
+          = f.select :role, Employee.roles.keys.map { |r| [r.humanize, r] }, {}, class: 'form-control'
     .col-6
       .form-group
         = f.label :department
@@ -48,11 +49,14 @@
         - @employee.additional&.each do |key, value|
           .form-row
             .col-5
-              %input.form-control{onchange: 'change(this)', placeholder: 'Key', type: 'text', value: key}
+              .form-group
+                %input.form-control{onchange: 'change(this)', placeholder: 'Key', type: 'text', value: key}
             .col-5
-              %input.form-control.value{name: "employee[additional][#{key}]", placeholder: 'Value', type: 'text', value: value}
+              .form-group
+                %input.form-control.value{name: "employee[additional][#{key}]", placeholder: 'Value', type: 'text', value: value}
             .col-2
-              %btn.btn.btn-outline-danger{onclick: 'remove(this)'} Remove
+              .form-group
+                %btn.btn.btn-outline-danger{onclick: 'remove(this)'} Remove
   .form-group
     = f.label 'Skills'
     = f.select(:skill_ids, @skills.pluck(:name, :id), {}, {class: 'select2-field', id: 'skillsSelector', multiple: :multiple, placeholder: 'Skills'})

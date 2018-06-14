@@ -16,11 +16,11 @@
           .my-2.my-sm-0
             = submit_tag 'Search', class: 'btn btn-outline-secondary my-2 my-sm-0', name: nil
         %div
+          = link_to 'Skills list', skills_path
+          |
           - if current_employee&.admin?
             %span.link.pointable{ 'data-target': '#inviteModal', 'data-toggle': 'modal' }
               Invite Employee
-            |
-            = link_to 'Skills list', skills_path
             |
             = render 'layouts/modal', { modal_id: 'inviteModal', modal_title: 'Send invitation' } do
               .modal-body
@@ -59,7 +59,7 @@
                         %btn.btn.btn-outline-success{ onclick: 'showLogin()' } Login
                       .col-9
                         .form-group.float-right
-                          = f.submit 'Send me reset password instructions', class: 'btn btn-outline-success'
+                          = f.submit 'Send me reset password instructions', class: 'btn btn-success'
 
 
     .notification

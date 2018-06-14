@@ -3,5 +3,6 @@
     = f.label :name
     = f.text_field :name, placeholder: true, class: 'form-control', required: true
   .form-group
-    = f.select :skill_type, Skill.skill_types.map {|k, v| [k.humanize, k]}, prompt: 'Select skill type', class: 'form-control', required: true
+    = f.select :skill_type, Skill.skill_types.map { |k, v| [k.humanize, k] }, { prompt: 'Skill type' }, class: 'form-control', required: true
+
   = f.submit class: 'btn btn-success'

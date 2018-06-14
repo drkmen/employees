@@ -40,7 +40,7 @@
               Skype:
               = @employee.skype
               %p
-                = @employee.description
+                = raw @employee.description
 
         - if @employee.additional.present?
           %h3 Additional information:
@@ -51,10 +51,7 @@
                   .col-2
                     %b= key.humanize + ':'
                   .col-10
-                    - if value.start_with?('http')
-                      = link_to value, value, target: :_blank
-                    - else
-                      = value
+                    = raw value
 
         %br
         - if @employee.skills.present?

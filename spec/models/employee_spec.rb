@@ -57,8 +57,8 @@ RSpec.describe Employee, type: :model do
     end
 
     it '#avatar method' do
-      employee.image = Image.new(image: Rails.root.join('app/assets/images/bw-test-user.png').open)
-      expect(employee.avatar).to eq "/uploads/image/image/#{Image.last.id}/bw-test-user.png"
+      employee.image = Image.new(image: Rails.root.join('app/assets/images/placeholder.png').open)
+      expect(employee.avatar).to eq "/uploads/image/image/#{Image.last.id}/placeholder.png"
     end
 
     it '#friendly_name method' do

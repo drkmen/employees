@@ -12,13 +12,13 @@ class ImagePolicy < ApplicationPolicy
   def create?
     if image&.imageable.instance_of? Employee
       employee.present? && (employee == image.imageable ||
-          (image.imageable.programmer? &&
+          (image.imageable.developer? &&
               ((employee.team_lead? && image.imageable.department == employee.department) ||
                   employee.manager?)) ||
           employee.admin?)
     elsif image&.imageable.instance_of? Project
       employee.present? && (employee == image.imageable.employee ||
-          (image.imageable.employee.programmer? &&
+          (image.imageable.employee.developer? &&
               ((employee.team_lead? && image.imageable.employee.department == employee.department) ||
                   employee.manager?)) ||
           employee.admin?)

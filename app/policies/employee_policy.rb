@@ -27,8 +27,8 @@ class EmployeePolicy < ApplicationPolicy
 
   def update?
     employee.present? && (employee == else_employee ||
-      employee.admin? || (employee.manager? && (else_employee.programmer? || else_employee.team_lead?)) ||
-      (employee.team_lead? && employee.department == else_employee.department && else_employee.programmer?))
+      employee.admin? || (employee.manager? && (else_employee.developer? || else_employee.team_lead?)) ||
+      (employee.team_lead? && employee.department == else_employee.department && else_employee.developer?))
   end
 
   def destroy?

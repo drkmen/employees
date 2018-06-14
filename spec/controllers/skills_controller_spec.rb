@@ -6,9 +6,9 @@ require 'rails_helper'
 RSpec.describe SkillsController, type: :controller do
 
   before do
-    @employee_programmer = FactoryBot.create(:employee, :programmer)
-    FactoryBot.create(:skill, employee_id: @employee_programmer.id)
-    sign_in @employee_programmer
+    @employee_developer = FactoryBot.create(:employee, :developer)
+    FactoryBot.create(:skill, employee_id: @employee_developer.id)
+    sign_in @employee_developer
   end
 
   describe 'PUT #update' do

@@ -16,7 +16,7 @@
               = render 'layouts/modal', { modal_id: 'editModal', modal_title: 'Edit Employee' } do
                 .modal-body
                   = render template: 'employees/edit'
-            - if current_employee.admin?
+            - if current_employee&.admin?
               |
               = link_to 'Delete', employee_path(@employee), method: :delete
 
@@ -116,7 +116,8 @@
 
                     = project.link
                     %br
-                    = "#{project.start_date&.strftime('%d/%m/%Y')} - #{project.end_date&.strftime('%d/%m/%Y')}"
+                    - if project.start_date && project.end_date
+                      = "#{project.start_date.strftime('%d/%m/%Y')} - #{project.end_date.strftime('%d/%m/%Y')}"
                     %br
                     = project.description
 

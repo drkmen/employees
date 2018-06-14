@@ -2,7 +2,7 @@
 
 # Employyes Controller
 class EmployeesController < ApplicationController
-  before_action :find_employee, except: %i[index create new skill_experience]
+  before_action :find_employee, except: %i[index new skill_experience]
   before_action :load_data, only: %i[index show]
 
   def index; end
@@ -13,31 +13,13 @@ class EmployeesController < ApplicationController
     @project.image = Image.new
   end
 
-  def new
-    @employee = Employee.new
-  end
-
-  def create
-    @employee = Employee.new employee_params
-    if @employee.save
-      flash[:notice] = 'Successfully created'
-      redirect_to employee_path(@employee)
-    else
-      flash[:danger] = 'Is not created'
-      render :new
-    end
-  end
-
-  def edit; end
-
   def update
     if @employee.update(employee_params)
       flash[:notice] = 'Successfully updated'
-      redirect_to employee_path(@employee)
     else
       flash[:danger] = 'Is not updated'
-      render :edit
     end
+    redirect_to employee_path(@employee)
   end
 
   def destroy

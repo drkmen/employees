@@ -17,8 +17,10 @@
             = submit_tag 'Search', class: 'btn btn-outline-secondary my-2 my-sm-0', name: nil
         %div
           - if current_employee&.admin?
-            %span.link.pointable{'data-target' => '#inviteModal', 'data-toggle' => 'modal'}
+            %span.link.pointable{ 'data-target': '#inviteModal', 'data-toggle': 'modal' }
               Invite Employee
+            |
+            = link_to 'Skills list', skills_path
             |
             = render 'layouts/modal', { modal_id: 'inviteModal', modal_title: 'Send invitation' } do
               .modal-body
@@ -31,20 +33,35 @@
             = link_to employee_path(current_employee), title: 'My Profile' do
               = image_tag current_employee.avatar, size: '25x25', class: 'rounded'
           - else
-            %span.link.pointable{'data-target' => '#loginModal', 'data-toggle' => 'modal'}
+            %span.link.pointable{ 'data-target': '#loginModal', 'data-toggle': 'modal' }
               Login
 
             = render 'layouts/modal', { modal_id: 'loginModal', modal_title: 'Log in' } do
               .modal-body
-                = form_for(:employee, url: employee_session_path, format: :json, remote: true) do |f|
-                  .form-group
-                    = f.email_field :email, class: 'form-control', placeholder: 'Email', required: true
-                  .form-group
-                    = f.password_field :password, class: 'form-control', placeholder: 'Password', required: true
-                  .form-group
-                    = f.submit 'Sign in', class: 'btn btn-success'
-              .modal-footer
-                = link_to 'Forgot your password?', new_password_path(:employee)
+                .login-form
+                  = form_for(:employee, url: employee_session_path, format: :json, remote: true) do |f|
+                    .form-group
+                      = f.email_field :email, class: 'form-control', placeholder: 'Email', required: true
+                    .form-group
+                      = f.password_field :password, class: 'form-control', placeholder: 'Password', required: true
+                    .form-row
+                      .col-6
+                        %btn.btn.btn-outline-warning{ onclick: 'showRestore()' } Restore access
+                      .col-6
+                        .form-group.float-right
+                          = f.submit 'Sign in', class: 'btn btn-success'
+                .restore-form.d-none
+                  = form_for(:employee, url: password_path(:employee), html: { method: :post }) do |f|
+                    .form-group
+                      = f.email_field :email, autofocus: true, autocomplete: 'email', class: 'form-control', placeholder: :email
+                    .form-row
+                      .col-3
+                        %btn.btn.btn-outline-success{ onclick: 'showLogin()' } Login
+                      .col-9
+                        .form-group.float-right
+                          = f.submit 'Send me reset password instructions', class: 'btn btn-outline-success'
+
+
     .notification
       - flash.each do |name, message|
         .alert.alert-secondary.text-center

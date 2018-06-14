@@ -1,0 +1,3 @@
+= render 'layouts/modal', { modal_id: "editSkillModal_#{skill.id}", modal_title: "Edit Skill [#{skill.name}]" } do
+  .modal-body
+    = render 'skills/form', skill: skill

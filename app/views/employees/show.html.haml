@@ -10,13 +10,15 @@
           .col-5
             = image_tag @employee.avatar, class: 'img-fluid'
           .col-7
-            %span.link.pointable{'data-target' => '#editModal', 'data-toggle' => 'modal'}
-              Edit
-            = render 'layouts/modal', { modal_id: 'editModal', modal_title: 'Edit Employee' } do
-              .modal-body
-                = render template: 'employees/edit'
-            |
-            = link_to 'Delete', employee_path(@employee), method: :delete
+            - able_edit do
+              %span.link.pointable{'data-target' => '#editModal', 'data-toggle' => 'modal'}
+                Edit
+              = render 'layouts/modal', { modal_id: 'editModal', modal_title: 'Edit Employee' } do
+                .modal-body
+                  = render template: 'employees/edit'
+            - if current_employee&.admin?
+              |
+              = link_to 'Delete', employee_path(@employee), method: :delete
 
             %h2
               = @employee.name
@@ -26,7 +28,7 @@
 
             %h5
               Office:
-              = @employee.office
+              = @employee&.office&.humanize
 
             %p
               Email:
@@ -45,9 +47,14 @@
           .row
             .col-12
               - @employee.additional.each do |key, value|
-                %b= key.humanize + ':'
-                = value
-                %br
+                .row
+                  .col-2
+                    %b= key.humanize + ':'
+                  .col-10
+                    - if value.start_with?('http')
+                      = link_to value, value, target: :_blank
+                    - else
+                      = value
 
         %br
         - if @employee.skills.present?
@@ -56,48 +63,51 @@
           .row
             - employee_skills = @employee.skills.to_a.group_by(&:skill_type)
             - employee_skills.each do |skill_type, skills|
-              %div{class: "col-#{12 / employee_skills.size}"}
+              %div{ class: "col-#{12 / employee_skills.size}" }
                 %h5= skill_type&.humanize
                 - skills.each do |skill|
-                  %span.link.pointable{'data-target': "#editSkillModal_#{skill.id}", 'data-toggle': :modal}
-                    = skill.name
-                    = skill.experience(current_employee)
-                  %br
+                  %span.link.pointable{ 'data-target': "#editSkillModal_#{skill.id}", 'data-toggle': :modal, title: "Experience: #{skill.experience(@employee)}" }
+                  - if able_edit?
+                    = link_to skill.name, skill_path(skill, employee_id: @employee.id), remote: true
+                    %br
+                  - else
+                    - if skill.experience(@employee)
+                      %p= "#{skill.name} / #{skill.experience(@employee)}"
+                    - else
+                      %p= skill.name
 
-                  -# figure out, how to render just one modal
-                  = render 'layouts/modal', { modal_id: "editSkillModal_#{skill.id}", modal_title: "Edit Skill Experience [#{skill.name}]" } do
-                    .modal-body
-                      = render 'employees/resource_skill_form', resource_skill: skill.resource_skills.find_by(employee_id: @employee.id)
-
-
-        %br
-        .row
-          .col-6
-            %h3 Projects
-          .col-6
-            %span.link.pointable{'data-target': '#addProjectToEmployee', 'data-toggle': :modal}
-              .float-right
-                %btn.btn.btn-outline-success Add project
-            = render 'layouts/modal', { modal_id: 'addProjectToEmployee', modal_title: 'Add project' } do
-              .modal-body
-                = render 'projects/form', project: @employee.projects.new, employee: @employee
-
-        - if @employee.projects.present?
+        - if @employee.projects.reject(&:new_record?).present?
+          %br
+          .row
+            .col-6
+              %h3 Projects
+            .col-6
+              - able_edit do
+                %span.link.pointable{ 'data-target': '#addProjectToEmployee', 'data-toggle': :modal }
+                  .float-right
+                    %btn.btn.btn-outline-success Add project
+                = render 'layouts/modal', { modal_id: 'addProjectToEmployee', modal_title: 'Add project' } do
+                  .modal-body
+                    = render 'projects/form', project: @project, employee: @employee, path: employee_projects_path(@employee)
           %hr
+
           .row
             .col-12
               - @employee.projects.order('created_at DESC').each do |project|
                 .row
                   .col-4
-                    = project.image
+                    = image_tag project.avatar, class: 'img-fluid'
                   .col-8
-                    %span.link.pointable{'data-target': "#editProjectAtEmployee_#{project.id}", 'data-toggle': 'modal'}
-                      Edit
-                    = render 'layouts/modal', { modal_id: "editProjectAtEmployee_#{project.id}", modal_title: 'Edit employee project' } do
-                      .modal-body
-                        = render 'projects/form', project: project, employee: @employee
-                    |
-                    = link_to 'Delete', project_path(project.id, employee_id: project.employee_id), method: :delete
+                    - able_edit do
+                      %span.link.pointable{ 'data-target': "#editProjectAtEmployee_#{project.id}", 'data-toggle': 'modal' }
+                        Edit
+                      = render 'layouts/modal', { modal_id: "editProjectAtEmployee_#{project.id}", modal_title: 'Edit employee project' } do
+                        .modal-body
+                          - project.image = Image.new unless project.image.present?
+                          = render 'projects/form', project: project, employee: @employee, path: employee_project_path(@employee, project)
+                      |
+                      = link_to 'Delete', employee_project_path(project.id, employee_id: project.employee_id), method: :delete
+
                     %h3
                       = project.name
                       - if project.client
@@ -105,9 +115,11 @@
                           %small
                             Client:
                             = project.client
+
                     = project.link
                     %br
-                    = "#{project.start_date.strftime('%d/%m/%Y')} - #{project.end_date.strftime('%d/%m/%Y')}"
+                    - if project.start_date && project.end_date
+                      = "#{project.start_date.strftime('%d/%m/%Y')} - #{project.end_date.strftime('%d/%m/%Y')}"
                     %br
                     = project.description
 
@@ -117,3 +129,16 @@
                       = skill.name
                       = raw '/'
                 %hr
+        - elsif @employee.projects.reject(&:new_record?).empty? && able_edit?
+          %br
+          .row
+            .col-6
+              %h3 Projects
+            .col-6
+              - able_edit do
+                %span.link.pointable{ 'data-target': '#addProjectToEmployee', 'data-toggle': :modal }
+                  .float-right
+                    %btn.btn.btn-outline-success Add project
+                = render 'layouts/modal', { modal_id: 'addProjectToEmployee', modal_title: 'Add project' } do
+                  .modal-body
+                    = render 'projects/form', project: @project, employee: @employee, path: employee_projects_path(@employee)

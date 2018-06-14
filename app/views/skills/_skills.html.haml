@@ -1,0 +1,20 @@
+.section.filters.container-fluid.skills
+  %h3.text-center Skills
+  %hr
+  %span.link.pointable{'data-target' => '#newSkillModal', 'data-toggle': :modal}
+    New Skill
+  = render 'layouts/modal', { modal_id: 'newSkillModal', modal_title: 'Create skill' } do
+    .modal-body
+      = render 'skills/form', skill: @skill
+  %hr
+    - @skills.to_a.group_by(&:skill_type).each do |skill_type, skills|
+      %h5= skill_type&.humanize
+      .row
+        - skills.each_slice(skills.size / 3) do |skill_slice|
+          .col-4
+            - skill_slice.each do |skill|
+              %span.link.pointable{'data-target': "#editSkillModal_#{skill.id}", 'data-toggle': :modal, 'data-remote': :true}
+                = link_to skill.name, skill_path(skill), remote: true
+              %br
+          %br
+        %br

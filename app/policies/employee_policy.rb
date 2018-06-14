@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+# EmployeePolicy
 class EmployeePolicy < ApplicationPolicy
   attr_reader :employee, :else_employee
 

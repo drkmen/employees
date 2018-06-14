@@ -24,3 +24,13 @@ $(function() {
         $('.notification').fadeOut('slow');
     }, 5000);
 });
+
+function showRestore() {
+    $(".login-form, .login-footer").addClass('d-none');
+    $(".restore-form, .restore-footer").removeClass('d-none');
+}
+
+function showLogin() {
+    $(".login-form, .login-footer").removeClass('d-none');
+    $(".restore-form, .restore-footer").addClass('d-none');
+}

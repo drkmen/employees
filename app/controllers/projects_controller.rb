@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Projects Controller
 class ProjectsController < ApplicationController
 
   def create
@@ -10,8 +11,6 @@ class ProjectsController < ApplicationController
     end
     redirect_to employee_path(project_params[:employee_id])
   end
-
-  def edit; end
 
   def update
     if Project.find(params[:id]).update(project_params)

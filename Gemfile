@@ -56,6 +56,7 @@ group :development, :test do
   gem 'rspec-rails'
   gem 'rails-controller-testing'
   gem 'faker', git: 'https://github.com/stympy/faker.git', branch: 'master'
+
 end
 
 group :development do
@@ -66,6 +67,11 @@ group :development do
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
   gem 'better_errors'
+
+  gem 'capistrano', require: false
+  gem 'capistrano-rvm'
+  gem 'capistrano-bundler'
+  gem 'capistrano-rails', require: false
 end
 
 group :test do

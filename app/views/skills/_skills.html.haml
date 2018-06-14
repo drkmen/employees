@@ -14,7 +14,10 @@
       - skills.each_slice(skills.size / 4) do |skill_slice|
         .col-3
           - skill_slice.each do |skill|
-            %span.link.pointable{'data-target': "#editSkillModal_#{skill.id}", 'data-toggle': :modal, 'data-remote': :true}
+            - if skill.employee_id == current_employee.id
+              %span.link.pointable{'data-target': "#editSkillModal_#{skill.id}", 'data-toggle': :modal, 'data-remote': :true}
               = link_to skill.name, skill_path(skill), remote: true
+            -else
+              = skill.name
             %br
     %p

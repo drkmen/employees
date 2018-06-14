@@ -12,8 +12,8 @@ FactoryBot.define do
       role 'other'
     end
 
-    trait :programmer do
-      role 'programmer'
+    trait :developer do
+      role 'developer'
     end
 
     trait :system_administrator do

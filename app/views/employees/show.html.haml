@@ -63,9 +63,9 @@
                 - skills.each do |skill|
                   %span.link.pointable{ 'data-target': "#editSkillModal_#{skill.id}", 'data-toggle': :modal, title: "Experience: #{skill.experience(current_employee)}" }
                     %span= skill.name
-                    - if skill.experience(current_employee)
+                    - if skill.experience(@employee)
                       = raw '/'
-                      = skill.experience(current_employee)
+                      = skill.experience(@employee)
                   %br
                     
                   - able_edit do

@@ -2,8 +2,8 @@
 
 # Project model
 class Project < ApplicationRecord
-  has_one :image, as: :imageable
-  has_many :resource_skills
+  has_one :image, as: :imageable, dependent: :destroy
+  has_many :resource_skills, dependent: :destroy
   has_many :skills, through: :resource_skills
   validates :name, presence: true
 
@@ -12,6 +12,6 @@ class Project < ApplicationRecord
   accepts_nested_attributes_for :image, :skills
 
   def avatar
-    image&.image_url || 'project.png'
+    image&.image_url || 'placeholder.png'
   end
 end

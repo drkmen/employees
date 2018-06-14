@@ -40,7 +40,9 @@ class SkillsController < ApplicationController
   end
 
   def create
-    Skill.create skill_params
+    @skill = Skill.new(skill_params)
+    authorize @skill
+    @skill.save
     flash[:notice] = 'Successfully created'
     redirect_to skills_path
   end

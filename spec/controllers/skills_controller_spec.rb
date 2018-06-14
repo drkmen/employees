@@ -11,24 +11,6 @@ RSpec.describe SkillsController, type: :controller do
     sign_in @employee_programmer
   end
 
-  describe 'GET #edit' do
-    it 'returns a success response' do
-      get :edit, params: { id: Skill.last.id }
-      expect(response.status).to eq(200)
-      expect(response).to render_template('edit')
-      expect(assigns(:skill)).to eq(Skill.last)
-    end
-  end
-
-  describe 'GET #new' do
-    it 'returns a success response' do
-      get :new
-      expect(response.status).to eq(200)
-      expect(response).to render_template('new')
-      expect(assigns(:skill).name).to eq(nil)
-    end
-  end
-
   describe 'PUT #update' do
     it 'returns a success response' do
       put :update,

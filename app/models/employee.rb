@@ -17,7 +17,7 @@ class Employee < ApplicationRecord
          :rememberable, :trackable, :validatable
 
   enum role: { other: 0,
-               programmer: 1,
+               developer: 1,
                manager: 2,
                team_lead: 3,
                admin: 4,
@@ -38,7 +38,7 @@ class Employee < ApplicationRecord
                  ruby_office: 1,
                  central: 2,
                  firsts: 3,
-                 kruglyash: 4,
+                 uglyash: 4,
                  gamers: 5,
                  admins: 6,
                  remote: 7,

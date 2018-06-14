@@ -20,6 +20,8 @@
             %span.link.pointable{ 'data-target': '#inviteModal', 'data-toggle': 'modal' }
               Invite Employee
             |
+            = link_to 'Skills list', skills_path
+            |
             = render 'layouts/modal', { modal_id: 'inviteModal', modal_title: 'Send invitation' } do
               .modal-body
                 = render template: 'devise/invitations/new'

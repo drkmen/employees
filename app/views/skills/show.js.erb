@@ -1,0 +1,7 @@
+<%-if @employee %>
+  $('.profile').append("<%= escape_javascript render 'skills/skill_update_modal' %>");
+  $('#<%="editSkillModal_#{@skill.id}"%>').modal().show();
+<%- else %>
+  $('.skills').append("<%= escape_javascript render 'skills/form_modal' %>");
+  $('#<%="editSkillModal_#{@skill.id}"%>').modal().show();
+<% end %>

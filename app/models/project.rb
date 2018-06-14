@@ -9,6 +9,6 @@ class Project < ApplicationRecord
   accepts_nested_attributes_for :image, :skills
 
   def avatar
-    image&.image_url || 'default_project.png'
+    image&.image_url || 'project.png'
   end
 end

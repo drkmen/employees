@@ -5,10 +5,10 @@ class Employee < ApplicationRecord
   include Filterable
   extend FriendlyId
 
-  has_one :image, as: :imageable
-  has_many :resource_skills
+  has_one :image, as: :imageable, dependent: :destroy
+  has_many :resource_skills, dependent: :destroy
   has_many :skills, through: :resource_skills
-  has_many :projects
+  has_many :projects, dependent: :destroy
   has_many :own_skills, class_name: 'Skill'
 
   friendly_id :friendly_name, use: :slugged
@@ -49,6 +49,10 @@ class Employee < ApplicationRecord
   scope :office, ->(office) { where(office: office) }
   scope :department, ->(department) { where(department: department) }
   scope :deleted, -> { unscoped.where(deleted: true) }
+  scope :search, ->(term) do
+    return all unless term
+    where("(first_name ILIKE ?) OR ((first_name || ' ' || last_name) ILIKE ?)", "%#{term}%", "%#{term}%")
+  end
 
   accepts_nested_attributes_for :image, :skills, :resource_skills
 
@@ -78,15 +82,5 @@ class Employee < ApplicationRecord
 
   def restore
     update(deleted: false)
-  end
-
-  def self.search(term)
-    if term
-      where("(first_name ILIKE ?) OR
-            ((first_name || ' ' || last_name) ILIKE ?)",
-            "%#{term}%", "%#{term}%")
-    else
-      all
-    end
   end
 end

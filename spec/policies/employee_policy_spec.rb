@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe EmployeePolicy do
 
   let(:other) { FactoryBot.create(:employee, :other) }
-  let(:programmer) { FactoryBot.create(:employee, :programmer) }
+  let(:developer) { FactoryBot.create(:employee, :developer) }
   let(:system_administrator) { FactoryBot.create(:employee, :system_administrator) }
   let(:manager) { FactoryBot.create(:employee, :manager) }
   let(:team_lead) { FactoryBot.create(:employee, :team_lead) }
@@ -16,8 +16,8 @@ RSpec.describe EmployeePolicy do
       expect(subject).to permit(other)
     end
 
-    it 'grants access if employee programmer' do
-      expect(subject).to permit(programmer)
+    it 'grants access if employee developer' do
+      expect(subject).to permit(developer)
     end
 
     it 'grants access if employee system_administrator' do
@@ -46,8 +46,8 @@ RSpec.describe EmployeePolicy do
       expect(subject).not_to permit(other)
     end
 
-    it 'denies access if employee programmer' do
-      expect(subject).not_to permit(programmer)
+    it 'denies access if employee developer' do
+      expect(subject).not_to permit(developer)
     end
 
     it 'denies access if employee system_administrator' do
@@ -80,8 +80,8 @@ RSpec.describe EmployeePolicy do
       expect(subject).not_to permit(other)
     end
 
-    it 'denies access if employee programmer' do
-      expect(subject).not_to permit(programmer)
+    it 'denies access if employee developer' do
+      expect(subject).not_to permit(developer)
     end
 
     it 'denies access if employee system_administrator' do
@@ -113,8 +113,8 @@ RSpec.describe EmployeePolicy do
         expect(subject).not_to permit(other, edit_other)
       end
 
-      it 'denies access if employee other edit employee programmer' do
-        expect(subject).not_to permit(other, programmer)
+      it 'denies access if employee other edit employee developer' do
+        expect(subject).not_to permit(other, developer)
       end
 
       it 'denies access if employee other edit employee manager' do
@@ -130,27 +130,27 @@ RSpec.describe EmployeePolicy do
       end
     end
 
-    describe 'programmer edit employee' do
-      it 'grants access if employee programmer edit self' do
-        programmer = FactoryBot.create(:employee, :programmer)
-        expect(subject).to permit(programmer, programmer)
+    describe 'developer edit employee' do
+      it 'grants access if employee developer edit self' do
+        developer = FactoryBot.create(:employee, :developer)
+        expect(subject).to permit(developer, developer)
       end
 
-      it 'denies access if employee programmer edit other employee programmer' do
-        edit_programmer = FactoryBot.create(:employee, :programmer, department: 'ruby')
-        expect(subject).not_to permit(programmer, edit_programmer)
+      it 'denies access if employee developer edit other employee developer' do
+        edit_developer = FactoryBot.create(:employee, :developer, department: 'ruby')
+        expect(subject).not_to permit(developer, edit_developer)
       end
 
-      it 'denies access if employee programmer edit employee manager' do
-        expect(subject).not_to permit(programmer, manager)
+      it 'denies access if employee developer edit employee manager' do
+        expect(subject).not_to permit(developer, manager)
       end
 
-      it 'denies access if employee programmer edit employee team_lead' do
-        expect(subject).not_to permit(programmer, team_lead)
+      it 'denies access if employee developer edit employee team_lead' do
+        expect(subject).not_to permit(developer, team_lead)
       end
 
-      it 'denies access if employee programmer edit employee admin' do
-        expect(subject).not_to permit(programmer, admin)
+      it 'denies access if employee developer edit employee admin' do
+        expect(subject).not_to permit(developer, admin)
       end
     end
 
@@ -165,20 +165,20 @@ RSpec.describe EmployeePolicy do
         expect(subject).not_to permit(system_administrator, edit_system_administrator)
       end
 
-      it 'denies access if employee system_administrator edit employee programmer' do
-        expect(subject).not_to permit(system_administrator, programmer)
+      it 'denies access if employee system_administrator edit employee developer' do
+        expect(subject).not_to permit(system_administrator, developer)
       end
 
       it 'denies access if employee system_administrator edit employee manager' do
-        expect(subject).not_to permit(programmer, manager)
+        expect(subject).not_to permit(developer, manager)
       end
 
       it 'denies access if employee system_administrator edit employee team_lead' do
-        expect(subject).not_to permit(programmer, team_lead)
+        expect(subject).not_to permit(developer, team_lead)
       end
 
       it 'denies access if employee system_administrator edit employee admin' do
-        expect(subject).not_to permit(programmer, admin)
+        expect(subject).not_to permit(developer, admin)
       end
     end
 
@@ -188,8 +188,8 @@ RSpec.describe EmployeePolicy do
         expect(subject).to permit(manager, manager)
       end
 
-      it 'grants access if employee manager edit programmer' do
-        expect(subject).to permit(manager, programmer)
+      it 'grants access if employee manager edit developer' do
+        expect(subject).to permit(manager, developer)
       end
 
       it 'denies access if employee manager edit employee other' do
@@ -216,20 +216,20 @@ RSpec.describe EmployeePolicy do
         expect(subject).to permit(team_lead, team_lead)
       end
 
-      it 'grants access if employee team_lead edit programmer from his department' do
+      it 'grants access if employee team_lead edit developer from his department' do
         team_lead = FactoryBot.create(:employee, :team_lead, department: 'ruby')
-        programmer = FactoryBot.create(:employee, :programmer, department: 'ruby')
-        expect(subject).to permit(team_lead, programmer)
+        developer = FactoryBot.create(:employee, :developer, department: 'ruby')
+        expect(subject).to permit(team_lead, developer)
       end
 
       it 'denies access if employee team_lead edited employee other' do
         expect(subject).not_to permit(team_lead, other)
       end
 
-      it 'denies access if employee team_lead edited employee programmer other department' do
+      it 'denies access if employee team_lead edited employee developer other department' do
         team_lead = FactoryBot.create(:employee, :team_lead, department: 'js')
-        other_dept_programmer = FactoryBot.create(:employee, :programmer, department: 'ruby')
-        expect(subject).not_to permit(team_lead, other_dept_programmer)
+        other_dept_developer = FactoryBot.create(:employee, :developer, department: 'ruby')
+        expect(subject).not_to permit(team_lead, other_dept_developer)
       end
 
       it 'denies access if employee team_lead edit employee manager' do
@@ -257,8 +257,8 @@ RSpec.describe EmployeePolicy do
         expect(subject).to permit(admin, other)
       end
 
-      it 'grants access if employee admin edit employee programmer' do
-        expect(subject).to permit(admin, programmer)
+      it 'grants access if employee admin edit employee developer' do
+        expect(subject).to permit(admin, developer)
       end
 
       it 'grants access if employee admin edit employee manager' do

@@ -15,8 +15,8 @@ class ProjectPolicy < ApplicationPolicy
 
   def create?
     employee.present? && (employee == project.employee ||
-      (employee.manager? && (project.employee.programmer? || project.employee.team_lead?)) ||
-      (employee.team_lead? && project.employee.programmer? &&
+      (employee.manager? && (project.employee.developer? || project.employee.team_lead?)) ||
+      (employee.team_lead? && project.employee.developer? &&
           project.employee.department == employee.department) ||
       employee.admin?)
   end

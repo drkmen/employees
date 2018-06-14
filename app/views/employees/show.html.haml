@@ -47,9 +47,14 @@
           .row
             .col-12
               - @employee.additional.each do |key, value|
-                %b= key.humanize + ':'
-                = value
-                %br
+                .row
+                  .col-2
+                    %b= key.humanize + ':'
+                  .col-10
+                    - if value.start_with?('http')
+                      = link_to value, value, target: :_blank
+                    - else
+                      = value
 
         %br
         - if @employee.skills.present?

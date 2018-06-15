@@ -16,8 +16,6 @@
           .my-2.my-sm-0
             = submit_tag 'Search', class: 'btn btn-outline-secondary my-2 my-sm-0', name: nil
         %div
-          = link_to 'Skills list', skills_path
-          |
           - if current_employee&.admin?
             %span.link.pointable{ 'data-target': '#inviteModal', 'data-toggle': 'modal' }
               Invite Employee
@@ -28,6 +26,8 @@
             = link_to 'Archive', archive_index_path
             |
           - if current_employee
+            = link_to 'Skills list', skills_path
+            |
             = link_to 'Logout', destroy_employee_session_path, method: :delete
             &nbsp;
             = link_to employee_path(current_employee), title: 'My Profile' do

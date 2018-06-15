@@ -1,26 +1,16 @@
-# frozen_string_literal: true
-
-# Sessions Controller
+# # frozen_string_literal: true
+#
+# # Sessions Controller
 class SessionsController < Devise::SessionsController
   respond_to :html, :json, :js
 
   def create
-    @employee = Employee.find_by(email: params[:employee][:email])
-    if @employee
-      if @employee.valid_password?(params[:employee][:password])
-      else
-        respond_to do |format|
-          format.html { render}
-          format.js { render}
-          format.json {render }
-        end
-      end
+    @referer = request.referer || root_path
+    self.resource = warden.authenticate(auth_options)
+    if resource && resource.active_for_authentication?
+      sign_in(resource_name, resource)
     else
-      respond_to do |format|
-        format.html { render}
-        format.js { render}
-        format.json {render }
-      end
+      @errors = 'Wrong credentials'
     end
   end
 end

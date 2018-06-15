@@ -39,9 +39,9 @@
             = render 'layouts/modal', { modal_id: 'loginModal', modal_title: 'Log in' } do
               .modal-body
                 .login-form
-                  = form_for(:employee, url: employee_session_path, format: :js, remote: true) do |f|
+                  = form_for(:employee, url: employee_session_path, remote: true) do |f|
                     .form-group
-                      %div#errorBody
+                      %div#errorBody.text-danger
                     .form-group
                       = f.email_field :email, class: 'form-control', placeholder: 'Email', required: true
                     .form-group

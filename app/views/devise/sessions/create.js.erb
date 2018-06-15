@@ -1,1 +1,5 @@
-$('#errorBody').append("<p>Wrong credintails</p>");
+<%- if @errors %>
+  $('#errorBody').html("<p><%= j @errors %></p>");
+<% else %>
+  window.location.href = "<%= @referer %>";
+<% end %>

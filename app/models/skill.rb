@@ -16,4 +16,13 @@ class Skill < ApplicationRecord
   def experience(employee_id)
     resource_skills.find_by(employee_id: employee_id)&.experience
   end
+
+  def display_name(employee_id)
+    exp = experience employee_id
+    if exp
+      "#{name} / #{exp}"
+    else
+      name
+    end
+  end
 end

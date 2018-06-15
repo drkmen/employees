@@ -1,7 +1,7 @@
-%h2= t 'devise.invitations.edit.header'
 = form_for resource, as: resource_name, url: invitation_path(resource_name), html: { method: :put } do |f|
   .form-row
     .col-4.offset-4
+      %h2= t 'devise.invitations.edit.header'
       = devise_error_messages!
       = f.hidden_field :invitation_token, readonly: true
       - if f.object.class.require_password_on_accepting

@@ -20,14 +20,14 @@
             %span.link.pointable{ 'data-target': '#inviteModal', 'data-toggle': 'modal' }
               Invite Employee
             |
-            = link_to 'Skills list', skills_path
-            |
             = render 'layouts/modal', { modal_id: 'inviteModal', modal_title: 'Send invitation' } do
               .modal-body
                 = render template: 'devise/invitations/new'
             = link_to 'Archive', archive_index_path
             |
           - if current_employee
+            = link_to 'Skills list', skills_path
+            |
             = link_to 'Logout', destroy_employee_session_path, method: :delete
             &nbsp;
             = link_to employee_path(current_employee), title: 'My Profile' do
@@ -39,7 +39,9 @@
             = render 'layouts/modal', { modal_id: 'loginModal', modal_title: 'Log in' } do
               .modal-body
                 .login-form
-                  = form_for(:employee, url: employee_session_path, format: :json, remote: true) do |f|
+                  = form_for(:employee, url: employee_session_path, remote: true) do |f|
+                    .form-group
+                      %div#errorBody.text-danger
                     .form-group
                       = f.email_field :email, class: 'form-control', placeholder: 'Email', required: true
                     .form-group
@@ -51,7 +53,9 @@
                         .form-group.float-right
                           = f.submit 'Sign in', class: 'btn btn-success'
                 .restore-form.d-none
-                  = form_for(:employee, url: password_path(:employee), html: { method: :post }) do |f|
+                  = form_for(:employee, url: password_path(:employee), remote: true) do |f|
+                    .form-group
+                      %div#errorBody2.text-danger
                     .form-group
                       = f.email_field :email, autofocus: true, autocomplete: 'email', class: 'form-control', placeholder: :email
                     .form-row
@@ -59,7 +63,7 @@
                         %btn.btn.btn-outline-success{ onclick: 'showLogin()' } Login
                       .col-9
                         .form-group.float-right
-                          = f.submit 'Send me reset password instructions', class: 'btn btn-outline-success'
+                          = f.submit 'Send me reset password instructions', class: 'btn btn-success'
 
 
     .notification

@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe SkillPolicy do
   let(:other) { FactoryBot.create(:employee, :other) }
-  let(:programmer) { FactoryBot.create(:employee, :programmer) }
+  let(:developer) { FactoryBot.create(:employee, :developer) }
   let(:system_administrator) { FactoryBot.create(:employee, :system_administrator) }
   let(:manager) { FactoryBot.create(:employee, :manager) }
   let(:team_lead) { FactoryBot.create(:employee, :team_lead) }
@@ -17,8 +17,8 @@ RSpec.describe SkillPolicy do
       expect(subject).to permit(other, skill)
     end
 
-    it 'grants access if employee programmer' do
-      expect(subject).to permit(programmer, skill)
+    it 'grants access if employee developer' do
+      expect(subject).to permit(developer, skill)
     end
 
     it 'grants access if employee system_administrator' do
@@ -47,8 +47,8 @@ RSpec.describe SkillPolicy do
       expect(subject).not_to permit(other)
     end
 
-    it 'denies access if employee programmer' do
-      expect(subject).not_to permit(programmer)
+    it 'denies access if employee developer' do
+      expect(subject).not_to permit(developer)
     end
 
     it 'denies access if employee system_administrator' do
@@ -85,9 +85,9 @@ RSpec.describe SkillPolicy do
         expect(subject).not_to permit(other, skill)
       end
 
-      it 'denies access if employee other edit/destroy programmer skill' do
-        programmer = FactoryBot.create(:employee, :programmer)
-        skill = FactoryBot.create(:skill, employee_id: programmer.id)
+      it 'denies access if employee other edit/destroy developer skill' do
+        developer = FactoryBot.create(:employee, :developer)
+        skill = FactoryBot.create(:skill, employee_id: developer.id)
         expect(subject).not_to permit(other, skill)
       end
 
@@ -121,51 +121,51 @@ RSpec.describe SkillPolicy do
       end
     end
 
-    describe 'programmer edit/destroy skill' do
-      it 'denies access if employee programmer edit/destroy other skill' do
+    describe 'developer edit/destroy skill' do
+      it 'denies access if employee developer edit/destroy other skill' do
         other = FactoryBot.create(:employee, :other)
         skill = FactoryBot.create(:skill, employee_id: other.id)
-        expect(subject).not_to permit(programmer, skill)
+        expect(subject).not_to permit(developer, skill)
       end
 
-      it 'grants access if employee programmer edit/destroy his skill' do
-        skill = FactoryBot.create(:skill, employee_id: programmer.id)
-        expect(subject).to permit(programmer, skill)
+      it 'grants access if employee developer edit/destroy his skill' do
+        skill = FactoryBot.create(:skill, employee_id: developer.id)
+        expect(subject).to permit(developer, skill)
       end
 
-      it 'denies access if employee programmer edit/destroy else programmer skill' do
-        else_programmer = FactoryBot.create(:employee, :programmer)
-        skill = FactoryBot.create(:skill, employee_id: else_programmer.id)
-        expect(subject).not_to permit(programmer, skill)
+      it 'denies access if employee developer edit/destroy else developer skill' do
+        else_developer = FactoryBot.create(:employee, :developer)
+        skill = FactoryBot.create(:skill, employee_id: else_developer.id)
+        expect(subject).not_to permit(developer, skill)
       end
 
-      it 'denies access if employee programmer edit/destroy system_administrator skill' do
+      it 'denies access if employee developer edit/destroy system_administrator skill' do
         system_administrator = FactoryBot.create(:employee, :system_administrator)
         skill = FactoryBot.create(:skill, employee_id: system_administrator.id)
-        expect(subject).not_to permit(programmer, skill)
+        expect(subject).not_to permit(developer, skill)
       end
 
-      it 'denies access if employee programmer edit/destroy manager skill' do
+      it 'denies access if employee developer edit/destroy manager skill' do
         manager = FactoryBot.create(:employee, :manager)
         skill = FactoryBot.create(:skill, employee_id: manager.id)
-        expect(subject).not_to permit(programmer, skill)
+        expect(subject).not_to permit(developer, skill)
       end
 
-      it 'denies access if employee programmer edit/destroy team_lead skill' do
+      it 'denies access if employee developer edit/destroy team_lead skill' do
         team_lead = FactoryBot.create(:employee, :team_lead)
         skill = FactoryBot.create(:skill, employee_id: team_lead.id)
-        expect(subject).not_to permit(programmer, skill)
+        expect(subject).not_to permit(developer, skill)
       end
 
-      it 'denies access if employee programmer edit/destroy admin skill' do
+      it 'denies access if employee developer edit/destroy admin skill' do
         admin = FactoryBot.create(:employee, :admin)
         skill = FactoryBot.create(:skill, employee_id: admin.id)
-        expect(subject).not_to permit(programmer, skill)
+        expect(subject).not_to permit(developer, skill)
       end
 
-      it 'denies access if employee programmer edit/destroy skill without owner' do
+      it 'denies access if employee developer edit/destroy skill without owner' do
         skill = FactoryBot.create(:skill)
-        expect(subject).not_to permit(programmer, skill)
+        expect(subject).not_to permit(developer, skill)
       end
     end
 
@@ -176,9 +176,9 @@ RSpec.describe SkillPolicy do
         expect(subject).not_to permit(system_administrator, skill)
       end
 
-      it 'denies access if employee system_administrator edit/destroy programmer skill' do
-        programmer = FactoryBot.create(:employee, :programmer)
-        skill = FactoryBot.create(:skill, employee_id: programmer.id)
+      it 'denies access if employee system_administrator edit/destroy developer skill' do
+        developer = FactoryBot.create(:employee, :developer)
+        skill = FactoryBot.create(:skill, employee_id: developer.id)
         expect(subject).not_to permit(system_administrator, skill)
       end
 
@@ -224,9 +224,9 @@ RSpec.describe SkillPolicy do
         expect(subject).not_to permit(manager, skill)
       end
 
-      it 'denies access if employee manager edit/destroy programmer skill' do
-        programmer = FactoryBot.create(:employee, :programmer)
-        skill = FactoryBot.create(:skill, employee_id: programmer.id)
+      it 'denies access if employee manager edit/destroy developer skill' do
+        developer = FactoryBot.create(:employee, :developer)
+        skill = FactoryBot.create(:skill, employee_id: developer.id)
         expect(subject).not_to permit(manager, skill)
       end
 
@@ -272,9 +272,9 @@ RSpec.describe SkillPolicy do
         expect(subject).not_to permit(team_lead, skill)
       end
 
-      it 'denies access if employee team_lead edit/destroy programmer skill' do
-        programmer = FactoryBot.create(:employee, :programmer)
-        skill = FactoryBot.create(:skill, employee_id: programmer.id)
+      it 'denies access if employee team_lead edit/destroy developer skill' do
+        developer = FactoryBot.create(:employee, :developer)
+        skill = FactoryBot.create(:skill, employee_id: developer.id)
         expect(subject).not_to permit(team_lead, skill)
       end
 
@@ -320,9 +320,9 @@ RSpec.describe SkillPolicy do
         expect(subject).not_to permit(admin, skill)
       end
 
-      it 'denies access if employee admin edit/destroy programmer skill' do
-        programmer = FactoryBot.create(:employee, :programmer)
-        skill = FactoryBot.create(:skill, employee_id: programmer.id)
+      it 'denies access if employee admin edit/destroy developer skill' do
+        developer = FactoryBot.create(:employee, :developer)
+        skill = FactoryBot.create(:skill, employee_id: developer.id)
         expect(subject).not_to permit(admin, skill)
       end
 

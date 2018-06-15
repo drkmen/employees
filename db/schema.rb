@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_06_11_120146) do
+ActiveRecord::Schema.define(version: 2018_06_14_142955) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -37,8 +37,8 @@ ActiveRecord::Schema.define(version: 2018_06_11_120146) do
     t.inet "current_sign_in_ip"
     t.inet "last_sign_in_ip"
     t.string "skype"
+    t.integer "department", default: 0, null: false
     t.string "slug"
-    t.boolean "deleted", default: false
     t.string "invitation_token"
     t.datetime "invitation_created_at"
     t.datetime "invitation_sent_at"
@@ -46,13 +46,12 @@ ActiveRecord::Schema.define(version: 2018_06_11_120146) do
     t.integer "invitation_limit"
     t.integer "invited_by_id"
     t.string "invited_by_type"
-    t.integer "department", default: 0, null: false
+    t.boolean "deleted", default: false
     t.index ["deleted"], name: "index_employees_on_deleted"
     t.index ["email"], name: "index_employees_on_email", unique: true
     t.index ["first_name", "last_name", "main_skill"], name: "index_employees_on_first_name_and_last_name_and_main_skill", unique: true
     t.index ["invitation_token"], name: "index_employees_on_invitation_token", unique: true
     t.index ["reset_password_token"], name: "index_employees_on_reset_password_token", unique: true
-    t.index ["skype"], name: "index_employees_on_skype", unique: true
   end
 
   create_table "friendly_id_slugs", force: :cascade do |t|

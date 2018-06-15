@@ -6,26 +6,9 @@ require 'rails_helper'
 RSpec.describe SkillsController, type: :controller do
 
   before do
-    FactoryBot.create(:employee, :admin_full)
-    FactoryBot.create(:skill)
-  end
-
-  describe 'GET #edit' do
-    it 'returns a success response' do
-      get :edit, params: { id: Skill.last.id }
-      expect(response.status).to eq(200)
-      expect(response).to render_template('edit')
-      expect(assigns(:skill)).to eq(Skill.last)
-    end
-  end
-
-  describe 'GET #new' do
-    it 'returns a success response' do
-      get :new
-      expect(response.status).to eq(200)
-      expect(response).to render_template('new')
-      expect(assigns(:skill).name).to eq(nil)
-    end
+    @employee_developer = FactoryBot.create(:employee, :developer)
+    FactoryBot.create(:skill, employee_id: @employee_developer.id)
+    sign_in @employee_developer
   end
 
   describe 'PUT #update' do

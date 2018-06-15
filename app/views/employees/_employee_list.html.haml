@@ -10,7 +10,10 @@
 
     %ul
       - @employees.each do |department, employees|
-        %h4= department&.humanize
+        %h4
+          = department&.humanize
+          .float-right= employees.size
+
         - employees.each do |employee|
           %li= link_to employee.name, employee_path(employee)
         &nbsp;

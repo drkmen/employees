@@ -42,8 +42,11 @@ class SkillsController < ApplicationController
   def create
     @skill = Skill.new(skill_params)
     authorize @skill
-    @skill.save
-    flash[:notice] = 'Successfully created'
+    if @skill.save
+      flash[:notice] = 'Successfully created'
+    else
+      flash[:danger] = 'Is not created [duplicate]'
+    end
     redirect_to skills_path
   end
 

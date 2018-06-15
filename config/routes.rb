@@ -1,7 +1,11 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
-  devise_for :employees, controllers: { sessions: 'sessions', invitations: 'invitations' }
+  devise_for :employees, controllers: {
+    sessions: 'sessions',
+    invitations: 'invitations',
+    passwords: 'passwords'
+  }
 
   resources :employees, except: %i[new edit create] do
     patch :skill_experience

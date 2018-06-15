@@ -30,10 +30,11 @@
         .form-group
           = f.label :role
           = f.select :role, Employee.roles.keys.map { |r| [r.humanize, r] }, {}, class: 'form-control'
-    .col-6
-      .form-group
-        = f.label :department
-        = f.select :department, Employee.departments.keys.map { |d| [d.humanize, d] }, {}, class: 'form-control'
+    - if able_change_role?
+      .col
+        .form-group
+          = f.label :department
+          = f.select :department, Employee.departments.keys.map { |d| [d.humanize, d] }, {}, class: 'form-control'
   .form-group
     .custom-file
       = f.label :image, class: 'custom-file-label'

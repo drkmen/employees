@@ -18,7 +18,7 @@
                   = render template: 'employees/edit'
             - if current_employee&.admin?
               |
-              = link_to 'Delete', employee_path(@employee), method: :delete
+              = link_to 'Delete', employee_path(@employee), method: :delete, data: {confirm: 'Are you sure?'}
 
             %h2
               = @employee.name
@@ -65,13 +65,10 @@
                 - skills.each do |skill|
                   %span.link.pointable{ 'data-target': "#editSkillModal_#{skill.id}", 'data-toggle': :modal, title: "Experience: #{skill.experience(@employee)}" }
                   - if able_edit?
-                    = link_to skill.name, skill_path(skill, employee_id: @employee.id), remote: true
+                    = link_to skill.display_name(@employee.id), skill_path(skill, employee_id: @employee.id), remote: true
                     %br
                   - else
-                    - if skill.experience(@employee)
-                      %p= "#{skill.name} / #{skill.experience(@employee)}"
-                    - else
-                      %p= skill.name
+                    %p= skill.display_name(@employee.id)
 
         - if @employee.projects.reject(&:new_record?).present?
           %br
@@ -103,7 +100,7 @@
                           - project.image = Image.new unless project.image.present?
                           = render 'projects/form', project: project, employee: @employee, path: employee_project_path(@employee, project)
                       |
-                      = link_to 'Delete', employee_project_path(project.id, employee_id: project.employee_id), method: :delete
+                      = link_to 'Delete', employee_project_path(project.id, employee_id: project.employee_id), method: :delete, data: {confirm: 'Are you sure?'}
 
                     %h3
                       = project.name
@@ -118,7 +115,7 @@
                     - if project.start_date && project.end_date
                       = "#{project.start_date.strftime('%d/%m/%Y')} - #{project.end_date.strftime('%d/%m/%Y')}"
                     %br
-                    = project.description
+                    = raw project.description
 
                 .row
                   .col-12

@@ -1,5 +1,6 @@
 = form_for skill do |f|
   .form-group
+    = f.hidden_field :employee_id, value: current_employee.id
     = f.label :name
     = f.text_field :name, placeholder: true, class: 'form-control', required: true
   .form-group

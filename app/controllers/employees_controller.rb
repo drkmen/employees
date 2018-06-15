@@ -15,6 +15,7 @@ class EmployeesController < ApplicationController
 
   def update
     authorize @employee
+    @employee.additional = employee_params[:additional] || {}
     if @employee.update(employee_params)
       flash[:notice] = 'Successfully updated'
     else

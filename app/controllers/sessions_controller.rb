@@ -2,7 +2,6 @@
 #
 # # Sessions Controller
 class SessionsController < Devise::SessionsController
-  respond_to :html, :json, :js
 
   def create
     @referer = request.referer || root_path

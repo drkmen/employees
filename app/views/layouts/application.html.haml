@@ -53,7 +53,9 @@
                         .form-group.float-right
                           = f.submit 'Sign in', class: 'btn btn-success'
                 .restore-form.d-none
-                  = form_for(:employee, url: password_path(:employee), html: { method: :post }) do |f|
+                  = form_for(:employee, url: password_path(:employee), remote: true) do |f|
+                    .form-group
+                      %div#errorBody2.text-danger
                     .form-group
                       = f.email_field :email, autofocus: true, autocomplete: 'email', class: 'form-control', placeholder: :email
                     .form-row

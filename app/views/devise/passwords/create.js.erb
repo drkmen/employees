@@ -1,0 +1,5 @@
+<%- if @errors %>
+$('#errorBody2').html("<p><%= j @errors %></p>");
+<% else %>
+window.location.href = "<%= @referer %>";
+<% end %>

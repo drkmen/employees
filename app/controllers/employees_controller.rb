@@ -5,7 +5,9 @@ class EmployeesController < ApplicationController
   before_action :find_employee, except: %i[index new skill_experience]
   before_action :load_data, only: %i[index show]
 
-  def index; end
+  def index
+    redirect_to current_employee if current_employee.developer?
+  end
 
   def show
     @employee.build_image unless @employee.image

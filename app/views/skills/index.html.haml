@@ -1,9 +1,10 @@
 .employees
   .row
-    .col-3
-      = render 'employees/filters'
-    .col-3
-      = render 'employees/employee_list'
-    .col-6
+    - unless current_employee.developer?
+      .col-3
+        = render 'employees/filters'
+      .col-3
+        = render 'employees/employee_list'
+    .col-6.mx-auto
       .section.last.profile
         = render 'skills'

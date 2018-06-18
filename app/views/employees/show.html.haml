@@ -30,17 +30,18 @@
               Office:
               = @employee&.office&.humanize
 
-            %p
-              Email:
-              = @employee.email
-              %br
-              Phone:
-              = @employee.phone
-              %br
-              Skype:
-              = @employee.skype
+            - unless current_employee.developer? && current_employee != @employee
               %p
-                = raw @employee.description
+                Email:
+                = @employee.email
+                %br
+                Phone:
+                = @employee.phone
+                %br
+                Skype:
+                = @employee.skype
+            %p
+              = raw @employee.description
 
         - if @employee.additional.present?
           %h3 Additional information:

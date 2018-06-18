@@ -10,11 +10,12 @@
     %header
       %nav.navbar.navbar-light.bg-light
         .navbar-brand= link_to 'FaceIT', root_path
-        = form_tag( '', method: :get, enforce_utf8: false, class: 'form-inline') do
-          .search
-            = text_field_tag :term, params[:term], class: 'form-control mr-sm-2', aria: { label: 'Search' }
-          .my-2.my-sm-0
-            = submit_tag 'Search', class: 'btn btn-outline-secondary my-2 my-sm-0', name: nil
+        - if current_employee
+          = form_tag( '', method: :get, enforce_utf8: false, class: 'form-inline') do
+            .search
+              = text_field_tag :term, params[:term], class: 'form-control mr-sm-2', aria: { label: 'Search' }
+            .my-2.my-sm-0
+              = submit_tag 'Search', class: 'btn btn-outline-secondary my-2 my-sm-0', name: nil
         %div
           - if current_employee&.admin?
             %span.link.pointable{ 'data-target': '#inviteModal', 'data-toggle': 'modal' }
@@ -32,7 +33,7 @@
             &nbsp;
             = link_to employee_path(current_employee), title: 'My Profile' do
               = image_tag current_employee.avatar, size: '25x25', class: 'rounded'
-          - else
+          -#- else
             %span.link.pointable{ 'data-target': '#loginModal', 'data-toggle': 'modal' }
               Login
 

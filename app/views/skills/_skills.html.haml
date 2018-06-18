@@ -1,13 +1,12 @@
-= render 'layouts/modal', { modal_id: 'newSkillModal', modal_title: 'Create skill' } do
-  .modal-body
-    = render 'skills/form', skill: @skill
-
-.section.filters.container-fluid.skills
+.section.container-fluid.skills
   %h3.text-center Skills
 
   - if current_employee
-    .btn.btn-outline-success.float-right{'data-target' => '#newSkillModal', 'data-toggle' => 'modal'} New Skill
+    .btn.btn-outline-success.float-right{'data-target' => '#newSkillModal', 'data-toggle': :modal} New Skill
     .clearfix
+    = render 'layouts/modal', { modal_id: 'newSkillModal', modal_title: 'Create skill' } do
+      .modal-body
+        = render 'skills/form', skill: @skill
 
   - @skills.to_a.group_by(&:skill_type).each do |skill_type, skills|
     %h4= skill_type&.humanize

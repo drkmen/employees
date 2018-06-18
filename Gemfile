@@ -44,7 +44,7 @@ gem 'bootstrap'
 gem 'friendly_id'
 # Authorization system
 gem 'pundit'
-gem 'dotenv-rails'
+gem 'dotenv-rails', require: 'dotenv/rails-now'
 
 
 # Reduces boot times through caching; required in config/boot.rb

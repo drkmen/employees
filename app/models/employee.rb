@@ -32,7 +32,8 @@ class Employee < ApplicationRecord
                      game_dev: 6,
                      ios: 7,
                      android: 8,
-                     markup: 9 }
+                     markup: 9,
+                     java: 10 }
   
   enum office: { managers_office: 0,
                  ruby_office: 1,

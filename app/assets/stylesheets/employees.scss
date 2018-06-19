@@ -38,6 +38,18 @@
     }
   }
 
+  .free {
+    @extend .text-success
+  }
+
+  .partially_busy {
+    @extend .text-warning
+  }
+
+  .busy {
+    @extend .text-danger
+  }
+
   .with-remove {
     line-height: 30px;
   }

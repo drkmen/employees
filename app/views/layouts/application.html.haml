@@ -31,8 +31,8 @@
             |
             = link_to 'Logout', destroy_employee_session_path, method: :delete
             &nbsp;
-            = link_to employee_path(current_employee), title: 'My Profile' do
-              = image_tag current_employee.avatar, size: '25x25', class: 'rounded'
+            = link_to employee_path(current_employee) do
+              = image_tag current_employee.avatar, size: '25x25', class: 'rounded', title: 'My Profile'
           -#- else
             %span.link.pointable{ 'data-target': '#loginModal', 'data-toggle': 'modal' }
               Login

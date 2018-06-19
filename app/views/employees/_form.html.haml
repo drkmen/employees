@@ -7,9 +7,17 @@
       .form-group
         = f.text_field :last_name, placeholder: true, class: 'form-control'
   .form-row
-    .col-12
+    .col
       .form-group
         = f.text_field :email, placeholder: true, class: 'form-control'
+    - if able_change_role?
+      .col-6
+        .form-group
+          = f.select :status, Employee.statuses.keys.map { |o| [o.humanize, o] }, {}, class: 'form-control'
+  .form-row
+    .col-12
+      .form-group
+        = f.text_field :upwork, placeholder: true, class: 'form-control'
   .form-row
     .col-6
       .form-group

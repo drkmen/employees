@@ -16,34 +16,10 @@ class Employee < ApplicationRecord
   devise :invitable, :database_authenticatable, :recoverable,
          :rememberable, :trackable, :validatable
 
-  enum role: { other: 0,
-               developer: 1,
-               manager: 2,
-               team_lead: 3,
-               admin: 4,
-               system_administrator: 5 }
-
-  enum department: { ruby: 0,
-                     php: 1,
-                     js: 2,
-                     sys_admins: 3,
-                     managers: 4,
-                     other_department: 5,
-                     game_dev: 6,
-                     ios: 7,
-                     android: 8,
-                     markup: 9,
-                     java: 10 }
-  
-  enum office: { managers_office: 0,
-                 ruby_office: 1,
-                 central: 2,
-                 firsts: 3,
-                 uglyash: 4,
-                 gamers: 5,
-                 admins: 6,
-                 remote: 7,
-                 lviv: 8 }
+  enum role: %i[other developer manager team_lead admin system_administrator]
+  enum department: %i[ruby php js sys_admins managers other_department game_dev ios android markup java]
+  enum office: %i[managers_office ruby_office central firsts uglyash gamers admins remote lviv]
+  enum status: %i[free partially_busy busy]
 
   default_scope { where(deleted: false) }
   scope :role, ->(role) { where(role: role) }

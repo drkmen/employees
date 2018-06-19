@@ -37,7 +37,7 @@ class EmployeesController < ApplicationController
   end
 
   def skill_experience
-    employee = Employee.friendly.find params[:employee_id]
+    employee = Employee.includes(:skills).friendly.find params[:employee_id]
     skill = employee.resource_skills.find params.dig(:skill_experience, :id)
     skill.update_attributes!(skill_experience_params)
     redirect_to employee
@@ -46,24 +46,26 @@ class EmployeesController < ApplicationController
   private
 
   def find_employee
-    @employee = Employee.includes(:projects, :skills).friendly.find(params[:id])
+    @employee = Employee.includes(projects: [:skills], skills: [:resource_skills]).friendly.find(params[:id])
   end
 
   def load_data
-    @employees = Employee.preload(:skills).filter(params.reject { |_, v| v.blank? }.slice(:role, :office, :department))
+    @employees = Employee.includes(:skills).filter(params.reject { |_, v| v.blank? }.slice(:role, :office, :department))
     @employees = Employee.filter_skills(@employees, params[:skills]) if params[:skills]
     @employees = @employees.to_a.group_by(&:department) unless @employees.empty?
     @employees = Employee.search(params[:term]).to_a.group_by(&:department) if params[:term]
 
-    @skills = Skill.all
+    @skills = Skill.all.order(skill_type: :asc)
   end
 
   def employee_params
-    params.require(:employee).permit!
+    params.require(:employee).permit(:first_name, :last_name, :main_skill, :description, :email,
+                                     :phone, :office, :role, :skype, :department, :upwork, :status,
+                                     additional: {}, image_attributes: [], skill_ids: [] )
   end
 
   def skill_experience_params
-    params.require(:skill_experience).permit!
+    params.require(:skill_experience).permit(:id, :experience)
   end
 
   def pundit_user

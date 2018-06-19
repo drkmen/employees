@@ -14,7 +14,7 @@
             - able_edit do
               %span.link.pointable{'data-target' => '#editModal', 'data-toggle' => 'modal'}
                 Edit
-              = render 'layouts/modal', { modal_id: 'editModal', modal_title: 'Edit Employee' } do
+              = render 'layouts/modal', { modal_id: 'editModal', modal_title: 'Edit Employee', large: true } do
                 .modal-body
                   = render template: 'employees/edit'
             - if current_employee&.admin?
@@ -30,6 +30,8 @@
             %h5
               Office:
               = @employee&.office&.humanize
+              - if current_employee.manager? || current_employee.admin?
+                %b.float-right{class: "#{@employee.status}"}= @employee&.status&.humanize
 
             - unless current_employee.developer? && current_employee != @employee
               %p
@@ -41,6 +43,9 @@
                 %br
                 Skype:
                 = @employee.skype
+                %br
+                Upwork:
+                = link_to @employee.upwork
             %p
               = raw @employee.description
 
@@ -82,7 +87,7 @@
                 %span.link.pointable{ 'data-target': '#addProjectToEmployee', 'data-toggle': :modal }
                   .float-right
                     %btn.btn.btn-outline-success Add project
-                = render 'layouts/modal', { modal_id: 'addProjectToEmployee', modal_title: 'Add project' } do
+                = render 'layouts/modal', { modal_id: 'addProjectToEmployee', modal_title: 'Add project', large: true } do
                   .modal-body
                     = render 'projects/form', project: @project, employee: @employee, path: employee_projects_path(@employee)
           %hr

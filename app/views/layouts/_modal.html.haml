@@ -1,5 +1,6 @@
-.modal.fade{'aria-labelledby': 'myModalLabel', role: 'dialog', tabindex: '-1', id: modal_id}
-  .modal-dialog{role: :document}
+- large ||= nil
+.modal.fade{'aria-labelledby': 'myModalLabel', role: 'dialog', tabindex: '-1', id: modal_id, class: large ? 'bd-example-modal-lg' : ''}
+  .modal-dialog{role: :document, class: large ? 'modal-lg' : ''}
     .modal-content
       .modal-header
         %h5.modal-title= modal_title

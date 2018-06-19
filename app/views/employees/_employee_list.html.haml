@@ -15,7 +15,7 @@
           .float-right= employees.size
 
         - employees.each do |employee|
-          %li= link_to employee.name, employee_path(employee)
+          %li= link_to_with_filters employee.name, employee_path(employee)
         &nbsp;
   - else
     %h3.text-center No one found :(

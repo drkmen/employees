@@ -46,6 +46,10 @@
                 %br
                 Upwork:
                 = link_to @employee.upwork
+            - if current_employee.admin? && @employee.managers.present?
+              %p
+                Managers:
+                = @employee.managers.map(&:name).join(', ')
             %p
               = raw @employee.description
 

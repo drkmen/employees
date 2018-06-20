@@ -43,6 +43,12 @@
         .form-group
           = f.label :department
           = f.select :department, Employee.departments.keys.map { |d| [d.humanize, d] }, {}, class: 'form-control'
+  - if current_employee.admin?
+    .form-row
+      .col-6
+        .form-group
+          = f.label 'Managers'
+          = f.select :manager_ids, Employee.managers.map{ |m| [m.name, m.id] }, {}, {class: 'select2-field', id: 'managersSelector', multiple: :multiple, class: 'form-control'}
   .form-group
     .custom-file
       = f.label :image, class: 'custom-file-label'

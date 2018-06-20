@@ -11,6 +11,12 @@ class Employee < ApplicationRecord
   has_many :projects, dependent: :destroy
   has_many :own_skills, class_name: 'Skill'
 
+  has_many :manager_developers, foreign_key: :manager_id, class_name: 'EmployeeManager'
+  has_many :developers, through: :manager_developers, source: :developer
+
+  has_many :developer_managers, foreign_key: :developer_id, class_name: 'EmployeeManager'
+  has_many :managers, through: :developer_managers, source: :manager
+
   friendly_id :friendly_name, use: :slugged
 
   devise :invitable, :database_authenticatable, :recoverable,

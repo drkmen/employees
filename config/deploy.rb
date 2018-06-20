@@ -47,11 +47,18 @@ set :keep_releases, 3
 
 namespace :deploy do
 
-  task :restart do
+  task :create_symlink do
     on roles :app do
       within current_path do
         p '****************** CREATE SYMLINK ******************'
         execute 'ln -s /home/production/www/employees/shared/config/.env.production /home/production/www/employees/current'
+      end
+    end
+  end
+
+  task :restart do
+    on roles :app do
+      within current_path do
         p '****************** REBOOTING SERVER ******************'
         execute "kill -SIGKILL `cat /home/production/www/employees/shared/tmp/pids/server.pid` && rm /home/production/www/employees/shared/tmp/pids/server.pid"
         execute :bundle, "exec rails s -e production -d -p 3005"
@@ -78,4 +85,5 @@ namespace :deploy do
 
 end
 
+after 'deploy:finished', 'deploy:create_symlink'
 after 'deploy:finished', 'deploy:restart'

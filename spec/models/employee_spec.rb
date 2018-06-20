@@ -5,24 +5,42 @@ require 'rails_helper'
 
 RSpec.describe Employee, type: :model do
   let(:employee) { create :employee, first_name: 'John', last_name: 'Wick', email: 'wick@gmail.com', password: '123456' }
+  let(:manager) { create :employee, role: 'manager' }
+  let(:developer) { create :employee, role: 'developer' }
   let(:employee_deleted) { create :employee, first_name: 'Joe', last_name: 'Doe', email: 'doe@gmail.com', password: '123456'}
   let(:skill) { create :skill}
 
-  it 'has_one image' do
-    image1 = employee.create_image(image: '1234')
-    expect(employee.reload.image).to eq(image1)
-  end
+  describe 'assosiations' do
+    it 'has_one image' do
+      image1 = employee.create_image(image: '1234')
+      expect(employee.reload.image).to eq(image1)
+    end
 
-  it 'has_many skills' do
-    skill1 = employee.skills.create!(name: 'skill1')
-    skill2 = employee.skills.create!(name: 'skill2')
-    expect(employee.reload.skills).to eq([skill1, skill2])
-  end
+    it 'has_many skills' do
+      skill1 = employee.skills.create!(name: 'skill1')
+      skill2 = employee.skills.create!(name: 'skill2')
+      expect(employee.reload.skills).to eq([skill1, skill2])
+    end
 
-  it 'has_many projects' do
-    project1 = employee.projects.create!(name: 'skill1')
-    project2 = employee.projects.create!(name: 'skill2')
-    expect(employee.reload.projects).to eq([project1, project2])
+    it 'has_many projects' do
+      project1 = employee.projects.create!(name: 'skill1')
+      project2 = employee.projects.create!(name: 'skill2')
+      expect(employee.reload.projects).to eq([project1, project2])
+    end
+
+    context 'many-to-many developers vs managers' do
+      it 'manager should has_many developers' do
+        expect(manager.developers).to be_empty
+        manager.developers << developer
+        expect(manager.developers).to eq [developer]
+      end
+
+      it 'developer should has_many managers' do
+        expect(developer.managers).to be_empty
+        developer.managers << manager
+        expect(developer.managers).to eq [manager]
+      end
+    end
   end
 
   describe 'scope tests' do

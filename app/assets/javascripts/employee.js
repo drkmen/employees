@@ -1,7 +1,14 @@
 $( document ).on('turbolinks:load', function() {
     $('#addAdditionalField').on('click', addFields);
-    $( "#skillsSelector, #managersSelector" ).select2();
+    $( "#skillsSelector, #managersSelector, #developersSelector" ).select2();
     $(".select2-field").select2();
+
+    $('#toggleFilters, #toggleEmployees').on('click', function(){
+        var $section = $(this).parents('.section');
+        $section.toggleClass('col-3').toggleClass('col-1');
+        $section.find('.content').toggleClass('d-none');
+        $(this).toggleClass('fa-long-arrow-left').toggleClass('fa-long-arrow-right');
+    });
 });
 
 function addFields(e) {

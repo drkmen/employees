@@ -1,11 +1,9 @@
 .employees
   .row
     - unless current_employee.developer?
-      .col-3
-        = render 'filters'
-      .col-3
-        = render 'employee_list'
-    .col-6.mx-auto
+      = render 'filters'
+      = render 'employee_list'
+    %div{class: current_employee.developer? ? 'col-6 mx-auto' : 'col mx-auto'}
       .section.last.profile
         .row
           .col-5
@@ -45,11 +43,19 @@
                 = @employee.skype
                 %br
                 Upwork:
-                = link_to @employee.upwork
-            - if current_employee.admin? && @employee.managers.present?
+                = link_to @employee.upwork, @employee.upwork, target: :blank
+            - if (current_employee.admin? || current_employee.manager?) && @employee.managers.present?
               %p
                 Managers:
-                = @employee.managers.map(&:name).join(', ')
+                - @employee.managers.each do |manager|
+                  = link_to manager.name, employee_path(manager)
+
+            - if (current_employee.admin? || current_employee.manager?) && @employee.developers.present?
+              %p
+                Developers:
+                - @employee.developers.each do |developer|
+                  = link_to developer.name, employee_path(developer)
+
             %p
               = raw @employee.description
 

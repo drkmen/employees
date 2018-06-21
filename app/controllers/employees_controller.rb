@@ -50,7 +50,7 @@ class EmployeesController < ApplicationController
   end
 
   def load_data
-    @employees = Employee.includes(:skills).filter(params.reject { |_, v| v.blank? }.slice(:role, :office, :department))
+    @employees = Employee.includes(:skills).filter(params.reject { |_, v| v.blank? }.slice(:role, :office, :department, :status))
     @employees = Employee.filter_skills(@employees, params[:skills]) if params[:skills]
     @employees = @employees.to_a.group_by(&:department) unless @employees.empty?
     @employees = Employee.search(params[:term]).to_a.group_by(&:department) if params[:term]
@@ -61,7 +61,8 @@ class EmployeesController < ApplicationController
   def employee_params
     params.require(:employee).permit(:first_name, :last_name, :main_skill, :description, :email,
                                      :phone, :office, :role, :skype, :department, :upwork, :status,
-                                     additional: {}, image_attributes: [], skill_ids: [], manager_ids: [])
+                                     additional: {}, image_attributes: [], skill_ids: [],
+                                     manager_ids: [], developer_ids: [])
   end
 
   def skill_experience_params

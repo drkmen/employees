@@ -1,21 +1,25 @@
-.section.list.container-fluid
-  %h3.text-center List
+.section.list.container-fluid.col-3
+  %h3.d-flex.align-items-center
+    .flex-grow-0
+      %i.fa.fa-long-arrow-left.pointable#toggleEmployees
+    .flex-grow-1.text-center List
 
-  - if @employees.present?
-    .row
-      .col-12
-        %small.float-right
-          Employees:
-          = @employees&.values&.flatten&.size
+  .content
+    - if @employees.present?
+      .row
+        .col-12
+          %small.float-right
+            Employees:
+            = @employees&.values&.flatten&.size
 
-    %ul
-      - @employees.each do |department, employees|
-        %h4
-          = department&.humanize
-          .float-right= employees.size
+      %ul
+        - @employees.each do |department, employees|
+          %h4
+            = department&.humanize
+            .float-right= employees.size
 
-        - employees.each do |employee|
-          %li= link_to_with_filters employee.name, employee_path(employee)
-        &nbsp;
-  - else
-    %h3.text-center No one found :(
+          - employees.each do |employee|
+            %li= link_to_with_filters employee.name, employee_path(employee)
+          &nbsp;
+    - else
+      %h3.text-center No one found :(

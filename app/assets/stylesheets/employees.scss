@@ -6,6 +6,7 @@
     border-right: 1px solid $dark-grey;
     height: calc(90vh - 50px);
     overflow: auto;
+    @include transition(0.2s, ease-in-out);
 
     &.last {
       border-right: none;

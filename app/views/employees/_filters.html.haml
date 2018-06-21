@@ -1,36 +1,44 @@
-.section.filters.container-fluid
-  %h3.text-center Filters
+.section.filters.container-fluid.col-3
+  %h3.d-flex.align-items-center
+    .flex-grow-0
+      %i.fa.fa-long-arrow-left.pointable#toggleFilters
+    .flex-grow-1.text-center Filters
 
-  %p
-  = form_tag '', method: :get, enforce_utf8: false do
-    .form-row
-      .col-4
-        .form-group
-          = select_tag :office, options_for_select(Employee.offices.map { |k, v| [k.humanize, v] }, params[:office]), prompt: 'Office', class: 'form-control'
-      .col-4
-        .form-group
-          = select_tag :role, options_for_select(Employee.roles.map { |k, v| [k.humanize, v] }, params[:role]), prompt: 'Role', class: 'form-control'
-      .col-4
-        .form-group
-          = select_tag :department, options_for_select(Employee.departments.map { |k, v| [k.humanize, v] }, params[:department]), prompt: 'Department', class: 'form-control'
-    .form-row
-      .col-12
-        .form-group
-          - @skills.to_a.group_by(&:skill_type).each do |skill_type, skills|
-            %h4= skill_type&.humanize
-            %p
-              .form-row
-                - skills.each_slice(skills.size / 3) do |skill_slice|
-                  .col-4
-                    - skill_slice.each do |skill|
-                      %label.form-check-label
-                        = check_box_tag 'skills[]', skill.name, params[:skills]&.include?(skill.name), id: "skill_#{skill.id}"
-                        = skill.name
-                      %br
+  .content
+    %p
+    = form_tag '', method: :get, enforce_utf8: false do
+      .form-row
+        .col-4
+          .form-group
+            = select_tag :office, options_for_select(Employee.offices.map { |k, v| [k.humanize, v] }, params[:office]), prompt: 'Office', class: 'form-control'
+        .col-4
+          .form-group
+            = select_tag :role, options_for_select(Employee.roles.reject { |r| r == 'admin' }.map { |k, v| [k.humanize, v] }, params[:role]), prompt: 'Role', class: 'form-control'
+        .col-4
+          .form-group
+            = select_tag :department, options_for_select(Employee.departments.map { |k, v| [k.humanize, v] }, params[:department]), prompt: 'Department', class: 'form-control'
+      .form-row
+        .col-4
+          .form-group
+            = select_tag :status, options_for_select(Employee.statuses.map { |k, v| [k.humanize, v] }, params[:status]), prompt: 'Status', class: 'form-control'
+      .form-row
+        .col-12
+          .form-group
+            - @skills.to_a.group_by(&:skill_type).each do |skill_type, skills|
+              %h4= skill_type&.humanize
+              %p
+                .form-row
+                  - skills.each_slice(skills.size / 3) do |skill_slice|
+                    .col-4
+                      - skill_slice.each do |skill|
+                        %label.form-check-label
+                          = check_box_tag 'skills[]', skill.name, params[:skills]&.include?(skill.name), id: "skill_#{skill.id}"
+                          = skill.name
+                        %br
 
-    .position-relative
-      .filter-area
-        = submit_tag 'Filter', class: 'btn btn-outline-success', name: nil
-        &nbsp;
-        - if params[:office] || params[:role] || params[:department] || params[:skills]
-          = link_to 'Reset filters', employees_path, class: 'btn btn-outline-secondary'
+      .position-relative
+        .filter-area
+          = submit_tag 'Filter', class: 'btn btn-outline-success', name: nil
+          &nbsp;
+          - if params[:office] || params[:role] || params[:department] || params[:skills]
+            = link_to 'Reset filters', employees_path, class: 'btn btn-outline-secondary'

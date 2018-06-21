@@ -31,6 +31,7 @@ class Employee < ApplicationRecord
   scope :role, ->(role) { where(role: role) }
   scope :office, ->(office) { where(office: office) }
   scope :department, ->(department) { where(department: department) }
+  scope :status, ->(status) { where(status: status) }
   scope :deleted, -> { unscoped.where(deleted: true) }
   scope :search, ->(term) do
     return all unless term

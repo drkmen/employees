@@ -44,6 +44,7 @@
                 %br
                 Upwork:
                 = link_to @employee.upwork, @employee.upwork, target: :blank
+
             - if (current_employee.admin? || current_employee.manager?) && @employee.managers.present?
               %p
                 Managers:
@@ -80,12 +81,23 @@
               %div{ class: "col-#{12 / employee_skills.size}" }
                 %h5= skill_type&.humanize
                 - skills.each do |skill|
-                  %span.link.pointable{ 'data-target': "#editSkillModal_#{skill.id}", 'data-toggle': :modal, title: "Experience: #{skill.experience(@employee)}" }
                   - if able_edit?
-                    = link_to skill.display_name(@employee.id), skill_path(skill, employee_id: @employee.id), remote: true
-                    %br
+                    %span.link.pointable{ 'data-target': "#editSkillModal_#{skill.id}", 'data-toggle': :modal, title: "Experience: #{skill.experience(@employee)}" }
+                      = link_to skill.display_name(@employee.id), skill_path(skill, employee_id: @employee.id), remote: true
+                      %br
                   - else
-                    %p= skill.display_name(@employee.id)
+                    = skill.display_name(@employee.id)
+                    %br
+
+        %p
+        - if @employee.active_projects.present? || (@employee.manager? && @employee.manager_active_projects.present?)
+          %h3 Active projects
+          - if (@employee.developer? || @employee.team_lead?)
+            - @employee.active_projects.each do |project|
+              = render 'projects/project', project: project
+          - elsif @employee.manager?
+            - @employee.manager_active_projects.each do |project|
+              = render 'projects/project', project: project
 
         - if @employee.projects.reject(&:new_record?).present?
           %br
@@ -104,43 +116,9 @@
 
           .row
             .col-12
-              - @employee.projects.order('created_at DESC').each do |project|
-                .row
-                  .col-4
-                    = image_tag project.avatar, class: 'img-fluid'
-                  .col-8
-                    - able_edit do
-                      %span.link.pointable{ 'data-target': "#editProjectAtEmployee_#{project.id}", 'data-toggle': 'modal' }
-                        Edit
-                      = render 'layouts/modal', { modal_id: "editProjectAtEmployee_#{project.id}", modal_title: 'Edit employee project' } do
-                        .modal-body
-                          - project.image = Image.new unless project.image.present?
-                          = render 'projects/form', project: project, employee: @employee, path: employee_project_path(@employee, project)
-                      |
-                      = link_to 'Delete', employee_project_path(project.id, employee_id: project.employee_id), method: :delete, data: {confirm: 'Are you sure?'}
+              - @employee.projects.order('created_at DESC').reject(&:active).each do |project|
+                = render 'projects/project', project: project
 
-                    %h3
-                      = project.name
-                      - if project.client.present?
-                        .float-right
-                          %small
-                            Client:
-                            = project.client
-
-                    = project.link
-                    %br
-                    - if project.start_date && project.end_date
-                      %i= "#{project.start_date.strftime('%d/%m/%Y')} - #{project.end_date.strftime('%d/%m/%Y')}"
-                    %br
-                    = raw project.description
-
-                .row
-                  .col-12
-                    %p
-                    - project.skills.each do |skill|
-                      = skill.name
-                      = raw '/'
-                %hr
         - elsif @employee.projects.reject(&:new_record?).empty? && able_edit?
           %br
           .row

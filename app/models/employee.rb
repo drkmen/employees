@@ -5,10 +5,14 @@ class Employee < ApplicationRecord
   include Filterable
   extend FriendlyId
 
-  has_one :image, as: :imageable, dependent: :destroy
   has_many :resource_skills, dependent: :destroy
   has_many :skills, through: :resource_skills
+
   has_many :projects, dependent: :destroy
+  has_many :active_projects, ->{ where(active: true)}, class_name: 'Project', dependent: :destroy
+  has_many :manager_active_projects, ->{ where(active: true)},
+           class_name: 'Project', dependent: :destroy, foreign_key: :manager_id
+
   has_many :own_skills, class_name: 'Skill'
 
   has_many :manager_developers, foreign_key: :manager_id, class_name: 'EmployeeManager'
@@ -16,6 +20,8 @@ class Employee < ApplicationRecord
 
   has_many :developer_managers, foreign_key: :developer_id, class_name: 'EmployeeManager'
   has_many :managers, through: :developer_managers, source: :manager
+
+  has_one :image, as: :imageable, dependent: :destroy
 
   friendly_id :friendly_name, use: :slugged
 

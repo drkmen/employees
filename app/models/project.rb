@@ -8,6 +8,8 @@ class Project < ApplicationRecord
   validates :name, presence: true
 
   belongs_to :employee
+  belongs_to :developer, class_name: 'Employee', foreign_key: :employee_id #alias
+  belongs_to :manager, class_name: 'Employee', foreign_key: :manager_id
 
   accepts_nested_attributes_for :image, :skills
 

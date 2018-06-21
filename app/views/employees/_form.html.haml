@@ -2,35 +2,44 @@
   .form-row
     .col-6
       .form-group
+        = f.label :first_name
         = f.text_field :first_name, placeholder: true, class: 'form-control'
     .col-6
       .form-group
+        = f.label :last_name
         = f.text_field :last_name, placeholder: true, class: 'form-control'
   .form-row
     .col
       .form-group
+        = f.label :email
         = f.text_field :email, placeholder: true, class: 'form-control'
     - if able_change_role?
       .col-6
         .form-group
-          = f.select :status, Employee.statuses.keys.map { |o| [o.humanize, o] }, {}, class: 'form-control'
+          = f.label :status
+          = f.select :status, Employee.statuses.keys.map { |o| [o.humanize, o] }, { include_blank: true }, class: 'form-control'
   .form-row
     .col-12
       .form-group
+        = f.label :upwork
         = f.text_field :upwork, placeholder: true, class: 'form-control'
   .form-row
     .col-6
       .form-group
+        = f.label 'Main Skill ?', title: 'Can be any string. Represents developer main direction: FullStack Ruby\Rails.'
         = f.text_field :main_skill, placeholder: true, class: 'form-control'
     .col-6
       .form-group
+        = f.label :phone
         = f.text_field :phone, placeholder: true, class: 'form-control'
   .form-row
     .col-6
       .form-group
+        = f.label :office
         = f.select :office, Employee.offices.keys.map { |o| [o.humanize, o] }, {}, class: 'form-control'
     .col-6
       .form-group
+        = f.label :skype
         = f.text_field :skype, placeholder: true, class: 'form-control'
   .form-row
     - if current_employee.admin?
@@ -43,13 +52,14 @@
         .form-group
           = f.label :department
           = f.select :department, Employee.departments.keys.map { |d| [d.humanize, d] }, {}, class: 'form-control'
-  - if current_employee.admin? && @employee.developer?
+
+  - if (current_employee.admin? || current_employee.manager?) && (@employee.developer? || @employee.team_lead?)
     .form-row
       .col-6
         .form-group
           = f.label 'Managers'
           = f.select :manager_ids, Employee.managers.map{ |m| [m.name, m.id] }, {}, { class: 'select2-field', id: 'managersSelector', multiple: :multiple, class: 'form-control'}
-  - elsif current_employee.admin? && @employee.managers?
+  - elsif (current_employee.admin? || current_employee.manager?) && @employee.managers?
     .form-row
       .col-6
         .form-group

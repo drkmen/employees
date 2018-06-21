@@ -2,28 +2,45 @@
   .form-row
     .form-group
       = f.hidden_field :employee_id, value: employee.id
+  .form-row
     .col-12
       .form-group
         = f.text_field :name, class: 'form-control', placeholder: 'Name'
+  .form-row
     .col-12
       .form-group
         = f.text_area :description, class: 'form-control', placeholder: 'Description'
+  .form-row
     .col-12
       .form-group
         = f.text_field :client, class: 'form-control', placeholder: 'Client name'
+  .form-row
     .col-12
       .form-group
         = f.text_field :link, class: 'form-control', placeholder: 'Link'
+  .form-row
+    .col-2
+      .form-group
+        = f.label 'Active?'
+      .form-group
+        = f.check_box :active
+    .col
+      .form-group
+        = f.label 'Manager'
+        = f.select :manager_id, Employee.managers.map { |m| [m.name, m.id] }, { include_blank: true }, { class: 'form-control', include_blank: 'Manager' }
+  .form-row
     .col-12
       .form-group
         = f.label 'Skills'
         = f.select(:skill_ids, @skills.pluck(:name, :id), {}, {class: 'select2-field', multiple: :multiple, placeholder: 'Skills'})
+  .form-row
     .col-12
       .form-group
         .custom-file
           = f.label :image, class: 'custom-file-label'
           = f.fields_for :image do |image_fields|
             = image_fields.file_field :image, class: 'custom-file-input'
+  .form-row
     .col-12
       .form-row
         .col-6
@@ -34,6 +51,7 @@
           .form-group
             = f.label 'End date'
             = f.date_field :end_date, class: 'form-control'
+  .form-row
     .col-12
       .form-group
         = f.submit class: 'btn btn-success'

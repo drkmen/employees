@@ -17,6 +17,20 @@
             .my-2.my-sm-0
               = submit_tag 'Search', class: 'btn btn-outline-secondary my-2 my-sm-0', name: nil
         %div
+
+          %span.link.pointable{ 'data-target': '#wishModal', 'data-toggle': 'modal' }
+            Wishes
+          |
+          = render 'layouts/modal', { modal_id: 'wishModal', modal_title: 'Send wishes\proposals' } do
+            .modal-body
+              %p
+                This form will submit email directly to our CEO. You can ask whatever you want. Nobody will see it.
+              = form_tag '/wishes' do |f|
+                .form-group
+                  = text_area_tag :wish, nil, class: 'form-control'
+                .form-group
+                  = submit_tag 'Send wish', class: 'btn btn-success'
+
           - if current_employee&.admin? || current_employee&.manager?
             %span.link.pointable{ 'data-target': '#inviteModal', 'data-toggle': 'modal' }
               Invite Employee

@@ -7,6 +7,11 @@ class ApplicationController < ActionController::Base
   before_action :store_employee_location!, if: :storable_location?
   before_action :authenticate_employee!
 
+  def wishes
+    flash[:success] = 'Successful sent' if ApplicationMailer.send_wish(current_employee, params[:wish]).deliver_now
+    redirect_to root_path
+  end
+
   protected
 
   def after_sign_out_path_for(resource_or_scope)

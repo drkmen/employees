@@ -65,11 +65,13 @@
           .row
             .col-12
               - @employee.additional.each do |key, value|
+                %p
                 .row
                   .col-2
-                    %b= key.humanize + ':'
+                    .bold= key.humanize + ':'
                   .col-10
                     = raw value
+                  %br
 
         %br
         - if @employee.skills.present?

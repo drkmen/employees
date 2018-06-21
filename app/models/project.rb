@@ -9,7 +9,7 @@ class Project < ApplicationRecord
 
   belongs_to :employee
   belongs_to :developer, class_name: 'Employee', foreign_key: :employee_id #alias
-  belongs_to :manager, class_name: 'Employee', foreign_key: :manager_id
+  belongs_to :manager, class_name: 'Employee', foreign_key: :manager_id, optional: true
 
   accepts_nested_attributes_for :image, :skills
 

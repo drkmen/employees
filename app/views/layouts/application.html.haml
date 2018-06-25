@@ -17,10 +17,10 @@
             .my-2.my-sm-0
               = submit_tag 'Search', class: 'btn btn-outline-secondary my-2 my-sm-0', name: nil
         %div
-
-          %span.link.pointable{ 'data-target': '#wishModal', 'data-toggle': 'modal' }
-            Wishes
-          |
+          - if current_employee
+            %span.link.pointable{ 'data-target': '#wishModal', 'data-toggle': 'modal' }
+              Wishes
+            |
           = render 'layouts/modal', { modal_id: 'wishModal', modal_title: 'Send wishes\proposals' } do
             .modal-body
               %p

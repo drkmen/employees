@@ -5,10 +5,10 @@ require 'rails_helper'
 
 RSpec.describe Employee, type: :model do
   let(:employee) { create :employee, first_name: 'John', last_name: 'Wick', email: 'wick@gmail.com', password: '123456' }
-  let(:manager) { create :employee, role: 'manager' }
-  let(:developer) { create :employee, role: 'developer' }
+  let(:manager) { create :employee, :manager }
+  let(:developer) { create :employee, :developer }
   let(:employee_deleted) { create :employee, first_name: 'Joe', last_name: 'Doe', email: 'doe@gmail.com', password: '123456'}
-  let(:skill) { create :skill}
+  let(:skill) { create :skill }
 
   describe 'assosiations' do
     it 'has_one image' do

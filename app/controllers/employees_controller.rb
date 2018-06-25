@@ -10,6 +10,7 @@ class EmployeesController < ApplicationController
   end
 
   def show
+    redirect_to current_employee if current_employee.developer? && current_employee != @employee
     @employee.build_image unless @employee.image
     @project = @employee.projects.new
     @project.image = Image.new

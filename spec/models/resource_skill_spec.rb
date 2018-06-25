@@ -5,7 +5,7 @@ require 'rails_helper'
 
 RSpec.describe ResourceSkill, type: :model do
   before(:each) do
-    FactoryBot.create(:employee, :admin_full)
+    FactoryBot.create(:employee, :admin)
     FactoryBot.create(:project, employee_id: Employee.last.id)
     FactoryBot.create(:skill)
     @resource_skill1 = Project.last.resource_skills.create!(skill_id: Skill.last.id)

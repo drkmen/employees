@@ -4,13 +4,13 @@
 require 'rails_helper'
 
 RSpec.describe EmployeesHelper, type: :helper do
-  let(:employee1) { FactoryBot.create(:employee, :admin_full) }
-  let(:employee2) { FactoryBot.create(:employee, :developer) }
+  let(:admin) { FactoryBot.create(:employee, :admin) }
+  let(:developer) { FactoryBot.create(:employee, :developer) }
 
-  it "has access to the helper methods defined in the module" do
-    expect(role(employee1)).to eq('Owner')
+  it 'has access to the helper methods defined in the module' do
+    expect(role(admin)).to eq('Owner')
   end
-  it "has access to the helper methods defined in the module" do
-    expect(role(employee2)).to eq('Developer')
+  it 'has access to the helper methods defined in the module' do
+    expect(role(developer)).to eq('Developer')
   end
 end

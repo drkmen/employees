@@ -32,10 +32,6 @@ FactoryBot.define do
       role 'admin'
     end
 
-    trait :admin_full do
-      role 'admin'
-    end
-
     trait :deleted do
       role 'other'
       deleted true

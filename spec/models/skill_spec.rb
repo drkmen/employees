@@ -11,7 +11,6 @@ RSpec.describe Skill, type: :model do
     let(:framework_skill) { FactoryBot.create(:skill, name: 'angularjs', skill_type: 'framework') }
     let(:database_skill) { FactoryBot.create(:skill, name: 'postgresql', skill_type: 'database') }
 
-
   describe 'enum skill_type' do
     it 'skill other_skill have correct skill_type value' do
       expect(other_skill.other_skill?).to be(true)
@@ -38,25 +37,25 @@ RSpec.describe Skill, type: :model do
       expect(framework_skill.other_skill?).to be(false)
     end
   end
+
   it 'should validate presence of name' do
     record = Skill.new
-    record.name = '' # invalid state
-    record.valid? # run validations
+    record.name = ''
+    record.valid?
     expect(record).to be_invalid
 
-    record.name = 'foobar' # valid state
-    record.valid? # run validations
+    record.name = 'foobar'
+    record.valid?
     expect(record).to be_valid
   end
 
   context 'skill associations specs' do
     before(:each) do
-      @employee1 = FactoryBot.create(:employee, :admin_full)
-      @employee2 = FactoryBot.create(:employee, :admin_full)
+      @employee1 = FactoryBot.create(:employee, :admin)
+      @employee2 = FactoryBot.create(:employee, :admin)
       @project1 = FactoryBot.create(:project, employee_id: @employee1.id)
       @project2 = FactoryBot.create(:project, employee_id: @employee2.id)
       @skill = FactoryBot.create(:skill)
-
     end
 
     it 'has_many resource_skills' do
@@ -76,8 +75,5 @@ RSpec.describe Skill, type: :model do
       @employee2.resource_skills.create!(skill_id: @skill.id)
       expect(@skill.reload.employees).to eq([@employee1, @employee2])
     end
-
   end
-
-
 end

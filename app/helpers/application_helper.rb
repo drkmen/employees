@@ -9,7 +9,7 @@ module ApplicationHelper
     [*params[:skills]].each do |skill|
       uri.query += "&skills[]=#{skill}"
     end
-    opts = path.is_a?(String) ? path + '?' + uri.query : path
+    opts = path.is_a?(String) && uri.query.present? ? path + '?' + uri.query : path
     link_to name, opts, html_options
   end
 end

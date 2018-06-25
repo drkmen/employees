@@ -4,9 +4,8 @@
 require 'rails_helper'
 
 RSpec.describe Project, type: :model do
-
   before do
-    FactoryBot.create(:employee, :admin_full)
+    FactoryBot.create(:employee, :admin)
     FactoryBot.create(:project, employee_id: Employee.last.id)
     FactoryBot.create(:skill)
   end
@@ -18,7 +17,7 @@ RSpec.describe Project, type: :model do
   end
 
   it 'has_one image' do
-    image1 = Project.last.create_image(image: '1234')
+    Project.last.create_image(image: '1234')
     image2 = Project.last.create_image(image: '123456')
     expect(Project.last.reload.image).to eq(image2)
   end
@@ -32,18 +31,17 @@ RSpec.describe Project, type: :model do
 
   it 'should validate presence of name' do
     record = Project.new
-    record.name = '' # invalid state
+    record.name = ''
     record.employee_id = Employee.last.id
-    record.valid? # run validations
+    record.valid?
     expect(record).to be_invalid
 
-    record.name = 'foobar' # valid state
-    record.valid? # run validations
+    record.name = 'foobar'
+    record.valid?
     expect(record).to be_valid
   end
 
   it 'belongs_to employee' do
     expect(Project.last.reload.employee).to eq(Employee.last)
   end
-
 end

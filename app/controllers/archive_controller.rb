@@ -3,6 +3,7 @@
 # Archive Controller
 class ArchiveController < ApplicationController
   def index
+    redirect_to current_employee if current_employee.developer?
     @employees = Employee.deleted
   end
 

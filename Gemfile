@@ -42,9 +42,9 @@ gem 'select2-rails'
 gem 'font-awesome-rails'
 gem 'bootstrap'
 gem 'friendly_id'
-# Authorization system
 gem 'pundit'
 gem 'dotenv-rails', require: 'dotenv/rails-now'
+gem 'bugsnag', '~> 6.7'
 
 gem 'addressable'
 # Reduces boot times through caching; required in config/boot.rb

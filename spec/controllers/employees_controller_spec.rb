@@ -67,14 +67,17 @@ RSpec.describe EmployeesController, type: :controller do
         ResourceSkill.create(skill_id: skill_1.id, employee_id: employee_3.id, experience: 'better than nothing')
         ResourceSkill.create(skill_id: skill_2.id, employee_id: employee_4.id, experience: 'best')
       end
+
       it 'only office' do
         get :index, params: { office: 2 }
         expect(assigns(:employees).size).to be 2
       end
+
       it 'office and role' do
         get :index, params: { office: 2, role:3 }
         expect(assigns(:employees).size).to be 1
       end
+
       it 'all filters with skills' do
         get :index, params: { office: 2, role:3, department: 0 }
         expect(assigns(:employees).size).to be 1
@@ -84,10 +87,12 @@ RSpec.describe EmployeesController, type: :controller do
         get :index, params: { skills: ['API development'] }
         expect(assigns(:employees).size).to be 2
       end
+
       it 'returns a success response' do
         get :index, params: { skills: ['AWS'] }
         expect(assigns(:employees).size).to be 1
       end
+
       it 'returns a success response' do
         get :index, params: { skills: ['Active Admin'] }
         expect(assigns(:employees).size).to be 1
@@ -97,10 +102,12 @@ RSpec.describe EmployeesController, type: :controller do
         get :index, params: { office: 2, skills: ['API development'] }
         expect(assigns(:employees).size).to be 2
       end
+
       it 'returns a success response' do
         get :index, params: { office: 3, role: 4, skills: ['AWS'] }
         expect(assigns(:employees).size).to be 1
       end
+
       it 'returns a success response' do
         get :index, params: { office: 2, role: 2,
                               department: 1, skills: ['Active Admin'] }

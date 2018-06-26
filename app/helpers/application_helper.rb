@@ -5,6 +5,7 @@ require 'addressable/uri'
 module ApplicationHelper
   def link_to_with_filters(name = nil, path = nil, html_options = {}, &block)
     uri = Addressable::URI.new
+    params.delete(:id)
     uri.query_values = params.permit(:office, :role, :department, :status)
     [*params[:skills]].each do |skill|
       uri.query += "&skills[]=#{skill}"

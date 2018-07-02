@@ -51,7 +51,7 @@ class EmployeesController < ApplicationController
 
   def load_data
     @skills = Skill.all.order(skill_type: :asc)
-    return unless current_employee.developer?
+    return if current_employee.developer?
 
     @employees = Employee.includes(:skills).filter(params.reject { |_, v| v.blank? }
                                            .slice(:role, :office, :department, :status))

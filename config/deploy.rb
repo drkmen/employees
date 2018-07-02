@@ -44,9 +44,15 @@ set :keep_releases, 3
 # Uncomment the following to require manually verifying the host key before first deploy.
 # set :ssh_options, verify_host_key: :secure
 
-namespace :update do
-  task :role do
-    execute :bundle, "exec rake update:role[#{role}]"
+task :execute, :command do |_task, args|
+  on roles :app do
+    within current_path do
+      # gavno kakoeto
+      # https://stackoverflow.com/questions/19452983/capistrano-3-execute-within-a-directory
+
+      # cap production "execute[update:role['developer']]"
+      execute :bundle, "exec rake #{args[:command]} RAILS_ENV=production"
+    end
   end
 end
 

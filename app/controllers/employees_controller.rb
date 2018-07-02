@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-# Employyes Controller
 class EmployeesController < ApplicationController
   before_action :find_employee, except: %i[index skill_experience]
   before_action :load_data, only: %i[index show]
@@ -13,7 +12,7 @@ class EmployeesController < ApplicationController
     redirect_to current_employee if current_employee.developer? && current_employee != @employee
     @employee.build_image unless @employee.image
     @project = @employee.projects.new
-    @project.image = Image.new
+    @project.build_image
   end
 
   def update
@@ -51,12 +50,14 @@ class EmployeesController < ApplicationController
   end
 
   def load_data
-    @employees = Employee.includes(:skills).filter(params.reject { |_, v| v.blank? }.slice(:role, :office, :department, :status))
-    @employees = Employee.filter_skills(@employees, params[:skills]) if params[:skills]
-    @employees = @employees.to_a.group_by(&:department) unless @employees.empty?
-    @employees = Employee.search(params[:term]).to_a.group_by(&:department) if params[:term]
-
     @skills = Skill.all.order(skill_type: :asc)
+    return unless current_employee.developer?
+
+    @employees = Employee.includes(:skills).filter(params.reject { |_, v| v.blank? }
+                                           .slice(:role, :office, :department, :status))
+    @employees = Employee.filter_skills(@employees, params[:skills]) if params[:skills]
+    @employees = Employee.search(params[:term]) if params[:term]
+    @employees = @employees.to_a.group_by(&:department) unless @employees.empty?
   end
 
   def employee_params

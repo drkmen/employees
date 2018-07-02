@@ -1,9 +1,10 @@
 # frozen_string_literal: true
+#
 require 'addressable/uri'
 
 # ApplicationHelper
 module ApplicationHelper
-  def link_to_with_filters(name = nil, path = nil, html_options = {}, &block)
+  def link_to_with_filters(name = nil, path = nil, html_options = {}, &_block)
     uri = Addressable::URI.new
     params.delete(:id)
     uri.query_values = params.permit(:office, :role, :department, :status)

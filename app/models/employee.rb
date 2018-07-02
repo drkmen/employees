@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-# Employee model
 class Employee < ApplicationRecord
   include Filterable
   extend FriendlyId
@@ -9,8 +8,8 @@ class Employee < ApplicationRecord
   has_many :skills, through: :resource_skills
 
   has_many :projects, dependent: :destroy
-  has_many :active_projects, ->{ where(active: true)}, class_name: 'Project', dependent: :destroy
-  has_many :manager_active_projects, ->{ where(active: true)},
+  has_many :active_projects, ->{ where(active: true) }, class_name: 'Project', dependent: :destroy
+  has_many :manager_active_projects, ->{ where(active: true) },
            class_name: 'Project', dependent: :destroy, foreign_key: :manager_id
 
   has_many :own_skills, class_name: 'Skill'

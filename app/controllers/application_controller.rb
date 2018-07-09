@@ -21,6 +21,20 @@ class ApplicationController < ActionController::Base
     devise_parameter_sanitizer.permit(:invite, keys: %i[first_name last_name role])
   end
 
+  def load_data
+    @skills = Skill.all.order(skill_type: :asc)
+    return if current_employee.developer?
+
+    if params[:term]
+      @employees = Employee.search(params[:term])
+    else
+      @employees = Employee.includes(:skills).filter(params.reject { |_, v| v.blank? }
+                                                         .slice(:role, :office, :department, :status))
+      @employees = Employee.filter_skills(@employees, params[:skills]) if params[:skills]
+    end
+    @employees = @employees.to_a.group_by(&:department) unless @employees.empty?
+  end
+
   private
 
   def storable_location?

@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-# Projects Controller
 class ProjectsController < ApplicationController
   before_action :find_project, only: %i[update destroy]
 

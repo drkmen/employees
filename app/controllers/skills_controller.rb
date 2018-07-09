@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-# Skills Controller
-
 class SkillsController < ApplicationController
   before_action :find_skill, only: %i[update destroy]
 
@@ -9,10 +7,7 @@ class SkillsController < ApplicationController
     @skills = Skill.all
     @skill = Skill.new
 
-    @employees = Employee.includes(:skills).filter(params.reject { |_, v| v.blank? }.slice(:role, :office, :department))
-    @employees = Employee.filter_skills(@employees, params[:skills]) if params[:skills]
-    @employees = @employees.to_a.group_by(&:department) unless @employees.empty?
-    @employees = Employee.search(params[:term]).to_a.group_by(&:department) if params[:term]
+    load_data
   end
 
   def show

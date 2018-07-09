@@ -49,17 +49,6 @@ class EmployeesController < ApplicationController
     @employee = Employee.includes(projects: [:skills], skills: [:resource_skills]).friendly.find(params[:id])
   end
 
-  def load_data
-    @skills = Skill.all.order(skill_type: :asc)
-    return if current_employee.developer?
-
-    @employees = Employee.includes(:skills).filter(params.reject { |_, v| v.blank? }
-                                           .slice(:role, :office, :department, :status))
-    @employees = Employee.filter_skills(@employees, params[:skills]) if params[:skills]
-    @employees = Employee.search(params[:term]) if params[:term]
-    @employees = @employees.to_a.group_by(&:department) unless @employees.empty?
-  end
-
   def employee_params
     params.require(:employee).permit(:first_name, :last_name, :main_skill, :description, :email,
                                      :phone, :office, :role, :skype, :department, :upwork, :status,

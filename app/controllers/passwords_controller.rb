@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
-# PasswordsController
 class PasswordsController < Devise::PasswordsController
-
   def create
     @referer = request.referer || root_path
     self.resource = resource_class.send_reset_password_instructions(resource_params)

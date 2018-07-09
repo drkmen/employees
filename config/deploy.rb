@@ -47,9 +47,6 @@ set :keep_releases, 3
 task :execute, :command do |_task, args|
   on roles :app do
     within current_path do
-      # gavno kakoeto
-      # https://stackoverflow.com/questions/19452983/capistrano-3-execute-within-a-directory
-
       # cap production "execute[update:role['developer']]"
       execute :bundle, "exec rake #{args[:command]} RAILS_ENV=production"
     end

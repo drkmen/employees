@@ -52,10 +52,13 @@
                   = link_to manager.name, employee_path(manager)
 
             - if (current_employee.admin? || current_employee.manager?) && @employee.developers.present?
-              %p
-                Developers:
-                - @employee.developers.each do |developer|
-                  = link_to developer.name, employee_path(developer)
+              .row
+                .col-2
+                  Developers:
+                .col-5
+                  - @employee.developers.each do |developer|
+                    = link_to developer.name, employee_path(developer)
+                    %br
 
             %p
               = raw @employee.description

@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-# ResourceSkill Model Spec
 require 'rails_helper'
 
 RSpec.describe ResourceSkill, type: :model do
@@ -23,5 +22,4 @@ RSpec.describe ResourceSkill, type: :model do
   it 'belongs_to employee' do
     expect(Skill.last.reload.resource_skills.last).to eq(@resource_skill2)
   end
-
 end

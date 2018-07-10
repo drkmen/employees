@@ -95,12 +95,12 @@
                     %br
 
         %p
-        - if @employee.active_projects.present? || (@employee.manager? && @employee.manager_active_projects.present?)
+        - if @employee.active_projects.present? || @employee.manager_active_projects.present?
           %h3 Active projects
-          - if (@employee.developer? || @employee.team_lead?)
+          - if @employee.active_projects.present?
             - @employee.active_projects.each do |project|
               = render 'projects/project', project: project
-          - elsif @employee.manager?
+          - elsif @employee.manager_active_projects.present?
             - @employee.manager_active_projects.each do |project|
               = render 'projects/project', project: project
 

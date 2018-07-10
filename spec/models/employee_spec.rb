@@ -1,41 +1,63 @@
 # frozen_string_literal: true
 
-# Employee Model Spec
 require 'rails_helper'
 
 RSpec.describe Employee, type: :model do
-  let(:employee) { create :employee, first_name: 'John', last_name: 'Wick', email: 'wick@gmail.com', password: '123456' }
+  let(:employee) do
+    create :employee, email: 'darthmaul@impire.com', first_name: 'Darth', last_name: 'Maul',
+           office: :ruby_office, department: :ruby, status: :free, role: :developer
+  end
   let(:manager) { create :employee, :manager }
   let(:developer) { create :employee, :developer }
-  let(:employee_deleted) { create :employee, first_name: 'Joe', last_name: 'Doe', email: 'doe@gmail.com', password: '123456'}
+  let(:employee_deleted) { create :employee, :deleted }
   let(:skill) { create :skill }
 
   describe 'assosiations' do
     it 'has_one image' do
-      image1 = employee.create_image(image: '1234')
-      expect(employee.reload.image).to eq(image1)
+      expect(employee).to respond_to :image
+      expect(employee.image).to be nil
+      image = employee.create_image(image: '1234')
+      expect(employee.reload.image).to eq image
     end
 
     it 'has_many skills' do
-      skill1 = employee.skills.create!(name: 'skill1')
-      skill2 = employee.skills.create!(name: 'skill2')
-      expect(employee.reload.skills).to eq([skill1, skill2])
+      expect(employee).to respond_to :skills
+      expect(employee.skills.to_a).to eq []
+      skill = employee.skills.create!(name: 'skill1')
+      expect(employee.reload.skills).to eq [skill]
     end
 
     it 'has_many projects' do
-      project1 = employee.projects.create!(name: 'skill1')
-      project2 = employee.projects.create!(name: 'skill2')
-      expect(employee.reload.projects).to eq([project1, project2])
+      expect(employee).to respond_to :projects
+      expect(employee.projects.to_a).to eq []
+      project = employee.projects.create!(name: 'project')
+      expect(employee.reload.projects).to eq [project]
+    end
+
+    it 'has_many active projects' do
+      expect(employee).to respond_to :active_projects
+      expect(employee.active_projects.to_a).to eq []
+      a_project = employee.projects.create!(name: 'project', active: true)
+      expect(employee.reload.active_projects).to eq [a_project]
+    end
+
+    it 'has_many manager_active_projects' do
+      expect(employee).to respond_to :manager_active_projects
+      expect(employee.manager_active_projects.to_a).to eq []
+      a_project = employee.projects.create!(name: 'project', active: true)
+      expect(employee.reload.active_projects).to eq [a_project]
     end
 
     context 'many-to-many developers vs managers' do
       it 'manager should has_many developers' do
+        expect(manager).to respond_to :developers
         expect(manager.developers).to be_empty
         manager.developers << developer
         expect(manager.developers).to eq [developer]
       end
 
       it 'developer should has_many managers' do
+        expect(developer).to respond_to :managers
         expect(developer.managers).to be_empty
         developer.managers << manager
         expect(developer.managers).to eq [manager]
@@ -43,60 +65,174 @@ RSpec.describe Employee, type: :model do
     end
   end
 
-  describe 'scope tests' do
+  describe 'scopes' do
     it 'default scope' do
-      expect(Employee.all).to eq [employee, employee_deleted]
-      expect(Employee.deleted).to eq []
+      expect(Employee.all).to eq [employee]
     end
 
-    it 'deleted scope' do
-      employee_deleted.delete
+    it 'deleted' do
       expect(Employee.deleted).to eq [employee_deleted]
+    end
+
+    describe 'role, office, department, status, search scopes' do
+      {
+        role: :developer,
+        office: :ruby_office,
+        department: :ruby,
+        status: :free,
+        search: 'Darth',
+        search: 'Darth Maul'
+      }.each do |scope, value|
+        it "#{scope}" do
+          expect(Employee.send(scope, value)).to eq [employee]
+        end
+      end
     end
   end
 
   describe 'methods' do
-    it '#name method' do
-      expect(employee.name).to eq 'John Wick'
+    it '#name' do
+      expect(employee.name).to eq 'Darth Maul'
     end
 
-    it '#delete method' do
+    it '#delete' do
       employee.delete
       expect(employee.deleted).to be true
     end
 
-    it '#restore method' do
+    it '#restore' do
       employee_deleted.restore
       expect(employee_deleted.deleted).to be false
     end
 
-    it '#avatar method with default' do
+    it '#avatar with default' do
       expect(employee.avatar).to eq 'user.png'
     end
 
-    it '#avatar method' do
+    it '#avatar' do
       employee.image = Image.new(image: Rails.root.join('app/assets/images/placeholder.png').open)
       expect(employee.avatar).to eq "/uploads/image/image/#{Image.last.id}/placeholder.png"
     end
 
-    it '#friendly_name method' do
-      expect(employee.friendly_name).to eq 'wick'
+    it '#friendly_name' do
+      expect(employee.friendly_name).to eq 'darthmaul'
     end
 
-    it '#filter method by first_name' do
+    it '#filter by first_name' do
       ResourceSkill.create(employee_id: employee.id, skill_id: skill.id)
       result = Employee.filter_skills(Employee.all, skill.name)
       expect(result).to eq [employee]
     end
+  end
 
-    it '#search method by first_name' do
-      result = Employee.search('John')
-      expect(result).to eq [employee]
+  describe 'enums' do
+    let(:actual_roles) do
+      {
+        'other' => 0,
+        'developer' => 1,
+        'manager' => 2,
+        'team_lead' => 3,
+        'admin' => 4,
+        'system_administrator' => 5
+      }
     end
 
-    it '#search method by first_name & last_name' do
-      result = Employee.search('Joe Doe')
-      expect(result).to eq [employee_deleted]
+    let(:actual_departments) do
+      {
+        'ruby' => 0,
+        'php' => 1,
+        'js' => 2,
+        'sys_admins' => 3,
+        'managers' => 4,
+        'other_department' => 5,
+        'game_dev' => 6,
+        'ios' => 7,
+        'android' => 8,
+        'markup' => 9,
+        'java' => 10
+      }
+    end
+
+    let(:actual_offices) do
+      {
+        'managers_office' => 0,
+        'ruby_office' => 1,
+        'central' => 2,
+        'firsts' => 3,
+        'uglyash' => 4,
+        'gamers' => 5,
+        'admins' => 6,
+        'remote' => 7,
+        'lviv' => 8
+      }
+    end
+
+    let(:actual_statuses) do
+      {
+        'free' => 0,
+        'partially_busy' => 1,
+        'busy' => 2
+      }
+    end
+
+    context 'class methods' do
+      it 'should respond to roles' do
+        expect(Employee).to respond_to :roles
+        expect(Employee.roles).to eq actual_roles
+      end
+
+      it 'should respond to departments' do
+        expect(Employee).to respond_to :departments
+        expect(Employee.departments).to eq actual_departments
+      end
+
+      it 'should respond to offices' do
+        expect(Employee).to respond_to :offices
+        expect(Employee.offices).to eq actual_offices
+      end
+
+      it 'should respond to statuses' do
+        expect(Employee).to respond_to :statuses
+        expect(Employee.statuses).to eq actual_statuses
+      end
+    end
+
+    context 'instance methods' do
+      context 'role methods' do
+        %i[other developer manager team_lead admin system_administrator].each do |method|
+          it "should respond to #{method}? and #{method}!" do
+            expect(employee).to respond_to "#{method}?"
+            expect(employee).to respond_to "#{method}!"
+          end
+        end
+      end
+
+      context 'department methods' do
+        %i[ruby php js sys_admins managers other_department game_dev ios android markup java].each do |method|
+          it "should respond to #{method}? and #{method}!" do
+            expect(employee).to respond_to "#{method}?"
+            expect(employee).to respond_to "#{method}!"
+          end
+        end
+      end
+
+      context 'office methods' do
+        %i[managers_office ruby_office central firsts uglyash gamers admins remote lviv].each do |method|
+          it "should respond to #{method}? and #{method}!" do
+            expect(employee).to respond_to "#{method}?"
+            expect(employee).to respond_to "#{method}!"
+          end
+        end
+      end
+
+      context 'status methods' do
+        %i[free partially_busy busy].each do |method|
+          it "should respond to #{method}? and #{method}!" do
+            expect(employee).to respond_to "#{method}?"
+            expect(employee).to respond_to "#{method}!"
+          end
+        end
+      end
     end
   end
 end

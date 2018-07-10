@@ -72,4 +72,8 @@ class Employee < ApplicationRecord
   def restore
     update(deleted: false)
   end
+
+  def self.me
+    find_by(email: ENV['LEAD_EMAIL'])
+  end
 end

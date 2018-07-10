@@ -20,9 +20,12 @@
             Client:
             = project.client
 
-    - if project.manager
+    - if project.manager && (@employee.developer? || @employee.team_lead?)
       Manager:
       = link_to project.manager&.name, employee_path(project.manager)
+    - if project.developer && @employee.manager?
+      Developer:
+      = link_to project.developer&.name, employee_path(project.developer)
 
     = project.link
     %br

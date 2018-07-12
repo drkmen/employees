@@ -1,0 +1,48 @@
+-#.row
+-#  .col-4.float-left
+-#    = wicked_pdf_image_tag project.avatar, class: 'img-fluid'
+-#  .clearfix
+-#  .col-8
+-#    %h3
+-#      = project.name
+-#      - if project.client.present?
+-#        .float-right
+-#          %small
+-#            Client:
+-#            = project.client
+-#
+-#    = project.link
+-#    %br
+-#    - if project.start_date && project.end_date
+-#      %i= "#{project.start_date.strftime('%d/%m/%Y')} - #{project.end_date.strftime('%d/%m/%Y')}"
+-#    %br
+-#    = raw project.description
+-#
+-#.row
+-#  .col-12
+-#    %p
+-#    = project.skills.pluck(:name).join('/ ')
+
+.d-block
+  .d-inline-block.w-50.float-left
+    = wicked_pdf_image_tag project.avatar, class: 'img-fluid'
+  .clearfix
+  .d-inline-block
+    %h3
+      = project.name
+      - if project.client.present?
+        .float-right
+          %small
+            Client:
+            = project.client
+
+    = project.link
+    %br
+    - if project.start_date && project.end_date
+      %i= "#{project.start_date.strftime('%d/%m/%Y')} - #{project.end_date.strftime('%d/%m/%Y')}"
+    %br
+    = raw project.description
+
+.d-block
+  %p
+  = project.skills.pluck(:name).join('/ ')

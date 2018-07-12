@@ -19,6 +19,9 @@
               |
               = link_to 'Delete', employee_path(@employee), method: :delete, data: {confirm: 'Are you sure?'}
 
+            .float-right
+              = link_to 'Export to PDF', employee_path(@employee, format: :pdf)
+
             %h2
               = @employee.name
               .float-right
@@ -100,9 +103,11 @@
           - if @employee.active_projects.present?
             - @employee.active_projects.each do |project|
               = render 'projects/project', project: project
+              %hr
           - elsif @employee.manager_active_projects.present?
             - @employee.manager_active_projects.each do |project|
               = render 'projects/project', project: project
+              %hr
 
         - if @employee.projects.reject(&:new_record?).present?
           %br
@@ -123,6 +128,7 @@
             .col-12
               - @employee.projects.order('created_at DESC').reject(&:active).each do |project|
                 = render 'projects/project', project: project
+                %hr
 
         - elsif @employee.projects.reject(&:new_record?).empty? && able_edit?
           %br

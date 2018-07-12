@@ -37,8 +37,4 @@
 .row
   .col-12
     %p
-    - project.skills.each do |skill|
-      = skill.name
-      = raw '/'
-
-%hr
+    = project.skills.pluck(:name).join('/ ')

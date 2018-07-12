@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-# Employee Model Spec
 require 'rails_helper'
 
 RSpec.describe Project, type: :model do

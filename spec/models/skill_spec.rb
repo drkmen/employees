@@ -1,15 +1,14 @@
 # frozen_string_literal: true
 
-# Skill Model Spec
 require 'rails_helper'
 
 RSpec.describe Skill, type: :model do
 
-    let(:other_skill) { FactoryBot.create(:skill, name: 'git', skill_type: 'other_skill') }
-    let(:programming_language_skill) { FactoryBot.create(:skill, name: 'javascript', skill_type: 'programming_language') }
-    let(:library_skill) { FactoryBot.create(:skill, name: 'jquery', skill_type: 'library') }
-    let(:framework_skill) { FactoryBot.create(:skill, name: 'angularjs', skill_type: 'framework') }
-    let(:database_skill) { FactoryBot.create(:skill, name: 'postgresql', skill_type: 'database') }
+  let(:other_skill) { FactoryBot.create(:skill, name: 'git', skill_type: 'other_skill') }
+  let(:programming_language_skill) { FactoryBot.create(:skill, name: 'javascript', skill_type: 'programming_language') }
+  let(:library_skill) { FactoryBot.create(:skill, name: 'jquery', skill_type: 'library') }
+  let(:framework_skill) { FactoryBot.create(:skill, name: 'angularjs', skill_type: 'framework') }
+  let(:database_skill) { FactoryBot.create(:skill, name: 'postgresql', skill_type: 'database') }
 
   describe 'enum skill_type' do
     it 'skill other_skill have correct skill_type value' do

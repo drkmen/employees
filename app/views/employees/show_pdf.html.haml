@@ -1,0 +1,141 @@
+-#-#:css
+-#  div.alwaysbreak { page-break-before: always; }
+-#  div.nobreak:before { clear:both; }
+-#  div.nobreak { page-break-inside: avoid; }
+-#  .page-break { display:block; clear:both; page-break-after:always; }
+-#  .col-12 { display: block; !important; }
+-#
+-#.employees
+-#  .row
+-#    .col-10.offset-1
+-#      .section.last.profile
+-#        .row
+-#          .col-12
+-#            %h2
+-#              = @employee.name
+-#              .float-right
+-#                = @employee.main_skill
+-#                = role(@employee)
+-#          %p
+-#          .col-6.mx-auto.float-left
+-#            = wicked_pdf_image_tag @employee.avatar, class: 'img-fluid'
+-#          .col-12
+-#            %p
+-#              Email:
+-#              = @employee.email
+-#              %br
+-#              Phone:
+-#              = @employee.phone
+-#              %br
+-#              Skype:
+-#              = @employee.skype
+-#              %br
+-#
+-#            %p
+-#              = raw @employee.description
+-#
+-#        - if @employee.additional.present?
+-#          %h3 Additional information:
+-#          .row
+-#            .col-12
+-#              - @employee.additional.each do |key, value|
+-#                %p
+-#                .row
+-#                  .col-2
+-#                    .bold= key.humanize + ':'
+-#                  .col-10
+-#                    = raw value
+-#                  %br
+-#
+-#        %br
+-#        - if @employee.skills.present?
+-#          %div
+-#            %h3 Skills
+-#          %hr
+-#          %div.alwaysbreak
+-#            - @employee.skills.to_a.group_by(&:skill_type).each do |skill_type, skills|
+-#              %div
+-#                %p
+-#                  %h5= skill_type&.humanize
+-#                  = skills.pluck(:name).join('/')
+-#
+-#        %br
+-#        %p
+-#
+-#        - if @employee.projects.reject(&:new_record?).present?
+-#          %h3 Projects
+-#          %hr
+-#
+-#          %div.alwaysbreak
+-#            .col-12
+-#              - @employee.projects.order('created_at DESC').reject(&:active).each do |project|
+-#                = render 'projects/project_pdf', project: project
+-#                %hr
+
+
+-#:css
+  div.alwaysbreak { page-break-before: always; }
+  div.nobreak:before { clear:both; }
+  div.nobreak { page-break-inside: avoid; }
+  .page-break { display:block; clear:both; page-break-after:always; }
+  .col-12 { display: block; !important; }
+
+.employees
+  .section.last.profile
+    .d-block
+      .d-block
+        %h2
+          = @employee.name
+          .float-right
+            = @employee.main_skill
+            = role(@employee)
+      %p
+      .w-50.p-3.float-left
+        = wicked_pdf_image_tag @employee.avatar, class: 'img-fluid'
+      .d-block
+        %p
+          Email:
+          = @employee.email
+          %br
+          Phone:
+          = @employee.phone
+          %br
+          Skype:
+          = @employee.skype
+          %br
+
+        %p
+          = raw @employee.description
+
+    - if @employee.additional.present?
+      %h3 Additional information:
+      .d-block
+        - @employee.additional.each do |key, value|
+          .d-block
+            .bold= key.humanize + ':'
+          .d-block
+            = raw value
+          %br
+
+    %br
+    - if @employee.skills.present?
+      %h3 Skills
+      %hr
+      .d-block
+        - @employee.skills.to_a.group_by(&:skill_type).each do |skill_type, skills|
+          .d-block
+            %p
+              %h5= skill_type&.humanize
+              = skills.pluck(:name).join('/')
+
+    %br
+    %p
+
+    - if @employee.projects.reject(&:new_record?).present?
+      %h3 Projects
+      %hr
+
+      .d-block
+        - @employee.projects.order('created_at DESC').reject(&:active).each do |project|
+          = render 'projects/project_pdf', project: project
+          %hr

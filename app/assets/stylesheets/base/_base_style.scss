@@ -1,0 +1,97 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto:300,400,500&subset=cyrillic,cyrillic-ext');
+
+// modules
+@import "base/variables";
+@import "base/mixins";
+
+html, body {
+  //font-family: 'Open Sans Condensed', sans-serif;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 300;
+  font-size: 14px;
+  background: linear-gradient($light-grey, white);
+  height: 100%;
+}
+
+a, .link {
+  text-decoration: underline;
+  border: none;
+  outline: none;
+  color: inherit;
+  @include transition(0.2s, ease-in-out);
+
+  &:hover, &:focus {
+    @include transition(0.2s, ease-in-out);
+    text-decoration: none;
+    border: none;
+    outline: none;
+  }
+
+  &.btn {
+    text-decoration: none;
+  }
+}
+
+.search {
+  border-bottom: 1px solid $grey;
+  margin-right: 20px;
+
+  &:before {
+    content: "\f002";
+    font-family: "FontAwesome";
+  }
+
+  input {
+    border: none;
+    border-radius: 0;
+    background-color: $light-grey;
+    width: 350px !important;
+    @include transition(0.2s, ease-in-out);
+
+    &:focus {
+      box-shadow: none;
+      outline: none;
+      background-color: $light-grey;
+      @include transition(0.2s, ease-in-out);
+    }
+  }
+}
+
+.pointable {
+  cursor: pointer;
+}
+
+.bold {
+  font-weight: bold;
+}
+
+.filters {
+  z-index: 1;
+
+  select {
+    text-decoration: none;
+
+    &:focus {
+      box-shadow: none;
+      outline: none;
+      @include transition(0.2s, ease-in-out);
+    }
+  }
+
+  .filter-area {
+    position: fixed;
+    bottom: 15px;
+    z-index: 2;
+  }
+}
+
+.skill-delete {
+  position: absolute;
+  right: 1rem;
+  bottom: 1rem;
+}
+
+/*Custom size for select2 field*/
+.select2-container {
+  width: 100% !important;
+}

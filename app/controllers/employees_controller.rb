@@ -13,16 +13,17 @@ class EmployeesController < ApplicationController
     @employee.build_image unless @employee.image
     @project = @employee.projects.new
     @project.build_image
-
+    
     respond_to do |format|
       format.html
       format.pdf do
         render pdf: "#{@employee.slug}",
                template: 'employees/show_pdf.html.haml',
+               locals: { keys: params.permit(params.keys).to_h },
                layout: 'pdf.html.haml',
                encoding: 'UTF-8',
-               show_as_html: params.key?('debug')
-               # margin: { top: 25, bottom: 25 }
+               show_as_html: params.key?('debug'),
+               margin: { top: 15, bottom: 15, left: 20, right: 20 }
       end
     end
   end

@@ -10,13 +10,13 @@ $( document ).on('turbolinks:load', function() {
         $(this).toggleClass('fa-long-arrow-left').toggleClass('fa-long-arrow-right');
     });
 
-    const $checkAll = $('#pdfEmployeeAll');
-    const $linkToPdf = $('#linkToPdf');
-    const $allCheckboxesAtModal = $('#pdfModal .fields input[type=checkbox]');
-    const baseHrefToPdf = $linkToPdf.attr('href');
+    var $checkAll = $('#pdfEmployeeAll');
+    var $linkToPdf = $('#linkToPdf');
+    var $allCheckboxesAtModal = $('#pdfModal .fields input[type=checkbox]');
+    var baseHrefToPdf = $linkToPdf.attr('href');
 
     $checkAll.on('change', function(){
-        const isChecked = this.checked;
+        var isChecked = this.checked;
         $allCheckboxesAtModal.each(function(index, element){
             element.checked = isChecked;
         });
@@ -24,8 +24,8 @@ $( document ).on('turbolinks:load', function() {
     });
 
     $allCheckboxesAtModal.on('change', function(){
-        let allChecked = true;
-        for (let i = 0; i < $allCheckboxesAtModal.length; i++) {
+        var allChecked = true;
+        for (var i = 0; i < $allCheckboxesAtModal.length; i++) {
             allChecked = $allCheckboxesAtModal[i].checked;
             if (!allChecked){
                 break;
@@ -36,10 +36,10 @@ $( document ).on('turbolinks:load', function() {
     });
 
     function generateNewUrl() {
-        let newUrlToPdf = baseHrefToPdf;
-        let wasAddedFirst = false;
-        for (let i = 0; i < $allCheckboxesAtModal.length; i++) {
-            let tempElement = $allCheckboxesAtModal[i];
+        var newUrlToPdf = baseHrefToPdf;
+        var wasAddedFirst = false;
+        for (var i = 0; i < $allCheckboxesAtModal.length; i++) {
+            var tempElement = $allCheckboxesAtModal[i];
             if (wasAddedFirst){
                 newUrlToPdf += '&';
             } else {

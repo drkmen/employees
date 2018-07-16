@@ -3,6 +3,6 @@
 # Factory Skill
 FactoryBot.define do
   factory :skill do
-    name { Faker::Name.title }
+    name { Faker::Job.title }
   end
 end

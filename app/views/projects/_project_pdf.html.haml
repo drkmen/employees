@@ -1,48 +1,22 @@
--#.row
--#  .col-4.float-left
--#    = wicked_pdf_image_tag project.avatar, class: 'img-fluid'
--#  .clearfix
--#  .col-8
--#    %h3
--#      = project.name
--#      - if project.client.present?
--#        .float-right
--#          %small
--#            Client:
--#            = project.client
--#
--#    = project.link
--#    %br
--#    - if project.start_date && project.end_date
--#      %i= "#{project.start_date.strftime('%d/%m/%Y')} - #{project.end_date.strftime('%d/%m/%Y')}"
--#    %br
--#    = raw project.description
--#
--#.row
--#  .col-12
--#    %p
--#    = project.skills.pluck(:name).join('/ ')
-
-.d-block
-  .d-inline-block.w-50.float-left
-    = wicked_pdf_image_tag project.avatar, class: 'img-fluid'
-  .clearfix
-  .d-inline-block
-    %h3
-      = project.name
+.project.full-width.d-inline-block
+  .preview.half-width.float-left.mr-1.p
+    = wicked_pdf_image_tag project.avatar, class: 'image-content'
+  .info.half-width.float-right.ml-1
+    .main.full-width.d-inline-block
+      .title.half-width.float-left.mr-1
+        %b
+          = project.name
       - if project.client.present?
-        .float-right
-          %small
+        .client.half-width.float-right.ml-1
+          %b.font-italic
             Client:
             = project.client
-
+  .details.ml-1
     = project.link
     %br
     - if project.start_date && project.end_date
-      %i= "#{project.start_date.strftime('%d/%m/%Y')} - #{project.end_date.strftime('%d/%m/%Y')}"
-    %br
+      %p= "#{project.start_date.strftime('%d/%m/%Y')} - #{project.end_date.strftime('%d/%m/%Y')}"
+      %br
     = raw project.description
 
-.d-block
-  %p
-  = project.skills.pluck(:name).join('/ ')
+%hr.mt.mb

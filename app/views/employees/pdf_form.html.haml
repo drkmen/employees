@@ -1,0 +1,44 @@
+.pdf-generator
+  .title
+  %h4
+    Select the employee fields that you need in the PDF file:
+  .checkboxes
+    .form-row
+      .col
+        .form-check
+          = check_box_tag('pdfEmployeeAll', value: 'all', class: 'form-check-input')
+          = label_tag 'Select all'
+    .fields
+      .form-row
+        .col-4
+          .form-check
+            = check_box_tag('mname', checked: false, class: 'form-check-input')
+            = label_tag 'Name'
+          .form-check
+            = check_box_tag('mrole', checked: false, class: 'form-check-input')
+            = label_tag 'Role'
+          .form-check
+            = check_box_tag('memail', checked: false, class: 'form-check-input')
+            = label_tag 'Email'
+        .col-4
+          .form-check
+            = check_box_tag('mphone', checked: false, class: 'form-check-input')
+            = label_tag 'Phone'
+          .form-check
+            = check_box_tag('mskype', checked: false, class: 'form-check-input')
+            = label_tag 'Skype'
+          .form-check
+            = check_box_tag('mdescription', checked: false, class: 'form-check-input')
+            = label_tag 'Description'
+        .col-4
+          .form-check
+            = check_box_tag('madditional', checked: false, class: 'form-check-input')
+            = label_tag 'Additional'
+          .form-check
+            = check_box_tag('mskills', checked: false, class: 'form-check-input')
+            = label_tag 'Skills'
+          .form-check
+            = check_box_tag('mprojects', checked: false, class: 'form-check-input')
+            = label_tag 'Projects'
+    .form-group.float-right
+      = link_to 'Generate', employee_path(@employee, format: :pdf), html_options = { class: 'btn btn-outline-secondary', id: 'linkToPdf' }

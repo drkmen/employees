@@ -3,25 +3,27 @@
     - unless current_employee.developer?
       = render 'filters'
       = render 'employee_list'
-    %div{class: current_employee.developer? ? 'col-6 mx-auto' : 'col mx-auto'}
+    %div{ class: current_employee.developer? ? 'col-6 mx-auto' : 'col mx-auto' }
       .section.last.profile
         .row
           .col-5
             = image_tag @employee.avatar, class: 'img-fluid'
           .col-7
             - able_edit do
-              %span.link.pointable{'data-target' => '#editModal', 'data-toggle' => 'modal'}
+              %span.link.pointable{ 'data-target': '#editModal', 'data-toggle': :modal }
                 Edit
               = render 'layouts/modal', { modal_id: 'editModal', modal_title: 'Edit Employee', large: true } do
                 .modal-body
                   = render template: 'employees/edit'
             - if current_employee&.admin?
               |
-              = link_to 'Delete', employee_path(@employee), method: :delete, data: {confirm: 'Are you sure?'}
+              = link_to 'Delete', employee_path(@employee), method: :delete, data: { confirm: 'Are you sure?' }
 
-            .float-right
-              = link_to 'Export to PDF', employee_path(@employee, format: :pdf)
-
+            %span.link.pointable.float-right{ 'data-target': '#pdfModal', 'data-toggle': :modal }
+              Export to PDF
+            = render 'layouts/modal', { modal_id: 'pdfModal', modal_title: 'Generate a PDF', large: true } do
+              .modal-body
+                = render template: 'employees/pdf_form'
             %h2
               = @employee.name
               .float-right

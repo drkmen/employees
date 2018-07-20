@@ -2,6 +2,7 @@
 
 # Project model
 class Project < ApplicationRecord
+  after_save :add_skills_to_employee
   has_one :image, as: :imageable, dependent: :destroy
   has_many :resource_skills, dependent: :destroy
   has_many :skills, through: :resource_skills
@@ -13,6 +14,10 @@ class Project < ApplicationRecord
   accepts_nested_attributes_for :image, :skills
 
   validates :name, presence: true
+
+  def add_skills_to_employee
+    employee.skills << (skills - employee.skills)
+  end
 
   def avatar
     image&.image_url || 'placeholder.png'

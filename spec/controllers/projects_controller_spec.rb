@@ -52,7 +52,8 @@ RSpec.describe ProjectsController, type: :controller do
              }
       end.to(change { Project.count }.by(1)) &&
         change { Skill.count }.by(2) &&
-        change { Image.count }.by(1)
+        change { Image.count }.by(1) &&
+        change { Employee.last.skills.count }.by(2)
     end
   end
 

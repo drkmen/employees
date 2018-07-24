@@ -19,11 +19,16 @@
               |
               = link_to 'Delete', employee_path(@employee), method: :delete, data: { confirm: 'Are you sure?' }
 
-            %span.link.pointable.float-right{ 'data-target': '#pdfModal', 'data-toggle': :modal }
-              Export to PDF
-            = render 'layouts/modal', { modal_id: 'pdfModal', modal_title: 'Generate a PDF', large: true } do
-              .modal-body
-                = render template: 'employees/pdf_form'
+            .float-right
+              Export to:
+              - if current_employee == @employee
+                = link_to 'JSON', employee_path(@employee, format: :json), target: '_blank'
+                |
+              %span.link.pointable{ 'data-target': '#pdfModal', 'data-toggle': :modal }
+                PDF
+              = render 'layouts/modal', { modal_id: 'pdfModal', modal_title: 'Generate a PDF', large: true } do
+                .modal-body
+                  = render template: 'employees/pdf_form'
             %h2
               = @employee.name
               .float-right

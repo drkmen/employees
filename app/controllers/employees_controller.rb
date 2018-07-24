@@ -13,9 +13,10 @@ class EmployeesController < ApplicationController
     @employee.build_image unless @employee.image
     @project = @employee.projects.new
     @project.build_image
-    
+
     respond_to do |format|
       format.html
+      format.json if current_employee == @employee
       format.pdf do
         render pdf: "#{@employee.slug}",
                template: 'employees/show_pdf.html.haml',

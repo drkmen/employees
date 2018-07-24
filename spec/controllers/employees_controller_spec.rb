@@ -4,7 +4,6 @@
 require 'rails_helper'
 
 RSpec.describe EmployeesController, type: :controller do
-
   let(:employee_1) { FactoryBot.create(:employee, office: 1, role: 1, department: 1) }
   let(:employee_2) { FactoryBot.create(:employee, office: 2, role: 2, department: 1) }
   let(:employee_3) { FactoryBot.create(:employee, office: 2, role: 3, department: 0) }
@@ -74,12 +73,12 @@ RSpec.describe EmployeesController, type: :controller do
       end
 
       it 'office and role' do
-        get :index, params: { office: 2, role:3 }
+        get :index, params: { office: 2, role: 3 }
         expect(assigns(:employees).size).to be 1
       end
 
       it 'all filters with skills' do
-        get :index, params: { office: 2, role:3, department: 0 }
+        get :index, params: { office: 2, role: 3, department: 0 }
         expect(assigns(:employees).size).to be 1
       end
 
@@ -122,18 +121,27 @@ RSpec.describe EmployeesController, type: :controller do
         expect(response).to render_template('show')
         expect(assigns(:employee)).to eq(Employee.last)
       end
+
+      it 'returns a success response with json format' do
+        request.headers['HTTP_ACCEPT'] = 'application/json; charset=utf-8'
+        get :show, params: { id: Employee.last.to_param }
+        expect(response.status).to eq(200)
+        expect(response).to render_template('show')
+        expect(response.headers['Content-Type']).to eq('application/json; charset=utf-8')
+        expect(assigns(:employee)).to eq(Employee.last)
+      end
     end
 
     describe 'PUT #update' do
       it 'returns a success response' do
         put :update,
-          params: {
-            id: Employee.last.id,
+            params: {
+              id: Employee.last.id,
               employee: {
                 first_name: 'qweqwe',
                 last_name: 'qweqwe'
               }
-          }
+            }
         expect(response.status).to eq(302)
         expect(redirect_to(Employee.last)).to be_truthy
         expect(assigns(:employee)).to eq(Employee.last)
@@ -147,8 +155,8 @@ RSpec.describe EmployeesController, type: :controller do
         expect do
           post :destroy, params: { id: Employee.last.id }
         end.to(change { Employee.count }.by(-1)) &&
-            have_http_status(302) &&
-            render_template('index')
+          have_http_status(302) &&
+          render_template('index')
       end
     end
 
@@ -160,16 +168,16 @@ RSpec.describe EmployeesController, type: :controller do
       it 'returns a success response' do
         expect do
           patch :skill_experience,
-            params: {
-              employee_id: employee_2.id,
-              skill_experience: {
-                id: ResourceSkill.last.id,
-                experience: 'better'
-              }
-            }
-        end.to(change { ResourceSkill.last.experience }.to eq('better')) &&
-            have_http_status(302) &&
-            render_template('show')
+                params: {
+                  employee_id: employee_2.id,
+                  skill_experience: {
+                    id: ResourceSkill.last.id,
+                    experience: 'better'
+                  }
+                }
+        end.to(change { ResourceSkill.last.experience }.to(eq('better'))) &&
+          have_http_status(302) &&
+          render_template('show')
       end
     end
   end

@@ -6,11 +6,12 @@
           = @employee.name
     - if keys[:mrole] == 'true'
       .description.half-width
-        %h2= "#{@employee.main_skill} #{role(@employee)}"
+        %h2= "#{ @employee.main_skill } #{ role(@employee) }"
 
-  .intro.full-width.d-inline-block
-    .avatar.half-width.auto-height.float-left.mr-1.p
-      = wicked_pdf_image_tag @employee.avatar, class: 'image-content'
+  .intro.full-width.d-inline-block.no-break
+    - if @employee.image&.image_url
+      .avatar.half-width.auto-height.float-left.mr-1.p
+        = wicked_pdf_image_tag @employee.avatar, class: 'image-content'
     .info.ml-1
       %p
         - if keys[:memail] == 'true'
@@ -25,15 +26,16 @@
           Skype:
           = @employee.skype
           %br
-      - if keys[:mdescription] == 'true'
-        %p
-          = raw @employee.description
+  - if keys[:mdescription] == 'true'
+    .description
+      %p
+        = raw @employee.description
   %br
   - if keys[:madditional] == 'true'
     - if @employee.additional.present?
-      .additional.d-block.full-block
-        %h3 Additional information:
-        %hr.mt.mb
+      .additional.d-block.full-block.always-break
+        %h2 Additional information:
+        %hr
         .d-block
           - @employee.additional.each do |key, value|
             .d-block
@@ -44,20 +46,21 @@
       %br
   - if keys[:mskills] == 'true'
     - if @employee.skills.present?
-      .skills
+      .skills.always-break
+        %br
         %h2 Skills
-        %hr.mt.mb
+        %hr
         .d-block
           - @employee.skills.to_a.group_by(&:skill_type).each do |skill_type, skills|
             .d-block
               %p
-                %h3= pluralize(skills.size, skill_type&.humanize)
-                = skills.pluck(:name).join('/')
+                %h4= pluralize(skill_type&.humanize, skills.size)
+                = skills.pluck(:name).join(', ')
       %br
   - if keys[:mprojects] == 'true'
-    - if @employee.projects.reject(&:new_record?).present?
-      .projects
-        %h3 Projects
-        %hr.mt.mb
+    - if @employee.projects.reject(&:new_record?).reject(&:active).present?
+      .projects.always-break
+        %h2 Projects
+        %hr
         - @employee.projects.order('created_at DESC').reject(&:active).each do |project|
           = render 'projects/project_pdf', project: project

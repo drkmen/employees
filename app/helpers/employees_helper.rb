@@ -22,4 +22,10 @@ module EmployeesHelper
   def able_change_role?
     current_employee&.manager? || current_employee&.admin?
   end
+
+  def pluralize(body, size = nil)
+    return body.pluralize unless size
+    parts = super(size, body).split
+    "#{ parts&.last&.capitalize } (#{ parts&.first })"
+  end
 end

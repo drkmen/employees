@@ -1,22 +1,20 @@
-.project.full-width.d-inline-block
-  .preview.half-width.float-left.mr-1.p
-    = wicked_pdf_image_tag project.avatar, class: 'image-content'
-  .info.half-width.float-right.ml-1
-    .main.full-width.d-inline-block
-      .title.half-width.float-left.mr-1
-        %b
-          = project.name
+.project.full-width.d-inline-block.no-break
+  - if project.image&.image_url
+    .avatar.half-width.auto-height.float-left.mr-1.p-non-top
+      = wicked_pdf_image_tag project.avatar, class: 'image-content'
+  .info.ml-1
+    .title
+      %h4
+        = project.name
       - if project.client.present?
-        .client.half-width.float-right.ml-1
-          %b.font-italic
-            Client:
-            = project.client
+        .client
+          %b
+            Client: #{ project.client }
   .details.ml-1
     = project.link
-    %br
     - if project.start_date && project.end_date
       %p= "#{project.start_date.strftime('%d/%m/%Y')} - #{project.end_date.strftime('%d/%m/%Y')}"
       %br
     = raw project.description
 
-%hr.mt.mb
+%hr

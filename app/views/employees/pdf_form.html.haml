@@ -6,39 +6,49 @@
     .form-row
       .col
         .form-check
-          = check_box_tag('pdfEmployeeAll', value: 'all', class: 'form-check-input')
-          = label_tag 'Select all'
+          = label_tag do
+            = check_box_tag('pdfEmployeeAll', value: 'all', class: 'form-check-input')
+            Select all
     .fields
       .form-row
         .col-4
           .form-check
-            = check_box_tag('mname', checked: false, class: 'form-check-input')
-            = label_tag 'Name'
+            = label_tag do
+              = check_box_tag('mname', checked: false, class: 'form-check-input')
+              Name
           .form-check
-            = check_box_tag('mrole', checked: false, class: 'form-check-input')
-            = label_tag 'Role'
+            = label_tag do
+              = check_box_tag('mrole', checked: false, class: 'form-check-input')
+              Role
           .form-check
-            = check_box_tag('memail', checked: false, class: 'form-check-input')
-            = label_tag 'Email'
+            = label_tag do
+              = check_box_tag('memail', checked: false, class: 'form-check-input')
+              Email
         .col-4
           .form-check
-            = check_box_tag('mphone', checked: false, class: 'form-check-input')
-            = label_tag 'Phone'
+            = label_tag do
+              = check_box_tag('mphone', checked: false, class: 'form-check-input')
+              Phone
           .form-check
-            = check_box_tag('mskype', checked: false, class: 'form-check-input')
-            = label_tag 'Skype'
+            = label_tag do
+              = check_box_tag('mskype', checked: false, class: 'form-check-input')
+              Skype
           .form-check
-            = check_box_tag('mdescription', checked: false, class: 'form-check-input')
-            = label_tag 'Description'
+            = label_tag do
+              = check_box_tag('mdescription', checked: false, class: 'form-check-input')
+              Description
         .col-4
           .form-check
-            = check_box_tag('madditional', checked: false, class: 'form-check-input')
-            = label_tag 'Additional'
+            = label_tag do
+              = check_box_tag('madditional', checked: false, class: 'form-check-input')
+              Additional
           .form-check
-            = check_box_tag('mskills', checked: false, class: 'form-check-input')
-            = label_tag 'Skills'
+            = label_tag do
+              = check_box_tag('mskills', checked: false, class: 'form-check-input')
+              Skills
           .form-check
-            = check_box_tag('mprojects', checked: false, class: 'form-check-input')
-            = label_tag 'Projects'
+            = label_tag do
+              = check_box_tag('mprojects', checked: false, class: 'form-check-input')
+              Projects
     .form-group.float-right
       = link_to 'Generate', employee_path(@employee, format: :pdf), html_options = { class: 'btn btn-outline-secondary', id: 'linkToPdf' }

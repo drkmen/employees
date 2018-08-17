@@ -47,16 +47,14 @@
   - if keys[:mskills] == 'true'
     - if @employee.skills.present?
       .skills.always-break
-        %br
         %h2 Skills
         %hr
         .d-block
-          - @employee.skills.to_a.group_by(&:skill_type).each do |skill_type, skills|
+          - @employee.skills.order(skill_type: :asc).to_a.group_by(&:skill_type).each do |skill_type, skills|
             .d-block
               %p
-                %h4= pluralize(skill_type&.humanize, skills.size)
+                %h4= "#{ skill_type&.humanize.pluralize } (#{ skills.size })"
                 = skills.pluck(:name).join(', ')
-      %br
   - if keys[:mprojects] == 'true'
     - if @employee.projects.reject(&:new_record?).reject(&:active).present?
       .projects.always-break

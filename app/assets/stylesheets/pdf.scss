@@ -21,6 +21,10 @@ body {
   page-break-before: always;
 }
 
+.auto-break {
+  page-break-inside: auto;
+}
+
 .employee-pdf {
 
   .d-block {

@@ -105,19 +105,7 @@
                     %br
 
         %p
-        - if @employee.active_projects.present? || @employee.manager_active_projects.present?
-          %h3 Active projects
-          - if @employee.active_projects.present?
-            - @employee.active_projects.each do |project|
-              = render 'projects/project', project: project
-              %hr
-          - elsif @employee.manager_active_projects.present?
-            - @employee.manager_active_projects.each do |project|
-              = render 'projects/project', project: project
-              %hr
-
-        - if @employee.projects.reject(&:new_record?).present?
-          %br
+        - if @employee.projects.present?
           .row
             .col-6
               %h3 Projects
@@ -130,23 +118,20 @@
                   .modal-body
                     = render 'projects/form', project: @project, employee: @employee, path: employee_projects_path(@employee)
           %hr
-
-          .row
-            .col-12
-              - @employee.projects.order('created_at DESC').reject(&:active).each do |project|
+          - if @employee.active_projects.present? || @employee.manager_active_projects.present?
+            %h4 Active projects
+            - if @employee.active_projects.present?
+              - @employee.active_projects.each do |project|
                 = render 'projects/project', project: project
                 %hr
-
-        - elsif @employee.projects.reject(&:new_record?).empty? && able_edit?
-          %br
-          .row
-            .col-6
-              %h3 Projects
-            .col-6
-              - able_edit do
-                %span.link.pointable{ 'data-target': '#addProjectToEmployee', 'data-toggle': :modal }
-                  .float-right
-                    %btn.btn.btn-outline-success Add project
-                = render 'layouts/modal', { modal_id: 'addProjectToEmployee', modal_title: 'Add project' } do
-                  .modal-body
-                    = render 'projects/form', project: @project, employee: @employee, path: employee_projects_path(@employee)
+            - elsif @employee.manager_active_projects.present?
+              - @employee.manager_active_projects.each do |project|
+                = render 'projects/project', project: project
+                %hr
+          - if @employee.projects.order('created_at DESC').reject(&:active).present?
+            %h4 Finished projects
+            .row
+              .col-12
+                - @employee.projects.order('created_at DESC').reject(&:active).each do |project|
+                  = render 'projects/project', project: project
+                  %hr

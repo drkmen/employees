@@ -16,8 +16,9 @@ RSpec.describe ProjectsController, type: :controller do
         post :create,
              params: {
                project: {
-                 name: 'qweqwe',
-                 employee_id: Employee.last.id
+               repository: 'https://site.com',
+               name: 'qweqwe',
+               employee_id: Employee.last.id
                },
                employee_id: Employee.last.id
              }
@@ -25,7 +26,8 @@ RSpec.describe ProjectsController, type: :controller do
         redirect_to(Employee.last &&
         have_http_status(302)) &&
         render_template('show') &&
-        eq(Employee.last)
+        eq(Employee.last) &&
+        (expect(Employee.last.projects.last.repository).to eq('https://site.com'))
     end
   end
   describe 'POST #create with nested_attributes' do
@@ -63,6 +65,7 @@ RSpec.describe ProjectsController, type: :controller do
             params: {
               id: Project.last.id,
               project: {
+                repository: 'https://site2.com',
                 employee_id: Employee.last.id,
                 name: 'qweqwe',
                 description: 'qweqwe'
@@ -72,6 +75,7 @@ RSpec.describe ProjectsController, type: :controller do
       expect(response.status).to eq(302)
       expect(redirect_to(Employee.last)).to be_truthy
       expect(Project.last.name).to eq('qweqwe')
+      expect(Employee.last.projects.last.repository).to eq('https://site2.com')
     end
   end
 

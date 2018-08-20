@@ -8,6 +8,7 @@ FactoryBot.define do
     client Faker::Name.name
     start_date Time.now.utc
     end_date Time.now.utc
+    link 'https://site.com'
     association :employee_id, factory: :employee
   end
   factory :invalid_project, parent: :project do

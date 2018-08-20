@@ -15,15 +15,19 @@
       .form-group
         = f.text_field :client, class: 'form-control', placeholder: 'Client name'
   .form-row
-    .col-12
+    .col-6
       .form-group
-        = f.text_field :link, class: 'form-control', placeholder: 'Link'
+        = f.text_field :link, class: 'form-control', placeholder: 'Live URL'
+    .col-6
+      .form-group
+        = f.text_field :repository, class: 'form-control', placeholder: 'Repository URL'
   .form-row
     .col-2
       .form-group
-        = f.label 'Active?'
+        = f.label 'Status'
       .form-group
-        = f.check_box :active
+        = f.check_box :active, id: :checkbox_active
+        = f.label 'Active', for: :checkbox_active
     .col
       .form-group
         = f.label 'Manager'
@@ -51,7 +55,7 @@
           .form-group
             = f.label 'End date'
             = f.date_field :end_date, class: 'form-control'
-  .form-row
+  .form-row.float-right
     .col-12
       .form-group
         = f.submit class: 'btn btn-success'

@@ -51,7 +51,7 @@ class EmployeesController < ApplicationController
   end
 
   def skill_experience
-    employee = Employee.includes(:skills).friendly.find params[:employee_id]
+    employee = Employee.includes(:skills).friendly.find(params[:employee_id])
     skill = employee.resource_skills.find params.dig(:skill_experience, :id)
     skill.update_attributes!(skill_experience_params)
     redirect_to employee
@@ -71,7 +71,7 @@ class EmployeesController < ApplicationController
   end
 
   def skill_experience_params
-    params.require(:skill_experience).permit(:id, :experience)
+    params.require(:skill_experience).permit(:id, :experience, :level)
   end
 
   def pundit_user

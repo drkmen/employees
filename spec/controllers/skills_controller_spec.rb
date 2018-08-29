@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-# Skill ControllerSpec
 require 'rails_helper'
 
 RSpec.describe SkillsController, type: :controller do

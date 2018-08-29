@@ -1,6 +1,33 @@
 .employees {
   padding-top: 25px;
 
+  @for $i from 1 through 20 {
+    .skill-#{$i} { color: $skill-0-20 }
+  }
+
+  @for $i from 21 through 40 {
+    .skill-#{$i} { color: $skill-20-40; }
+  }
+
+  @for $i from 41 through 60 {
+    .skill-#{$i} { color: $skill-40-60; }
+  }
+
+  @for $i from 61 through 80 {
+    .skill-#{$i} { color: $skill-60-80 }
+  }
+
+  @for $i from 81 through 100 {
+    .skill-#{$i} { color: $skill-80-100 }
+  }
+
+  .experience-level-icon {
+    max-height: 100px;
+    min-height: 100px;
+    max-width: 50px;
+    min-width: 50px;
+  }
+
   .section {
     position: relative;
     border-right: 1px solid $dark-grey;

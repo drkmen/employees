@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-# Project model
 class Project < ApplicationRecord
   after_save :add_skills_to_employee
   has_one :image, as: :imageable, dependent: :destroy

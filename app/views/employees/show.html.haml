@@ -91,18 +91,19 @@
           %h3 Skills
           %hr
           .row
-            - employee_skills = @employee.skills.to_a.group_by(&:skill_type)
+            - employee_skills = @employee.skills.sorted(current_employee.id).to_a.group_by(&:skill_type)
             - employee_skills.each do |skill_type, skills|
               %div{ class: "col-#{12 / employee_skills.size}" }
                 %h5= skill_type&.humanize
                 - skills.each do |skill|
-                  - if able_edit?
-                    %span.link.pointable{ 'data-target': "#editSkillModal_#{skill.id}", 'data-toggle': :modal, title: "Experience: #{skill.experience(@employee)}" }
-                      = link_to skill.display_name(@employee.id), skill_path(skill, employee_id: @employee.id), remote: true
+                  %div{ class: "skill-#{ skill.level(current_employee.id) }"}
+                    - if able_edit?
+                      %span.link.pointable{ 'data-target': "#editSkillModal_#{skill.id}", 'data-toggle': :modal, title: "Experience: #{skill.experience(@employee)}" }
+                        = link_to skill.display_name(@employee.id), skill_path(skill, employee_id: @employee.id), remote: true
+                        %br
+                    - else
+                      = skill.display_name(@employee.id)
                       %br
-                  - else
-                    = skill.display_name(@employee.id)
-                    %br
 
         %p
         - if @employee.projects.present?

@@ -3,4 +3,10 @@
   .form-group
     = f.text_field :experience, value: resource_skill.experience, class: 'form-control', placeholder: true
   .form-group
-    = f.submit class: 'btn btn-success'
+    %label{ for: :experienceLevel }
+      Experience level
+    %img.experience-level-icon#experienceLevelIcon{ src: "/evolution_#{resource_skill.level ?  resource_skill.level == 100 ? 'under' : (resource_skill.level / 20.0).round : 0 }.png" }
+    = f.range_field :level, html_options = { class: 'custom-range', id: 'experienceLevel',
+     type: :range, min: 0, max: 100, step: 1, value: resource_skill.level || 0, oninput: 'updateExperienceLevel(this);' }
+  .form-group
+    = f.submit class: 'float-right btn btn-success'

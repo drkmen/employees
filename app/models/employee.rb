@@ -4,6 +4,8 @@ class Employee < ApplicationRecord
   include Filterable
   extend FriendlyId
 
+  FILTERS = %i[role office department status]
+
   has_many :resource_skills, dependent: :destroy
   has_many :skills, through: :resource_skills
 
@@ -33,10 +35,11 @@ class Employee < ApplicationRecord
   enum status: %i[free partially_busy busy]
 
   default_scope { where(deleted: false) }
-  scope :role, ->(role) { where(role: role) }
-  scope :office, ->(office) { where(office: office) }
-  scope :department, ->(department) { where(department: department) }
-  scope :status, ->(status) { where(status: status) }
+
+  FILTERS.each do |filter|
+    scope filter, ->(value) { where(filter => value)}
+  end
+
   scope :deleted, -> { unscoped.where(deleted: true) }
   scope :search, ->(term) do
     return all unless term
@@ -74,6 +77,6 @@ class Employee < ApplicationRecord
   end
 
   def self.me
-    find_by(email: ENV['LEAD_EMAIL'])
+    find_by(email: ENV['MY_EMAIL'])
   end
 end

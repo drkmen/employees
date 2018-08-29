@@ -88,6 +88,21 @@ RSpec.describe Employee, type: :model do
         end
       end
     end
+
+    describe 'sorting scope' do
+
+      before do
+        FactoryBot.create(:employee, office: 1, role: 1, department: 1)
+        FactoryBot.create(:skill, name: 'API development', skill_type: 'other_skill')
+        FactoryBot.create(:skill, name: 'AWS', skill_type: 'service')
+        Employee.last.resource_skills.new(skill_id: Skill.first.id, level: 100).save!
+        Employee.last.resource_skills.new(skill_id: Skill.last.id, level: 0).save!
+      end
+
+      it 'It\'s must have a sorted order' do
+        expect(Employee.last.skills.sorted(Employee.last.id)).to eq Employee.last.skills.sort_by { |skill| skill.level(Employee.last.id) }.reverse
+      end
+    end
   end
 
   describe 'methods' do

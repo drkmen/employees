@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-# Projects ControllerSpec
 require 'rails_helper'
 
 RSpec.describe ProjectsController, type: :controller do

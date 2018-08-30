@@ -3,10 +3,35 @@
   .form-group
     = f.text_field :experience, value: resource_skill.experience, class: 'form-control', placeholder: true
   .form-group
-    %label{ for: :experienceLevel }
-      Experience level
-    %img.experience-level-icon#experienceLevelIcon{ src: "/evolution_#{resource_skill.level ?  resource_skill.level == 100 ? 'under' : (resource_skill.level / 20.0).round : 0 }.png" }
+    .skills-selector.d-flex.align-items-center
+      %label{ for: :experienceLevel }
+        Experience level
+      %div#levelIndicator{ class: "legend-detail-#{ resource_skill.level ?  resource_skill.level: 0 } size-12-px" }
     = f.range_field :level, html_options = { class: 'custom-range', id: 'experienceLevel',
      type: :range, min: 0, max: 100, step: 1, value: resource_skill.level || 0, oninput: 'updateExperienceLevel(this);' }
-  .form-group
-    = f.submit class: 'float-right btn btn-success'
+  .row
+    .col-2
+      %img.experience-level-icon#experienceLevelIcon{ src: "/evolution_#{resource_skill.level ?  resource_skill.level == 100 ? 'under' : (resource_skill.level / 20.0).round : 0 }.png" }
+    .col-5
+      .legend
+        %div.d-flex.align-items-center.m-mx-1
+          .legend-detail-100.size-12-px
+          %p - I am the GOD
+        %div.d-flex.align-items-center.m-mx-1
+          .legend-detail-80.size-12-px
+          %p - Can do anything
+        %div.d-flex.align-items-center.m-mx-1
+          .legend-detail-60.size-12-px
+          %p - Can do
+        %div.d-flex.align-items-center.m-mx-1
+          .legend-detail-40.size-12-px
+          %p - Can try
+        %div.d-flex.align-items-center.m-mx-1
+          .legend-detail-20.size-12-px
+          %p - Read about it
+        %div.d-flex.align-items-center.m-mx-1
+          .legend-detail-0.size-12-px
+          %p - No experience
+    .col-5.mt-auto
+      .d-flex.align-items-end.flex-column
+        = f.submit class: 'btn btn-success'

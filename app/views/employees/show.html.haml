@@ -88,7 +88,28 @@
 
         %br
         - if @employee.skills.present?
-          %h3 Skills
+          .skills
+            .float-right
+              .legend.d-flex
+                %div.d-flex.align-items-center.m-mx-1
+                  .legend-detail-100.size-12-px
+                  %p - I am the GOD
+                %div.d-flex.align-items-center.m-mx-1
+                  .legend-detail-80.size-12-px
+                  %p - Can do anything
+                %div.d-flex.align-items-center.m-mx-1
+                  .legend-detail-60.size-12-px
+                  %p - Can do
+                %div.d-flex.align-items-center.m-mx-1
+                  .legend-detail-40.size-12-px
+                  %p - Can try
+                %div.d-flex.align-items-center.m-mx-1
+                  .legend-detail-20.size-12-px
+                  %p - Read about it
+                %div.d-flex.align-items-center.m-mx-1
+                  .legend-detail-0.size-12-px
+                  %p - No experience
+            %h3 Skills
           %hr
           .row
             - employee_skills = @employee.skills.sorted(@employee.id).to_a.group_by(&:skill_type)

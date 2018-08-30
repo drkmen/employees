@@ -55,6 +55,7 @@ $( document ).on('turbolinks:load', function() {
 var old_img = 0;
 
 function updateExperienceLevel(element) {
+    $(element).parents('.modal').find('#levelIndicator').removeClass().addClass('legend-detail-' + element.value + ' size-12-px');
     var img_id = parseInt(element.value) === 100 ? 'under' : img_id = Math.round(element.value / 20);
     if (img_id !== old_img) {
         $(element).parents('.modal').find('#experienceLevelIcon').attr("src", '/evolution_' +  img_id + '.png');

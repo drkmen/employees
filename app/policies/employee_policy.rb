@@ -21,7 +21,7 @@ class EmployeePolicy < ApplicationPolicy
   end
 
   def create?
-    employee.present? && employee.admin?
+    employee.present? && (employee.admin? || employee.manager?)
   end
 
   def update?

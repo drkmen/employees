@@ -15,7 +15,7 @@
               = render 'layouts/modal', { modal_id: 'editModal', modal_title: 'Edit Employee', large: true } do
                 .modal-body
                   = render template: 'employees/edit'
-            - if current_employee&.admin?
+            - if current_employee&.admin? || current_employee&.manager?
               |
               = link_to 'Delete', employee_path(@employee), method: :delete, data: { confirm: 'Are you sure?' }
 
@@ -32,7 +32,7 @@
             %h2
               = @employee.name
               .float-right
-                = @employee.main_skill
+                = (@employee.main_skill.present? ? @employee.main_skill : @employee.department).humanize
                 = role(@employee)
 
             %h5

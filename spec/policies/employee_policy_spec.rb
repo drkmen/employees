@@ -76,6 +76,10 @@ RSpec.describe EmployeePolicy do
       expect(subject).to permit(admin)
     end
 
+    it 'grants access if employee manager' do
+      expect(subject).to permit(manager)
+    end
+
     it 'denies access if employee other' do
       expect(subject).not_to permit(other)
     end
@@ -86,10 +90,6 @@ RSpec.describe EmployeePolicy do
 
     it 'denies access if employee system_administrator' do
       expect(subject).not_to permit(system_administrator)
-    end
-
-    it 'denies access if employee manager' do
-      expect(subject).not_to permit(manager)
     end
 
     it 'denies access if employee team_lead' do

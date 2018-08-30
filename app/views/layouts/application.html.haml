@@ -52,5 +52,6 @@
       - flash.each do |_name, message|
         .alert.alert-secondary.text-center
           = message
+          %button.float-right.close{ 'data-dismiss': :alert, type: :button } ×
     .container-fluid
       = yield

@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-# Filterable module
 module Filterable
   extend ActiveSupport::Concern
 

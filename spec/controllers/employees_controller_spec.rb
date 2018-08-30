@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-# Employee ControllerSpec
 require 'rails_helper'
 
 RSpec.describe EmployeesController, type: :controller do
@@ -162,7 +161,7 @@ RSpec.describe EmployeesController, type: :controller do
 
     describe 'PATCH #skill_experience' do
       before do
-        ResourceSkill.create(skill_id: skill_3.id, employee_id: employee_2.id, experience: 'good')
+        ResourceSkill.create(skill_id: skill_3.id, employee_id: employee_2.id, experience: 'good', level: 100)
       end
 
       it 'returns a success response' do
@@ -172,10 +171,12 @@ RSpec.describe EmployeesController, type: :controller do
                   employee_id: employee_2.id,
                   skill_experience: {
                     id: ResourceSkill.last.id,
-                    experience: 'better'
+                    experience: 'better',
+                    level: 24
                   }
                 }
-        end.to(change { ResourceSkill.last.experience }.to(eq('better'))) &&
+        end.to(change { ResourceSkill.last.experience }.to(eq('better')) &&
+                   change { ResourceSkill.last.level }.to(eq(24))) &&
           have_http_status(302) &&
           render_template('show')
       end

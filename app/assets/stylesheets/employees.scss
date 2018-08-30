@@ -1,6 +1,48 @@
 .employees {
   padding-top: 25px;
 
+  .size-12-px {
+    width: 12px;
+    height: 12px;
+    margin: 0 5px;
+  }
+
+  .legend p {
+    margin: 0;
+  }
+
+  .skills-selector label {
+    margin-bottom: 0;
+  }
+
+  // used for a mark at the skills selector
+
+  .legend-detail-0 {
+    background-color: black;
+  }
+
+  @for $i from 1 through 20 {
+    .legend-detail-#{$i} { background-color: $skill-0-20 }
+  }
+
+  @for $i from 21 through 40 {
+    .legend-detail-#{$i} { background-color: $skill-20-40; }
+  }
+
+  @for $i from 41 through 60 {
+    .legend-detail-#{$i} { background-color: $skill-40-60; }
+  }
+
+  @for $i from 61 through 80 {
+    .legend-detail-#{$i} { background-color: $skill-60-80 }
+  }
+
+  @for $i from 81 through 100 {
+    .legend-detail-#{$i} { background-color: $skill-80-100 }
+  }
+
+  // used for a mark skills
+
   @for $i from 1 through 20 {
     .skill-#{$i} { color: $skill-0-20 }
   }

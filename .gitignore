@@ -30,7 +30,6 @@
 /config/master.key
 
 .idea/
-.ruby-version
 .ruby-gemset
 config/database.yml
 

@@ -1,4 +1,4 @@
 = render 'layouts/modal', { modal_id: "editSkillModal_#{@skill.id}", modal_title: "Edit Skill [#{@skill.name}]" } do
   .modal-body
     = render 'skills/form', skill: @skill
-  = button_to 'Delete skill', skill_path(@skill), class: 'btn btn-danger skill-delete', method: :delete
+  = button_to 'Delete skill', skill_path(@skill), class: 'btn btn-danger skill-delete', method: :delete, data: { confirm: 'Are you sure?' }

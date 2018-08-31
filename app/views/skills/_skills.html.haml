@@ -2,7 +2,7 @@
   %h3.text-center Skills
 
   - if current_employee
-    .btn.btn-outline-success.float-right{'data-target' => '#newSkillModal', 'data-toggle': :modal} New Skill
+    .btn.btn-outline-success.float-right{ 'data-target': '#newSkillModal', 'data-toggle': :modal } New Skill
     .clearfix
     = render 'layouts/modal', { modal_id: 'newSkillModal', modal_title: 'Create skill' } do
       .modal-body
@@ -14,7 +14,7 @@
       - skills.each_slice(skills.size / 4) do |skill_slice|
         .col-3
           - skill_slice.each do |skill|
-            - if current_employee && skill.employee_id == current_employee.id
+            - if skill&.employee_id == current_employee&.id || current_employee&.admin?
               %span.link.pointable{'data-target': "#editSkillModal_#{skill.id}", 'data-toggle': :modal, 'data-remote': :true}
               = link_to skill.name, skill_path(skill), remote: true
             -else

@@ -1,6 +1,6 @@
 .employees
   .row
-    - unless current_employee.developer?
+    - unless current_employee.developer_without_ap?
       = render 'filters'
       = render 'employee_list'
     %div{ class: current_employee.developer? ? 'col-6 mx-auto' : 'col mx-auto' }

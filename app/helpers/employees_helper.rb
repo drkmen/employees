@@ -2,7 +2,7 @@
 
 module EmployeesHelper
   def role(employee)
-    return 'Owner' if employee.admin?
+    return 'Owner' if employee.role == 'admin'
     employee.role.humanize
   end
 

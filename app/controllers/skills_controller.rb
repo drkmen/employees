@@ -62,7 +62,7 @@ class SkillsController < ApplicationController
   end
 
   def skill_params
-    params.require(:skill).permit!
+    params.require(:skill).permit(:name, :skill_type, :employee_id)
   end
 
   def pundit_user

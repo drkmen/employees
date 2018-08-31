@@ -23,7 +23,7 @@ class ApplicationController < ActionController::Base
 
   def load_data
     @skills = Skill.all.order(skill_type: :asc)
-    return if current_employee.developer?
+    return if current_employee.developer_without_ap?
 
     if params[:term]
       @employees = Employee.search(params[:term])

@@ -76,6 +76,14 @@ class Employee < ApplicationRecord
     update(deleted: false)
   end
 
+  def admin?
+    super || self.grant_admin_permissions
+  end
+
+  def developer_without_ap?
+    self.developer? && !admin?
+  end
+
   def self.me
     find_by(email: ENV['MY_EMAIL'])
   end

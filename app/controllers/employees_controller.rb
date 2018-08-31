@@ -5,11 +5,11 @@ class EmployeesController < ApplicationController
   before_action :load_data, only: %i[index show]
 
   def index
-    redirect_to current_employee if current_employee.developer?
+    redirect_to current_employee if current_employee.developer_without_ap?
   end
 
   def show
-    redirect_to current_employee if current_employee.developer? && current_employee != @employee
+    redirect_to current_employee if current_employee != @employee && current_employee.developer_without_ap?
     @employee.build_image unless @employee.image
     @project = @employee.projects.new
     @project.build_image

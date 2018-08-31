@@ -10,7 +10,7 @@
     %header
       %nav.navbar.navbar-light.bg-light
         .navbar-brand= link_to 'FaceIT', root_path
-        - if current_employee && !current_employee&.developer?
+        - unless current_employee&.developer_without_ap?
           = form_tag( '', method: :get, enforce_utf8: false, class: 'form-inline') do
             .search
               = text_field_tag :term, params[:term], class: 'form-control mr-sm-2', aria: { label: 'Search' }
@@ -25,7 +25,7 @@
             .modal-body
               %p
                 This form will submit email directly to our CEO. You can ask whatever you want. Nobody will see it.
-              = form_tag '/wishes' do |f|
+              = form_tag '/wishes' do
                 .form-group
                   = text_area_tag :wish, nil, class: 'form-control'
                 .form-group

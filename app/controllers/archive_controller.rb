@@ -2,7 +2,7 @@
 
 class ArchiveController < ApplicationController
   def index
-    redirect_to current_employee if current_employee.developer?
+    redirect_to current_employee if current_employee.developer_without_ap?
     @employees = Employee.deleted
   end
 

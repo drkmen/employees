@@ -17,7 +17,7 @@ class SkillPolicy < ApplicationPolicy
   end
 
   def update?
-    employee.present? && skill.employee_id == employee.id
+    employee.present? && skill.employee_id == employee.id || employee.admin?
   end
 
   def destroy?

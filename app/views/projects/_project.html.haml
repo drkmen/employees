@@ -23,14 +23,20 @@
     - if project.manager && (@employee.developer? || @employee.team_lead?)
       Manager:
       = link_to project.manager&.name, employee_path(project.manager)
+      %br
     - if project.developer && @employee.manager?
       Developer:
       = link_to project.developer&.name, employee_path(project.developer)
-    %br= link_to project&.link, project&.link, target: :blank
-    %br= link_to project&.repository, project&.repository, target: :blank
-    %br
+
+      = link_to project&.link, project&.link, target: :blank do
+        %br= project&.link
+
+      = link_to project&.repository, target: :blank do
+        %br= project&.repository
+
     - if project.start_date && project.end_date
       %i= "#{ project.start_date.strftime('%d/%m/%Y') } - #{ project.end_date.strftime('%d/%m/%Y') }"
+
     %br
     = raw project.description
 

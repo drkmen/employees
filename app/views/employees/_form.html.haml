@@ -64,7 +64,7 @@
       .col-6
         .form-group
           = f.label 'Developers'
-          = f.select :developer_ids, Employee.developer.map{ |m| [m.name, m.id] }, {}, { class: 'select2-field', id: 'developersSelector', multiple: :multiple, class: 'form-control'}
+          = f.select :developer_ids, (Employee.team_lead + Employee.developer).map{ |m| [m.name, m.id] }, {}, { class: 'select2-field', id: 'developersSelector', multiple: :multiple, class: 'form-control'}
   .form-group
     .custom-file
       = f.label :image, class: 'custom-file-label'

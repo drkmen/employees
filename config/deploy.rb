@@ -7,7 +7,7 @@ set :repo_url, 'git@github.com:drkmen/employees.git'
 set :use_sudo, false
 
 set :rvm_type, :system                     # Defaults to: :auto
-set :rvm_ruby_version, '2.5.1'            # Defaults to: 'default'
+set :rvm_ruby_version, '2.5.3'            # Defaults to: 'default'
 # set :rvm_custom_path, '~/.myveryownrvm'  # only needed if not detected
 
 # Default branch is :master

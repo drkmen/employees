@@ -60,7 +60,7 @@ class EmployeesController < ApplicationController
   private
 
   def find_employee
-    @employee = Employee.includes(projects: [:skills], skills: [:resource_skills]).friendly.find(params[:id])
+    @employee = Employee.includes(employee_projects: [:skills], skills: [:resource_skills]).friendly.find(params[:id])
   end
 
   def employee_params

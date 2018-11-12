@@ -9,8 +9,10 @@ class Employee < ApplicationRecord
   has_many :resource_skills, dependent: :destroy
   has_many :skills, through: :resource_skills
 
-  has_many :projects, dependent: :destroy
-  has_many :active_projects, ->{ where(active: true) }, class_name: 'Project', dependent: :destroy
+  has_many :employee_projects, dependent: :destroy
+  has_many :projects, through: :employee_projects
+
+  has_many :active_projects, ->{ where(active: true) }, through: :employee_projects, source: :project
   has_many :manager_active_projects, ->{ where(active: true) },
            class_name: 'Project', dependent: :destroy, foreign_key: :manager_id
 

@@ -6,8 +6,11 @@ class Project < ApplicationRecord
   has_many :resource_skills, dependent: :destroy
   has_many :skills, through: :resource_skills
 
-  belongs_to :employee
-  belongs_to :developer, class_name: 'Employee', foreign_key: :employee_id # alias
+  belongs_to :employee, optional: true
+  has_many :employee_projects
+  has_many :employees, through: :employee_projects, source: :employee
+
+  belongs_to :developer, class_name: 'Employee', foreign_key: :employee_id
   belongs_to :manager, class_name: 'Employee', foreign_key: :manager_id, optional: true
 
   accepts_nested_attributes_for :image, :skills

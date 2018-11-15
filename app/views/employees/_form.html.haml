@@ -92,6 +92,10 @@
   .form-group
     = f.label 'Skills'
     = f.select(:skill_ids, @skills.pluck(:name, :id), {}, {class: 'select2-field', id: 'skillsSelector', multiple: :multiple, placeholder: 'Skills'})
+  - if current_employee == @employee
+    .form-group
+      = f.label :password
+      = f.password_field :password, placeholder: true, class: 'form-control'
   .form-group
     = f.submit class: 'btn btn-success'
 

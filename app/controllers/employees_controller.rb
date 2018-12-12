@@ -35,7 +35,7 @@ class EmployeesController < ApplicationController
     if @employee.update(employee_params)
       flash[:notice] = 'Successfully updated'
     else
-      flash[:danger] = 'Is not updated'
+      flash[:danger] = "Is not updated: #{@employee.errors.messages}"
     end
     redirect_to employee_path(@employee)
   end

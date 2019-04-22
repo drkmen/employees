@@ -1,6 +1,9 @@
 %header
   %nav.navbar.navbar-light.bg-light
-    .navbar-brand= link_to 'FaceIT', root_path
+    .navbar-brand
+      = image_tag 'ruby.png', size: '20x20', title: 'Powered with RubyOnRails'
+      = link_to root_path do
+        %b FaceIT
     - unless current_employee&.developer_without_ap?
       = form_tag( '', method: :get, enforce_utf8: false, class: 'form-inline') do
         .search

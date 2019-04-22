@@ -2,6 +2,7 @@ class OfficesController < ApplicationController
   before_action :find_office, only: %i[update destroy]
 
   def index
+    redirect_to employee_path(current_employee) unless current_employee.admin? || current_employee.manager?
     @offices = Office.all.order(employees_count: :desc)
     @office = Office.new
     load_data

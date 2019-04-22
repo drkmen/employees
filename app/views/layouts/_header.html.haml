@@ -1,0 +1,57 @@
+%header
+  %nav.navbar.navbar-light.bg-light
+    .navbar-brand
+      = image_tag 'ruby.png', size: '20x20', title: 'Powered with RubyOnRails'
+      = link_to root_path do
+        %b FaceIT
+    - unless current_employee&.developer_without_ap?
+      = form_tag( '', method: :get, enforce_utf8: false, class: 'form-inline') do
+        .search
+          = text_field_tag :term, params[:term], class: 'form-control mr-sm-2', aria: { label: 'Search' }
+        .my-2.my-sm-0
+          = submit_tag 'Search', class: 'btn btn-outline-secondary my-2 my-sm-0', name: nil
+    %div
+      - if current_employee
+
+        = link_to '#', { 'data-target': '#wishModal', 'data-toggle': 'modal' } do
+          %b Wishes
+        |
+
+        = render 'layouts/modal', { modal_id: 'wishModal', modal_title: 'Send wishes\proposals' } do
+          .modal-body
+            %p
+              This form will submit email directly to our CEO. You can ask whatever you want. Nobody will see it.
+            = form_tag '/wishes' do
+              .form-group
+                = text_area_tag :wish, nil, class: 'form-control'
+              .form-group
+                = submit_tag 'Send wish', class: 'btn btn-success'
+
+      - if current_employee&.admin? || current_employee&.manager?
+        = link_to offices_path do
+          %b Offices
+        |
+
+        = link_to '#', { 'data-target': '#inviteModal', 'data-toggle': 'modal' } do
+          %b Invite Employee
+        |
+
+        = render 'layouts/modal', { modal_id: 'inviteModal', modal_title: 'Send invitation' } do
+          .modal-body
+            = render template: 'devise/invitations/new'
+
+        = link_to archive_index_path do
+          %b Archive
+        |
+
+        - if current_employee
+          = link_to skills_path do
+            %b Skills list
+        |
+
+      = link_to destroy_employee_session_path, method: :delete do
+        %b Logout
+
+      &nbsp;
+      = link_to employee_path(current_employee) do
+        = image_tag current_employee.avatar, size: '25x25', class: 'rounded', title: 'My Profile'

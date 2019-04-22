@@ -23,6 +23,7 @@ class Employee < ApplicationRecord
   has_many :managers, through: :developer_managers, source: :manager
 
   has_one :image, as: :imageable, dependent: :destroy
+  belongs_to :office, counter_cache: true
 
   friendly_id :friendly_name, use: :slugged
 
@@ -31,7 +32,6 @@ class Employee < ApplicationRecord
 
   enum role: %i[other developer manager team_lead admin system_administrator]
   enum department: %i[ruby php js sys_admins managers other_department game_dev ios android markup java]
-  enum office: %i[managers_office ruby_office central firsts uglyash gamers admins remote lviv]
   enum status: %i[free partially_busy busy]
 
   default_scope { where(deleted: false) }

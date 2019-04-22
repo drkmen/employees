@@ -38,7 +38,7 @@
 
             %h5
               Office:
-              = @employee&.office&.humanize
+              = @employee&.office&.name
               - if current_employee.manager? || current_employee.admin?
                 %b.float-right{class: "#{@employee.status}"}= @employee&.status&.humanize
 

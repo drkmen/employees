@@ -10,7 +10,7 @@
       .form-row
         .col-4
           .form-group
-            = select_tag :office, options_for_select(Employee.offices.map { |k, v| [k.humanize, v] }, params[:office]), prompt: 'Office', class: 'custom-select'
+            = select_tag :office, options_for_select(Office.all.map { |office| [office.name, office.id] }, params[:office]), prompt: 'Office', class: 'custom-select'
         .col-4
           .form-group
             = select_tag :role, options_for_select(Employee.roles.reject { |r| r == 'admin' }.map { |k, v| [k.humanize, v] }, params[:role]), prompt: 'Role', class: 'custom-select'
@@ -32,8 +32,11 @@
                     .col-4
                       - skill_slice.each do |skill|
                         %label.form-check-label
-                          = check_box_tag 'skills[]', skill.name, params[:skills]&.include?(skill.name), id: "skill_#{skill.id}"
-                          = skill.name
+                          .skill-group
+                            .checkbox
+                              = check_box_tag 'skills[]', skill.name, params[:skills]&.include?(skill.name), id: "skill_#{skill.id}"
+                            .label
+                              = skill.name
                         %br
 
       .position-relative

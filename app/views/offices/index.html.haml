@@ -1,0 +1,39 @@
+.employees
+  .row
+    - unless current_employee.developer_without_ap?
+      = render 'employees/filters'
+      = render 'employees/employee_list'
+    %div{class: current_employee.developer? ? 'col-6 mx-auto' : 'col mx-auto'}
+      .section.last.profile.p-0
+        %h3.text-center
+          Offices
+        .float-right
+          .btn.btn-outline-success.float-right{ 'data-target': '#newOfficeModal', 'data-toggle': :modal }
+            Add office
+
+        .clearfix
+        %br
+
+        %table.table.table-hover
+          %thead
+            %tr
+              %th{scope: 'col'} #
+              %th{scope: 'col'} Name
+              %th{scope: 'col'} Employees count
+              %th{scope: 'col'} Actions
+          %tbody
+            - @offices.each.with_index do |office, index|
+              %tr
+                %th{scope: 'row'}= index + 1
+                %td= office.name
+                %td= office.employees_count
+                %td
+                  %span.pointable{ 'data-target': "#editOfficeModal_#{office.id}", 'data-toggle': :modal } edit
+                  = render 'layouts/modal', { modal_id: "editOfficeModal_#{office.id}", modal_title: "Edit office [#{office.name}]" } do
+                    .modal-body
+                      = render 'offices/form', office: office
+                  = link_to 'delete', office_path(office), method: :delete, class: 'delete'
+
+= render 'layouts/modal', { modal_id: 'newOfficeModal', modal_title: 'New office' } do
+  .modal-body
+    = render 'offices/form', office: @office

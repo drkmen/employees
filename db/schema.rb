@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_08_31_094730) do
+ActiveRecord::Schema.define(version: 2019_04_22_092451) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -57,6 +57,7 @@ ActiveRecord::Schema.define(version: 2018_08_31_094730) do
     t.string "upwork"
     t.integer "status"
     t.boolean "grant_admin_permissions", default: false
+    t.integer "office_id"
     t.index ["deleted"], name: "index_employees_on_deleted"
     t.index ["email"], name: "index_employees_on_email", unique: true
     t.index ["first_name", "last_name", "main_skill"], name: "index_employees_on_first_name_and_last_name_and_main_skill", unique: true
@@ -83,6 +84,14 @@ ActiveRecord::Schema.define(version: 2018_08_31_094730) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["imageable_type", "imageable_id"], name: "index_images_on_imageable_type_and_imageable_id"
+  end
+
+  create_table "offices", force: :cascade do |t|
+    t.string "name"
+    t.integer "department_id"
+    t.integer "employees_count", default: 0
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "projects", force: :cascade do |t|

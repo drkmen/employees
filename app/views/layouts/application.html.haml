@@ -7,46 +7,7 @@
     = stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload'
     = javascript_include_tag 'application', 'data-turbolinks-track': 'reload'
   %body
-    %header
-      %nav.navbar.navbar-light.bg-light
-        .navbar-brand= link_to 'FaceIT', root_path
-        - unless current_employee&.developer_without_ap?
-          = form_tag( '', method: :get, enforce_utf8: false, class: 'form-inline') do
-            .search
-              = text_field_tag :term, params[:term], class: 'form-control mr-sm-2', aria: { label: 'Search' }
-            .my-2.my-sm-0
-              = submit_tag 'Search', class: 'btn btn-outline-secondary my-2 my-sm-0', name: nil
-        %div
-          - if current_employee
-            %span.link.pointable{ 'data-target': '#wishModal', 'data-toggle': 'modal' }
-              Wishes
-            |
-          = render 'layouts/modal', { modal_id: 'wishModal', modal_title: 'Send wishes\proposals' } do
-            .modal-body
-              %p
-                This form will submit email directly to our CEO. You can ask whatever you want. Nobody will see it.
-              = form_tag '/wishes' do
-                .form-group
-                  = text_area_tag :wish, nil, class: 'form-control'
-                .form-group
-                  = submit_tag 'Send wish', class: 'btn btn-success'
-
-          - if current_employee&.admin? || current_employee&.manager?
-            %span.link.pointable{ 'data-target': '#inviteModal', 'data-toggle': 'modal' }
-              Invite Employee
-            |
-            = render 'layouts/modal', { modal_id: 'inviteModal', modal_title: 'Send invitation' } do
-              .modal-body
-                = render template: 'devise/invitations/new'
-            = link_to 'Archive', archive_index_path
-            |
-          - if current_employee
-            = link_to 'Skills list', skills_path
-            |
-            = link_to 'Logout', destroy_employee_session_path, method: :delete
-            &nbsp;
-            = link_to employee_path(current_employee) do
-              = image_tag current_employee.avatar, size: '25x25', class: 'rounded', title: 'My Profile'
+    = render 'layouts/header'
 
     .notification.fixed-top
       - flash.each do |_name, message|

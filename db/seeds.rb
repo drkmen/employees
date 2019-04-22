@@ -167,3 +167,7 @@ Skill.create!(name: 'iOS', skill_type: 'other_skill')
 Skill.create!(name: 'lynx', skill_type: 'other_skill')
 Skill.create!(name: 'mLab', skill_type: 'other_skill')
 Skill.create!(name: 'xCode', skill_type: 'other_skill')
+
+%w(Первый(руби) Второй(руби) Третий(PHP) Четвертый(JS) Пятый(менеджеры) Шестой(Админы) Седьмой(ios/game_developers) Удаленщики).each do |office|
+  Office.create!(name: office)
+end

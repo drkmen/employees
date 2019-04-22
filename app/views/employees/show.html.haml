@@ -3,7 +3,7 @@
     - unless current_employee.developer_without_ap?
       = render 'filters'
       = render 'employee_list'
-    %div{ class: current_employee.developer? ? 'col-6 mx-auto' : 'col mx-auto' }
+    %div{ class: current_employee.developer? && !current_employee.admin? ? 'col-6 mx-auto' : 'col mx-auto' }
       .section.last.profile
         .row
           .col-5

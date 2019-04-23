@@ -74,6 +74,24 @@ namespace :deploy do
     end
   end
 
+  task :start do
+    on roles :app do
+      within current_path do
+        p '****************** STARTING SERVER ******************'
+        execute :bundle, "exec rails s -e production -d -p 3005"
+      end
+    end
+  end
+  
+  task :stop do
+    on roles :app do
+      within current_path do
+        p '****************** STOPPING SERVER ******************'
+        execute "kill -SIGKILL `cat /home/production/www/employees/shared/tmp/pids/server.pid` && rm /home/production/www/employees/shared/tmp/pids/server.pid"
+      end
+    end
+  end
+
   task :seed do
     on roles :app do
       within current_path do

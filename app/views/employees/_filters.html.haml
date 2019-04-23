@@ -2,11 +2,16 @@
   %h3.d-flex.align-items-center
     .flex-grow-0
       %i.fa.fa-long-arrow-left.pointable#toggleFilters
-    .flex-grow-1.text-center Filters
+    .flex-grow-1.text-center
+      Filters
 
   .content
+    .float-right
+      = link_to 'Reset filters', url_for(), class: 'btn btn-outline-secondary'
+    .clearfix
+
     %p
-    = form_tag '', method: :get, enforce_utf8: false do
+    = form_tag '', method: :get, enforce_utf8: false, remote: true, id: 'filtersForm' do
       .form-row
         .col-4
           .form-group
@@ -41,7 +46,5 @@
 
       .position-relative
         .filter-area
-          = submit_tag 'Filter', class: 'btn btn-outline-success', name: nil
+          = submit_tag 'Filter', class: 'd-none', name: nil
           &nbsp;
-          - if params[:office] || params[:role] || params[:department] || params[:skills]
-            = link_to 'Reset filters', employees_path, class: 'btn btn-outline-secondary'

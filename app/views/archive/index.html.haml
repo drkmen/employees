@@ -1,17 +1,21 @@
-.archive.center-horizontal
+.archive
   .container
-    .title
+    .title.text-center
       %h2 Employees archive
     .content
-      - @employees.each do |employee|
-        .row
-          .col-11
-            = employee.name
-            %br
-            = employee.email
-            %br
-            = employee.phone
-          .col-1
-            = link_to 'Restore', archive_path(employee), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-outline-success'
-        - unless employee.eql? @employees[-1]
-          %hr
+      %table.table.table-hover
+        %thead
+          %tr
+            %th{scope: 'col'} #
+            %th{scope: 'col'} Name
+            %th{scope: 'col'} Email
+            %th{scope: 'col'} Phone
+            %th{scope: 'col'}
+        %tbody
+          - @employees.each.with_index do |employee, index|
+            %tr
+              %th{scope: 'row'}= index + 1
+              %td= employee.name
+              %td= employee.email
+              %td= employee.phone
+              %td= link_to 'Restore', archive_path(employee), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-outline-success'

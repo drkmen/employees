@@ -88,7 +88,7 @@
                   %br
 
         %br
-        - if @employee.skills.present?
+        - if @employee_skills.present?
           .skills
             .float-right
               .legend.d-flex
@@ -113,18 +113,19 @@
             %h3 Skills
           %hr
           .row
-            - employee_skills = @employee.skills.sorted(@employee.id).to_a.group_by(&:skill_type)
-            - employee_skills.each do |skill_type, skills|
+            - employee_skills = @employee_skills.sorted(@employee.id).to_a.group_by { |rs| rs&.skill&.skill_type }
+            - employee_skills.each do |skill_type, resource_skills|
               %div{ class: "col-#{12 / employee_skills.size}" }
                 %h5= skill_type&.humanize
-                - skills.each do |skill|
-                  %div{ class: "skill-#{ skill.level(@employee.id) }"}
+                - resource_skills.each do |rs|
+                  %div{ class: "skill-#{ rs.level }"}
+                    - display_name = rs.experience.present? ? "#{rs.skill.name} / #{rs.experience}" : rs.skill.name
                     - if able_edit?
-                      %span.link.pointable{ 'data-target': "#editSkillModal_#{skill.id}", 'data-toggle': :modal, title: "Experience: #{skill.experience(@employee)}" }
-                        = link_to skill.display_name(@employee.id), skill_path(skill, employee_id: @employee.id), remote: true
+                      %span.link.pointable{ 'data-target': "#editSkillModal_#{rs.skill&.id}", 'data-toggle': :modal, title: "Experience: #{rs.experience}" }
+                        = link_to display_name, skill_path(id: rs.skill&.id, employee_id: @employee.id), remote: true
                         %br
                     - else
-                      = skill.display_name(@employee.id)
+                      = display_name
                       %br
 
         %p

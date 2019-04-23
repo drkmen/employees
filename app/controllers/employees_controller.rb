@@ -17,6 +17,7 @@ class EmployeesController < ApplicationController
     respond_to do |format|
       format.html
       format.json if current_employee == @employee
+      format.js
       format.pdf do
         render pdf: "#{@employee.slug}",
                template: 'employees/show_pdf.html.haml',
@@ -60,7 +61,9 @@ class EmployeesController < ApplicationController
   private
 
   def find_employee
-    @employee = Employee.includes(projects: [:skills], skills: [:resource_skills]).friendly.find(params[:id])
+    @employee = Employee.includes(projects: [:skills, :image, :manager, :developer]).friendly.find(params[:id])
+    # additional query needed to avoid huge N+1
+    @employee_skills = ResourceSkill.includes(skill: :employee).where(employee_id: @employee.id)
   end
 
   def employee_params

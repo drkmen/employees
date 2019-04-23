@@ -6,6 +6,7 @@ FactoryBot.define do
     last_name { Faker::Name.last_name }
     password Faker::Internet.password
     email { Faker::Internet.email }
+    office
 
     trait :other do
       role 'other'

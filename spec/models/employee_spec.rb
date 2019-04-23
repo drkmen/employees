@@ -5,7 +5,7 @@ require 'rails_helper'
 RSpec.describe Employee, type: :model do
   let(:employee) do
     create :employee, email: 'darthmaul@impire.com', first_name: 'Darth', last_name: 'Maul',
-           office: :ruby_office, department: :ruby, status: :free, role: :developer
+           department: :ruby, status: :free, role: :developer, office: FactoryBot.create(:office)
   end
   let(:manager) { create :employee, :manager }
   let(:developer) { create :employee, :developer }
@@ -77,7 +77,7 @@ RSpec.describe Employee, type: :model do
     describe 'role, office, department, status, search scopes' do
       {
         role: :developer,
-        office: :ruby_office,
+        # office: Office.all.sample.id, TODO: fix me
         department: :ruby,
         status: :free,
         search: 'Darth',
@@ -92,15 +92,15 @@ RSpec.describe Employee, type: :model do
     describe 'sorting scope' do
 
       before do
-        FactoryBot.create(:employee, office: 1, role: 1, department: 1)
+        FactoryBot.create(:employee, role: 1, department: 1)
         FactoryBot.create(:skill, name: 'API development', skill_type: 'other_skill')
         FactoryBot.create(:skill, name: 'AWS', skill_type: 'service')
-        Employee.last.resource_skills.new(skill_id: Skill.first.id, level: 100).save!
-        Employee.last.resource_skills.new(skill_id: Skill.last.id, level: 0).save!
+        Employee.last.resource_skills.new(skill: Skill.first, level: 100).save!
+        Employee.last.resource_skills.new(skill: Skill.last, level: 0).save!
       end
 
       it 'It\'s must have a sorted order' do
-        expect(Employee.last.skills.sorted(Employee.last.id)).to eq Employee.last.skills.sort_by { |skill| skill.level(Employee.last.id) }.reverse
+        expect(Employee.last.resource_skills.sorted(Employee.last.id)).to eq Employee.last.resource_skills.sort_by { |skill| skill.level }.reverse
       end
     end
   end
@@ -168,20 +168,6 @@ RSpec.describe Employee, type: :model do
       }
     end
 
-    let(:actual_offices) do
-      {
-        'managers_office' => 0,
-        'ruby_office' => 1,
-        'central' => 2,
-        'firsts' => 3,
-        'uglyash' => 4,
-        'gamers' => 5,
-        'admins' => 6,
-        'remote' => 7,
-        'lviv' => 8
-      }
-    end
-
     let(:actual_statuses) do
       {
         'free' => 0,
@@ -199,11 +185,6 @@ RSpec.describe Employee, type: :model do
       it 'should respond to departments' do
         expect(Employee).to respond_to :departments
         expect(Employee.departments).to eq actual_departments
-      end
-
-      it 'should respond to offices' do
-        expect(Employee).to respond_to :offices
-        expect(Employee.offices).to eq actual_offices
       end
 
       it 'should respond to statuses' do
@@ -224,15 +205,6 @@ RSpec.describe Employee, type: :model do
 
       context 'department methods' do
         %i[ruby php js sys_admins managers other_department game_dev ios android markup java].each do |method|
-          it "should respond to #{method}? and #{method}!" do
-            expect(employee).to respond_to "#{method}?"
-            expect(employee).to respond_to "#{method}!"
-          end
-        end
-      end
-
-      context 'office methods' do
-        %i[managers_office ruby_office central firsts uglyash gamers admins remote lviv].each do |method|
           it "should respond to #{method}? and #{method}!" do
             expect(employee).to respond_to "#{method}?"
             expect(employee).to respond_to "#{method}!"

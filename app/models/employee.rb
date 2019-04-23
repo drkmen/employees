@@ -23,7 +23,7 @@ class Employee < ApplicationRecord
   has_many :managers, through: :developer_managers, source: :manager
 
   has_one :image, as: :imageable, dependent: :destroy
-  belongs_to :office, counter_cache: true
+  belongs_to :office, counter_cache: true, optional: true
 
   friendly_id :friendly_name, use: :slugged
 

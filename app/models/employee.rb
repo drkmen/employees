@@ -40,9 +40,9 @@ class Employee < ApplicationRecord
     scope filter, ->(value) { where(filter => value)}
   end
 
-  Department.all.each do |department|
-    scope "#{department.uid}_dep", ->() { where(department_id: department.id) }
-  end
+  # Department.all.each do |department|
+  #   scope "#{department.uid}_dep", ->() { where(department_id: department.id) }
+  # end
 
   scope :deleted, -> { unscoped.where(deleted: true) }
   scope :search, ->(term) do

@@ -31,10 +31,13 @@
                   = render template: 'employees/pdf_form'
             %h2
               = @employee.name
-              .float-right
+              %br
+              %small.text-muted
                 - if @employee.developer? || @employee.team_lead?
                   = (@employee.main_skill.present? ? @employee.main_skill : @employee.department&.name)&.humanize
                 = role(@employee)
+
+              %br
 
             %h5
               Office:

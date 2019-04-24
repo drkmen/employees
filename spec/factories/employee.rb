@@ -8,28 +8,10 @@ FactoryBot.define do
     email { Faker::Internet.email }
     office
 
-    trait :other do
-      role 'other'
-    end
-
-    trait :developer do
-      role 'developer'
-    end
-
-    trait :system_administrator do
-      role 'system_administrator'
-    end
-
-    trait :manager do
-      role 'manager'
-    end
-
-    trait :team_lead do
-      role 'team_lead'
-    end
-
-    trait :admin do
-      role 'admin'
+    %i[other developer system_administrator manager team_lead admin].each do |role|
+      trait role do
+        role role.to_s
+      end
     end
 
     trait :deleted do

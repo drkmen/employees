@@ -2,12 +2,12 @@ require 'rails_helper'
 
 RSpec.describe EmployeePolicy do
 
-  let(:other) { FactoryBot.create(:employee, :other) }
-  let(:developer) { FactoryBot.create(:employee, :developer) }
-  let(:system_administrator) { FactoryBot.create(:employee, :system_administrator) }
-  let(:manager) { FactoryBot.create(:employee, :manager) }
-  let(:team_lead) { FactoryBot.create(:employee, :team_lead) }
-  let(:admin) { FactoryBot.create(:employee, :admin) }
+  Employee.roles.keys.each do |role|
+    let(role) { FactoryBot.create(:employee, role.to_sym) }
+  end
+
+  let(:ruby_dep) { Department.create(name: 'ruby') }
+  let(:js_dep) { Department.create(name: 'js') }
 
   subject { described_class }
 
@@ -137,7 +137,7 @@ RSpec.describe EmployeePolicy do
       end
 
       it 'denies access if employee developer edit other employee developer' do
-        edit_developer = FactoryBot.create(:employee, :developer, department: 'ruby')
+        edit_developer = FactoryBot.create(:employee, :developer, department: ruby_dep)
         expect(subject).not_to permit(developer, edit_developer)
       end
 
@@ -217,8 +217,8 @@ RSpec.describe EmployeePolicy do
       end
 
       it 'grants access if employee team_lead edit developer from his department' do
-        team_lead = FactoryBot.create(:employee, :team_lead, department: 'ruby')
-        developer = FactoryBot.create(:employee, :developer, department: 'ruby')
+        team_lead = FactoryBot.create(:employee, :team_lead, department: ruby_dep)
+        developer = FactoryBot.create(:employee, :developer, department: ruby_dep)
         expect(subject).to permit(team_lead, developer)
       end
 
@@ -227,8 +227,8 @@ RSpec.describe EmployeePolicy do
       end
 
       it 'denies access if employee team_lead edited employee developer other department' do
-        team_lead = FactoryBot.create(:employee, :team_lead, department: 'js')
-        other_dept_developer = FactoryBot.create(:employee, :developer, department: 'ruby')
+        team_lead = FactoryBot.create(:employee, :team_lead, department: js_dep)
+        other_dept_developer = FactoryBot.create(:employee, :developer, department: ruby_dep)
         expect(subject).not_to permit(team_lead, other_dept_developer)
       end
 
@@ -237,13 +237,13 @@ RSpec.describe EmployeePolicy do
       end
 
       it 'denies access if employee team_lead edit other employee team_lead' do
-        second_team_lead = FactoryBot.create(:employee, :team_lead, department: 'ruby')
+        second_team_lead = FactoryBot.create(:employee, :team_lead, department: ruby_dep)
         expect(subject).not_to permit(team_lead, second_team_lead)
       end
 
       it 'denies access if employee team_lead edit other employee team_lead from same dept' do
-        first_team_lead = FactoryBot.create(:employee, :team_lead, department: 'ruby')
-        second_team_lead = FactoryBot.create(:employee, :team_lead, department: 'ruby')
+        first_team_lead = FactoryBot.create(:employee, :team_lead, department: ruby_dep)
+        second_team_lead = FactoryBot.create(:employee, :team_lead, department: ruby_dep)
         expect(subject).not_to permit(first_team_lead, second_team_lead)
       end
 

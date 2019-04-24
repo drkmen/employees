@@ -1,7 +1,7 @@
 class Department < ApplicationRecord
   has_many :offices
   has_many :employees
-  belongs_to :team_lead, class_name: 'Employee'#, primary_key: :team_lead_id
+  belongs_to :team_lead, class_name: 'Employee', optional: true
 
   before_save :set_uid
   after_save :set_team_lead

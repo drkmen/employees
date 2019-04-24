@@ -33,7 +33,7 @@
               = @employee.name
               .float-right
                 - if @employee.developer? || @employee.team_lead?
-                  = (@employee.main_skill.present? ? @employee.main_skill : @employee.department).humanize
+                  = (@employee.main_skill.present? ? @employee.main_skill : @employee.department&.name)&.humanize
                 = role(@employee)
 
             %h5

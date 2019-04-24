@@ -1,0 +1,37 @@
+%h3.text-center
+  Departments
+
+.float-right
+  .btn.btn-outline-success.float-right{ 'data-target': '#newDepartmentModal', 'data-toggle': :modal }
+    Add department
+
+.clearfix
+%br
+
+%table.table.table-hover
+  %thead
+    %tr
+      %th{scope: 'col'} #
+      %th{scope: 'col'} Name
+      %th{scope: 'col'} Team Leader
+      %th{scope: 'col'} Employees count
+      %th{scope: 'col'} Actions
+  %tbody
+    - @departments.each.with_index do |department, index|
+      %tr
+        %th{scope: 'row'}= index + 1
+        %td= department.name
+        %td
+          - if department.team_lead
+            = link_to department.team_lead.name, employee_path(department.team_lead)
+        %td= department.employees_count
+        %td
+          %span.pointable{ 'data-target': "#editDepartmentModal_#{department.id}", 'data-toggle': :modal } edit
+          = render 'layouts/modal', { modal_id: "editDepartmentModal_#{department.id}", modal_title: "Edit department [#{department.name}]" } do
+            .modal-body
+              = render 'departments/form', department: department
+          = link_to 'delete', department_path(department), method: :delete, class: 'delete'
+
+= render 'layouts/modal', { modal_id: 'newDepartmentModal', modal_title: 'New department' } do
+  .modal-body
+    = render 'departments/form', department: @department

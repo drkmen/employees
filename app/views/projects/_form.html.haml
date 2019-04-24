@@ -31,7 +31,7 @@
     .col
       .form-group
         = f.label 'Manager'
-        = f.select :manager_id, Employee.managers.map { |m| [m.name, m.id] }, { include_blank: true }, { class: 'form-control', include_blank: 'Manager' }
+        = f.select :manager_id, Employee.managers_dep.map { |m| [m.name, m.id] }, { include_blank: true }, { class: 'form-control', include_blank: 'Manager' }
   .form-row
     .col-12
       .form-group

@@ -5,7 +5,7 @@
       = link_to root_path do
         %b FaceIT
     - unless current_employee&.developer_without_ap?
-      = form_tag( '', method: :get, enforce_utf8: false, class: 'form-inline') do
+      = form_tag('', method: :get, enforce_utf8: false, class: 'form-inline') do
         .search
           = text_field_tag :term, params[:term], class: 'form-control mr-sm-2', aria: { label: 'Search' }
         .my-2.my-sm-0
@@ -29,7 +29,7 @@
 
       - if current_employee&.admin? || current_employee&.manager?
         = link_to offices_path do
-          %b Offices
+          %b Offices & Departments
         |
 
         = link_to '#', { 'data-target': '#inviteModal', 'data-toggle': 'modal' } do

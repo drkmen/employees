@@ -10,10 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_04_22_092451) do
+ActiveRecord::Schema.define(version: 2019_04_24_073943) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "departments", force: :cascade do |t|
+    t.string "name"
+    t.string "uid"
+    t.integer "team_lead_id"
+    t.integer "employees_count", default: 0
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "employee_managers", force: :cascade do |t|
     t.integer "developer_id"
@@ -58,6 +67,7 @@ ActiveRecord::Schema.define(version: 2019_04_22_092451) do
     t.integer "status"
     t.boolean "grant_admin_permissions", default: false
     t.integer "office_id"
+    t.integer "department_id"
     t.index ["deleted"], name: "index_employees_on_deleted"
     t.index ["email"], name: "index_employees_on_email", unique: true
     t.index ["first_name", "last_name", "main_skill"], name: "index_employees_on_first_name_and_last_name_and_main_skill", unique: true

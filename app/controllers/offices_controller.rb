@@ -5,6 +5,9 @@ class OfficesController < ApplicationController
     redirect_to employee_path(current_employee) unless current_employee.admin? || current_employee.manager?
     @offices = Office.all.order(employees_count: :desc)
     @office = Office.new
+
+    @departments = Department.all.order(employees_count: :desc)
+    @department = Department.new
     load_data
   end
 

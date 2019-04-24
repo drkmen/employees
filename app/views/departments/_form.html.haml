@@ -1,0 +1,13 @@
+= form_for department do |f|
+  .row
+    .col
+      .form-group
+        = f.text_field :name, placeholder: 'department name', class: 'form-control'
+  .row
+    .col
+      .form-group
+        = f.select :team_lead_id, Employee.team_lead.map { |team_lead| [team_lead.name, team_lead.id] }, { prompt: 'Team Leader' }, class: 'custom-select'
+  .row
+    .col
+      .form-group
+        = f.submit class: 'btn btn-success'

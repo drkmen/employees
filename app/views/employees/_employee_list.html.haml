@@ -15,7 +15,7 @@
       %ul
         - @employees.each do |department, employees|
           %h4
-            %span{id: department}= department&.humanize
+            %span{id: department}= department&.name
             .float-right= employees.size
 
           - employees.each do |employee|

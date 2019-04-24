@@ -30,7 +30,7 @@ class ApplicationController < ActionController::Base
     if params[:term]
       @employees = Employee.search(params[:term])
     else
-      @employees = Employee.includes(:skills).filter(params.reject { |_, v| v.blank? }
+      @employees = Employee.includes(:skills, :department).filter(params.reject { |_, v| v.blank? }
                                                          .slice(:role, :office, :department, :status))
       @employees = Employee.filter_skills(@employees, params[:skills]) if params[:skills]
     end

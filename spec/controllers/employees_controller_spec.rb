@@ -20,7 +20,7 @@ RSpec.describe EmployeesController, type: :controller do
 
   4.times do |i|
     i += 1
-    let("employee_#{i}") { FactoryBot.create(:employee, role: i, department: i) }
+    let("employee_#{i}") { FactoryBot.create(:employee, role: i) }
   end
 
   skills_data.each.with_index do |hash, i|

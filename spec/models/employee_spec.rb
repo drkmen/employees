@@ -5,7 +5,7 @@ require 'rails_helper'
 RSpec.describe Employee, type: :model do
   let(:employee) do
     create :employee, email: 'darthmaul@impire.com', first_name: 'Darth', last_name: 'Maul',
-           department: :ruby, status: :free, role: :developer, office: FactoryBot.create(:office)
+           department: FactoryBot.create(:department), status: :free, role: :developer, office: FactoryBot.create(:office)
   end
   let(:manager) { create :employee, :manager }
   let(:developer) { create :employee, :developer }
@@ -78,7 +78,7 @@ RSpec.describe Employee, type: :model do
       {
         role: :developer,
         # office: Office.all.sample.id, TODO: fix me
-        department: :ruby,
+        # department: :ruby,
         status: :free,
         search: 'Darth',
         search: 'Darth Maul'
@@ -92,7 +92,7 @@ RSpec.describe Employee, type: :model do
     describe 'sorting scope' do
 
       before do
-        FactoryBot.create(:employee, role: 1, department: 1)
+        FactoryBot.create(:employee, role: 1)
         FactoryBot.create(:skill, name: 'API development', skill_type: 'other_skill')
         FactoryBot.create(:skill, name: 'AWS', skill_type: 'service')
         Employee.last.resource_skills.new(skill: Skill.first, level: 100).save!
@@ -182,11 +182,6 @@ RSpec.describe Employee, type: :model do
         expect(Employee.roles).to eq actual_roles
       end
 
-      it 'should respond to departments' do
-        expect(Employee).to respond_to :departments
-        expect(Employee.departments).to eq actual_departments
-      end
-
       it 'should respond to statuses' do
         expect(Employee).to respond_to :statuses
         expect(Employee.statuses).to eq actual_statuses
@@ -196,15 +191,6 @@ RSpec.describe Employee, type: :model do
     context 'instance methods' do
       context 'role methods' do
         %i[other developer manager team_lead admin system_administrator].each do |method|
-          it "should respond to #{method}? and #{method}!" do
-            expect(employee).to respond_to "#{method}?"
-            expect(employee).to respond_to "#{method}!"
-          end
-        end
-      end
-
-      context 'department methods' do
-        %i[ruby php js sys_admins managers other_department game_dev ios android markup java].each do |method|
           it "should respond to #{method}? and #{method}!" do
             expect(employee).to respond_to "#{method}?"
             expect(employee).to respond_to "#{method}!"

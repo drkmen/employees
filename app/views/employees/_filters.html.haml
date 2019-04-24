@@ -21,7 +21,7 @@
             = select_tag :role, options_for_select(Employee.roles.reject { |r| r == 'admin' }.map { |k, v| [k.humanize, v] }, params[:role]), prompt: 'Role', class: 'custom-select'
         .col-4
           .form-group
-            = select_tag :department, options_for_select(Employee.departments.map { |k, v| [k.humanize, v] }, params[:department]), prompt: 'Department', class: 'custom-select'
+            = select_tag :department, options_for_select(Department.all.map { |department| [department.name, department.id] }, params[:department]), prompt: 'Department', class: 'custom-select'
       .form-row
         .col-4
           .form-group

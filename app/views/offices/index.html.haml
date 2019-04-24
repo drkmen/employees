@@ -34,6 +34,8 @@
                       = render 'offices/form', office: office
                   = link_to 'delete', office_path(office), method: :delete, class: 'delete'
 
+        = render template: 'departments/index'
+
 = render 'layouts/modal', { modal_id: 'newOfficeModal', modal_title: 'New office' } do
   .modal-body
     = render 'offices/form', office: @office

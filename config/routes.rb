@@ -13,7 +13,8 @@ Rails.application.routes.draw do
   end
   resources :skills, except: %i[new edit]
   resources :archive, only: %i[index destroy]
-  resources :offices
+  resources :offices, only: %i[index create update destroy]
+  resources :departments, only: %i[create update destroy]
 
   post :wishes, to: 'application#wishes'
   root to: 'employees#index'

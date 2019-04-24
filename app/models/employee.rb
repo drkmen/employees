@@ -24,6 +24,7 @@ class Employee < ApplicationRecord
 
   has_one :image, as: :imageable, dependent: :destroy
   belongs_to :office, counter_cache: true, optional: true
+  belongs_to :department, counter_cache: true, optional: true
 
   friendly_id :friendly_name, use: :slugged
 
@@ -31,13 +32,16 @@ class Employee < ApplicationRecord
          :rememberable, :trackable, :validatable
 
   enum role: %i[other developer manager team_lead admin system_administrator]
-  enum department: %i[ruby php js sys_admins managers other_department game_dev ios android markup java]
   enum status: %i[free partially_busy busy]
 
   default_scope { where(deleted: false) }
 
   FILTERS.each do |filter|
     scope filter, ->(value) { where(filter => value)}
+  end
+
+  Department.all.each do |department|
+    scope "#{department.uid}_dep", ->() { where(department_id: department.id) }
   end
 
   scope :deleted, -> { unscoped.where(deleted: true) }

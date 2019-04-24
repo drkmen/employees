@@ -171,3 +171,7 @@ Skill.create!(name: 'xCode', skill_type: 'other_skill')
 %w(Первый(руби) Второй(руби) Третий(PHP) Четвертый(JS) Пятый(менеджеры) Шестой(Админы) Седьмой(ios/game_developers) Удаленщики).each do |office|
   Office.create!(name: office)
 end
+
+%i[ruby php js system_administrators managers other game_developers ios android markup java].each do |office|
+  Department.create!(name: office.to_s.humanize, uid: office)
+end

@@ -49,9 +49,10 @@
             %b Skills list
         |
 
-      = link_to destroy_employee_session_path, method: :delete do
-        %b Logout
+      - if current_employee
+        = link_to destroy_employee_session_path, method: :delete do
+          %b Logout
 
-      &nbsp;
-      = link_to employee_path(current_employee) do
-        = image_tag current_employee.avatar, size: '25x25', class: 'rounded', title: 'My Profile'
+        &nbsp;
+        = link_to employee_path(current_employee) do
+          = image_tag current_employee.avatar, size: '25x25', class: 'rounded', title: 'My Profile'

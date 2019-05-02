@@ -21,7 +21,6 @@ a, .link {
   &:hover, &:focus {
     @include transition(0.2s, ease-in-out);
     text-decoration: none;
-    border: none;
     outline: none;
   }
 

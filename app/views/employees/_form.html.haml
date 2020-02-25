@@ -1,4 +1,9 @@
 = form_for @employee do |f|
+
+  %p
+  %h3 Main
+  %hr
+
   .form-row
     .col-6
       .form-group
@@ -8,6 +13,7 @@
       .form-group
         = f.label :last_name
         = f.text_field :last_name, placeholder: true, class: 'form-control'
+
   .form-row
     .col
       .form-group
@@ -18,11 +24,13 @@
         .form-group
           = f.label :status
           = f.select :status, Employee.statuses.keys.map { |o| [o.humanize, o] }, { include_blank: true }, class: 'custom-select'
+
   .form-row
     .col-12
       .form-group
         = f.label :upwork
         = f.text_field :upwork, placeholder: true, class: 'form-control'
+
   .form-row
     .col-6
       .form-group
@@ -32,6 +40,7 @@
       .form-group
         = f.label :phone
         = f.text_field :phone, placeholder: true, class: 'form-control'
+
   .form-row
     .col-6
       .form-group
@@ -41,6 +50,7 @@
       .form-group
         = f.label :skype
         = f.text_field :skype, placeholder: true, class: 'form-control'
+
   .form-row
     - if current_employee.admin?
       .col-6
@@ -52,6 +62,23 @@
         .form-group
           = f.label :department
           = f.select :department_id, Department.all.map { |department| [department.name, department.id] }, {}, class: 'custom-select'
+
+  %p
+  %h3 General
+  %hr
+
+  .form-group
+    .custom-file
+      = f.label :image, class: 'custom-file-label'
+      = f.fields_for :image do |image_fields|
+        = image_fields.file_field :image, class: 'custom-file-input'
+
+  .form-group
+    = f.text_area :description, placeholder: true, cols: 12, rows: 5, class: 'form-control'
+
+  %p
+  %h3 Additional
+  %hr
 
   - if (current_employee.admin? || current_employee.manager?) && (@employee.developer? || @employee.team_lead?)
     .form-row
@@ -65,13 +92,7 @@
         .form-group
           = f.label 'Developers'
           = f.select :developer_ids, (Employee.team_lead + Employee.developer).map{ |m| [m.name, m.id] }, {}, { class: 'select2-field custom-select', id: 'developersSelector', multiple: :multiple }
-  .form-group
-    .custom-file
-      = f.label :image, class: 'custom-file-label'
-      = f.fields_for :image do |image_fields|
-        = image_fields.file_field :image, class: 'custom-file-input'
-  .form-group
-    = f.text_area :description, placeholder: true, cols: 12, rows: 5, class: 'form-control'
+
   .form-group
     %btn.btn.btn-outline-success#addAdditionalField Add additional field
   .form-group
@@ -89,18 +110,15 @@
             .col-1
               .form-group
                 %i.fa.fa-times.text-danger.pointable{onclick: 'remove(this)'}
+
+  %p
+  %h3 Skills
+  %hr
+
   .form-group
     = f.label 'Skills'
     = f.select(:skill_ids, @skills.pluck(:name, :id), {}, {class: 'select2-field', id: 'skillsSelector', multiple: :multiple, placeholder: 'Skills'})
-  -#- if current_employee == @employee
-    .form-group
-      .form-row
-        .col-6
-          = f.label :password
-          = f.password_field :password, placeholder: true, class: 'form-control'
-        .col-6
-          = f.label :password_confirmation
-          = f.password_field :password_confirmation, placeholder: true, class: 'form-control'
+
   .form-group
     = f.submit class: 'btn btn-success'
 

@@ -14,11 +14,13 @@ class Project < ApplicationRecord
 
   validates :name, presence: true
 
-  def add_skills_to_employee
-    employee.skills << (skills - employee.skills)
-  end
-
   def avatar
     image&.image_url || 'placeholder.png'
+  end
+
+  private
+
+  def add_skills_to_employee
+    employee.skills << (skills - employee.skills)
   end
 end

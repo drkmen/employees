@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Department < ApplicationRecord
   has_many :offices
   has_many :employees
@@ -8,6 +10,8 @@ class Department < ApplicationRecord
 
   validates :name, presence: true
   validates :name, :uid, uniqueness: true
+
+  private
 
   def set_uid
     self.uid = name.downcase.to_sym

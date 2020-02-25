@@ -4,7 +4,9 @@ class Employee < ApplicationRecord
   include Filterable
   extend FriendlyId
 
-  FILTERS = %i[role office department status]
+  FILTERS = %i[role office department status].freeze
+  ROLES = %i[other developer manager team_lead admin system_administrator].freeze
+  STATUSES = %i[free partially_busy busy].freeze
 
   has_many :resource_skills, dependent: :destroy
   has_many :skills, through: :resource_skills
@@ -31,8 +33,8 @@ class Employee < ApplicationRecord
   devise :invitable, :database_authenticatable, :recoverable,
          :rememberable, :trackable, :validatable
 
-  enum role: %i[other developer manager team_lead admin system_administrator]
-  enum status: %i[free partially_busy busy]
+  enum role: ROLES
+  enum status: STATUSES
 
   default_scope { where(deleted: false) }
 
@@ -46,7 +48,8 @@ class Employee < ApplicationRecord
 
   scope :deleted, -> { unscoped.where(deleted: true) }
   scope :search, ->(term) do
-    return all unless term
+    all unless term
+
     where("(first_name ILIKE ?) OR ((first_name || ' ' || last_name) ILIKE ?)", "%#{term}%", "%#{term}%")
   end
 

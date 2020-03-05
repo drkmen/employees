@@ -3,44 +3,56 @@
 require 'rails_helper'
 
 RSpec.describe Project, type: :model do
-  before do
-    FactoryBot.create(:employee, :admin)
-    FactoryBot.create(:project, employee_id: Employee.last.id)
-    FactoryBot.create(:skill)
-  end
+  let(:admin) { create(:employee, :admin) }
+  let(:skill) { create(:skill) }
+  let(:image) { Image.new(image: Rails.root.join('app/assets/images/placeholder.png').open) }
 
-  it 'has_many resource_skills' do
-    resource_skill1 = Project.last.resource_skills.create!(skill_id: Skill.last.id)
-    resource_skill2 = Project.last.resource_skills.create!(skill_id: Skill.last.id)
-    expect(Project.last.reload.resource_skills).to eq([resource_skill1, resource_skill2])
-  end
+  subject(:project) { create(:project, employee: admin, skills: [skill], image: image) }
 
-  it 'has_one image' do
-    Project.last.create_image(image: '1234')
-    image2 = Project.last.create_image(image: '123456')
-    expect(Project.last.reload.image).to eq(image2)
+  describe 'columns' do
+    %i[
+      id name start_date end_date description client employee_id
+      created_at updated_at link active manager_id repository
+    ].each do |field|
+      it { is_expected.to have_db_column(field) }
+    end
   end
 
 
-  it 'has_many skills' do
-    skill1 = Project.last.skills.create!(name: 'skill1')
-    skill2 = Project.last.skills.create!(name: 'skill2')
-    expect(Project.last.reload.skills).to eq([skill1, skill2])
+  describe 'associations' do
+    it { is_expected.to have_many(:resource_skills).dependent(:destroy) }
+    it { is_expected.to have_many(:skills).through(:resource_skills) }
+    it { is_expected.to belong_to(:employee) }
+    it { is_expected.to belong_to(:developer).class_name('Employee').with_foreign_key(:employee_id) }
+    it { is_expected.to belong_to(:manager).class_name('Employee').with_foreign_key(:manager_id).optional(true) }
+    it { is_expected.to have_one(:image).dependent(:destroy) }
   end
 
-  it 'should validate presence of name' do
-    record = Project.new
-    record.name = ''
-    record.employee_id = Employee.last.id
-    record.valid?
-    expect(record).to be_invalid
-
-    record.name = 'foobar'
-    record.valid?
-    expect(record).to be_valid
+  describe 'validations' do
+    it { is_expected.to validate_presence_of(:name) }
   end
 
-  it 'belongs_to employee' do
-    expect(Project.last.reload.employee).to eq(Employee.last)
+  describe 'callbacks' do
+    describe 'after_save' do
+      describe '#add_skills_to_employee' do
+        it 'adds project skills to employee' do
+          expect(project.employee.skills).to include(*project.skills)
+        end
+      end
+    end
+  end
+
+  describe 'methods' do
+    describe '#avatar' do
+      subject { project.avatar }
+
+      it { is_expected.to eq image.image_url }
+
+      context 'when image is missing' do
+        before { allow(project).to receive(:image).and_return(nil) }
+
+        it { is_expected.to eq 'placeholder.png' }
+      end
+    end
   end
 end

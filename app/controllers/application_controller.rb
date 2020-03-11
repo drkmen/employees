@@ -11,6 +11,8 @@ class ApplicationController < ActionController::Base
     redirect_to root_path
   end
 
+  alias_method :current_user, :current_employee
+
   protected
 
   def after_sign_out_path_for(resource_or_scope)

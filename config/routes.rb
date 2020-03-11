@@ -12,7 +12,12 @@ Rails.application.routes.draw do
     resources :projects, except: %i[edit show index]
   end
   resources :skills, except: %i[new edit]
-  resources :archive, only: %i[index destroy]
+  resources :archive, only: %i[index] do
+    collection do
+      delete 'destroy/:employee_id', action: :destroy, as: :destroy
+      patch 'restore/:employee_id', action: :restore, as: :restore
+    end
+  end
   resources :offices, only: %i[index create update destroy]
   resources :departments, only: %i[create update destroy]
 

@@ -3,54 +3,105 @@
 require 'rails_helper'
 
 RSpec.describe ArchiveController, type: :controller do
+  let(:developer) { create(:employee, :developer) }
+  let(:admin) { create(:employee, :admin) }
+  let!(:deleted_employee) { create(:employee, :deleted) }
 
-  context 'signed out user' do
-    it 'should redirect to login' do
-      get :index
-      expect(response).to have_http_status(302)
-      expect(response).to redirect_to new_employee_session_path
-    end
-  end
+  describe 'GET#index' do
+    let(:send_request) { get :index }
 
-  context 'signed in developer' do
+    context 'when user' do
+      context 'is not authenticated' do
+        before { send_request }
 
-    before do
-      @developer = FactoryBot.create(:employee, :developer)
-      sign_in @developer
-    end
+        it_behaves_like 'unauthenticated'
+      end
 
-    describe 'GET #index' do
-      it 'returns a success response' do
-        get :index
-        expect(response).to have_http_status(302)
-        expect(response).to redirect_to employee_path(@developer)
+      context 'authenticated as' do
+        before { sign_in user }
+
+        context 'developer' do
+          let(:user) { developer }
+
+          it_behaves_like 'unauthorized'
+        end
+
+        context 'admin' do
+          let(:user) { admin }
+
+          before { send_request }
+
+          it { expect(response.status).to eq(200) }
+          it { expect(response).to render_template('index') }
+        end
       end
     end
   end
 
-  context 'signed in admin' do
-    before do
-      FactoryBot.create(:employee, :deleted)
-      user = FactoryBot.create(:employee, :admin)
-      sign_in user
-    end
+  describe 'PATCH#restore' do
+    let(:send_request) { patch :restore, params: { employee_id: deleted_employee.id } }
 
-    describe 'GET #index' do
-      it 'returns a success response' do
-        get :index
-        expect(response.status).to eq(200)
-        expect(response).to render_template('index')
-        expect(assigns(:employees).size).to be 1
+    context 'when user' do
+      context 'is not authenticated' do
+        before { send_request }
+
+        it_behaves_like 'unauthenticated'
+      end
+
+      context 'authenticated as' do
+        before { sign_in user }
+
+        context 'developer' do
+          let(:user) { developer }
+
+          it_behaves_like 'unauthorized'
+        end
+
+        context 'admin' do
+          let(:user) { admin }
+
+          it 'restores employee' do
+            expect do
+              send_request
+            end.to(change { Employee.deleted.count }.by(-1)) &&
+              have_http_status(302) &&
+              render_template('index')
+          end
+        end
       end
     end
+  end
 
-    describe 'GET #destroy' do
-      it 'returns a success response' do
-        expect do
-          post :destroy, params: { id: Employee.deleted.last }
-        end.to(change { Employee.deleted.count }.by(-1)) &&
-          have_http_status(302) &&
-          render_template('index')
+  describe 'DELETE#destroy' do
+    let(:send_request) { delete :destroy, params: { employee_id: deleted_employee.id } }
+
+    context 'when user' do
+      context 'is not authenticated' do
+        before { send_request }
+
+        it_behaves_like 'unauthenticated'
+      end
+
+      context 'authenticated as' do
+        before { sign_in user }
+
+        context 'developer' do
+          let(:user) { developer }
+
+          it_behaves_like 'unauthorized'
+        end
+
+        context 'admin' do
+          let(:user) { admin }
+
+          it 'deletes employee' do
+            expect do
+              send_request
+            end.to(change { Employee.deleted.count }.by(-1)) &&
+                have_http_status(302) &&
+                render_template('index')
+          end
+        end
       end
     end
   end

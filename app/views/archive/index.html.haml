@@ -10,12 +10,30 @@
             %th{scope: 'col'} Name
             %th{scope: 'col'} Email
             %th{scope: 'col'} Phone
+            %th{scope: 'col'} Worked
+            %th{scope: 'col'}
             %th{scope: 'col'}
         %tbody
-          - @employees.each.with_index do |employee, index|
-            %tr
-              %th{scope: 'row'}= index + 1
-              %td= employee.name
-              %td= employee.email
-              %td= employee.phone
-              %td= link_to 'Restore', archive_path(employee), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-outline-success'
+          - @grouped_employees.each do |year, value|
+            - value.each do |month, value|
+              %tr
+                %td
+                  %h4
+                    = year
+                    = Date::MONTHNAMES[month]
+                %td
+                %td
+                %td
+                %td
+                %td
+                %td
+
+              - value.each.with_index do |employee, index|
+                %tr
+                  %th{scope: 'row'}= index + 1
+                  %td= employee.name
+                  %td= employee.email
+                  %td= employee.phone
+                  %td= time_ago_in_words(employee.created_at)
+                  %td= link_to 'Restore', restore_archive_index_path(employee), method: :patch, data: { confirm: 'Are you sure?' }, class: 'btn btn-outline-success'
+                  %td= link_to 'Delete', destroy_archive_index_path(employee), method: :delete, data: { confirm: 'Are you sure? It\'s can\'t be undone' }, class: 'btn btn-outline-danger'

@@ -36,7 +36,7 @@ class Employee < ApplicationRecord
   enum role: ROLES
   enum status: STATUSES
 
-  default_scope { where(deleted: false) }
+  default_scope { where(deleted_at: nil) }
 
   FILTERS.each do |filter|
     scope filter, ->(value) { where(filter => value)}
@@ -46,7 +46,7 @@ class Employee < ApplicationRecord
     scope "#{department.uid}_dep", ->() { where(department_id: department.id) }
   end
 
-  scope :deleted, -> { unscoped.where(deleted: true) }
+  scope :deleted, -> { unscoped.where.not(deleted_at: nil) }
   scope :search, ->(term) do
     all unless term
 
@@ -75,12 +75,12 @@ class Employee < ApplicationRecord
     image&.image_url || 'user.png'
   end
 
-  def delete
-    update(deleted: true)
+  def delete!
+    update(deleted_at: DateTime.now)
   end
 
-  def restore
-    update(deleted: false)
+  def restore!
+    update(deleted_at: nil)
   end
 
   def admin?

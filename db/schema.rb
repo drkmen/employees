@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_04_24_073943) do
+ActiveRecord::Schema.define(version: 2020_03_06_092119) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -62,13 +62,12 @@ ActiveRecord::Schema.define(version: 2019_04_24_073943) do
     t.integer "invitation_limit"
     t.integer "invited_by_id"
     t.string "invited_by_type"
-    t.boolean "deleted", default: false
     t.string "upwork"
     t.integer "status"
     t.boolean "grant_admin_permissions", default: false
     t.integer "office_id"
     t.integer "department_id"
-    t.index ["deleted"], name: "index_employees_on_deleted"
+    t.datetime "deleted_at"
     t.index ["email"], name: "index_employees_on_email", unique: true
     t.index ["first_name", "last_name", "main_skill"], name: "index_employees_on_first_name_and_last_name_and_main_skill", unique: true
     t.index ["invitation_token"], name: "index_employees_on_invitation_token", unique: true

@@ -43,7 +43,7 @@ class EmployeesController < ApplicationController
 
   def destroy
     authorize @employee
-    if @employee.delete
+    if @employee.delete!
       flash[:notice] = 'Successfully deleted'
     else
       flash[:danger] = 'Is not deleted'

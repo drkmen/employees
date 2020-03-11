@@ -19,7 +19,7 @@ RSpec.describe Employee, type: :model do
       created_at updated_at encrypted_password reset_password_token reset_password_sent_at
       remember_created_at sign_in_count current_sign_in_at last_sign_in_at current_sign_in_ip
       last_sign_in_ip skype department slug invitation_token invitation_created_at invitation_sent_at
-      invitation_accepted_at invitation_limit invited_by_id invited_by_type deleted upwork
+      invitation_accepted_at invitation_limit invited_by_id invited_by_type deleted_at upwork
       status grant_admin_permissions office_id department_id
     ].each do |field|
       it { is_expected.to have_db_column(field) }
@@ -95,13 +95,13 @@ RSpec.describe Employee, type: :model do
     describe '.default_scope' do
       subject { described_class.default_scoped.to_a }
 
-      it { is_expected.to eq described_class.where(deleted: false).to_a }
+      it { is_expected.to eq described_class.where(deleted_at: nil).to_a }
     end
 
-    describe '.deleted' do
+    describe '.deleted_at' do
       subject { described_class.deleted }
 
-      it { is_expected.to eq described_class.unscoped.where(deleted: true) }
+      it { is_expected.to eq described_class.unscoped.where.not(deleted_at: nil) }
     end
 
     Employee::FILTERS.each do |filter|
@@ -149,17 +149,17 @@ RSpec.describe Employee, type: :model do
       it { is_expected.to eq "#{employee.first_name} #{employee.last_name}" }
     end
 
-    describe '#delete' do
+    describe '#delete!' do
       it 'deletes employee' do
-        employee.delete
-        expect(employee.deleted).to be_truthy
+        employee.delete!
+        expect(employee.deleted_at).to_not be_nil
       end
     end
 
-    describe '#restore' do
+    describe '#restore!' do
       it 'restores employee' do
-        employee.restore
-        expect(employee.deleted).to be_falsey
+        employee.restore!
+        expect(employee.deleted_at).to be_nil
       end
     end
 

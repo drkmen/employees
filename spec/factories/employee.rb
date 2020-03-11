@@ -19,7 +19,7 @@ FactoryBot.define do
 
     trait :deleted do
       role { :other }
-      deleted { true }
+      deleted_at { DateTime.now }
     end
   end
 end

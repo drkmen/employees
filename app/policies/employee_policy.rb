@@ -34,6 +34,10 @@ class EmployeePolicy < ApplicationPolicy
     create?
   end
 
+  def restore?
+    employee.admin? || employee.manager?
+  end
+
   class Scope < Scope
     def resolve
       scope

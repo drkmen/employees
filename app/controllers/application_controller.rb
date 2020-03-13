@@ -6,6 +6,9 @@ class ApplicationController < ActionController::Base
   before_action :store_employee_location!, if: :storable_location?
   before_action :authenticate_employee!
 
+  rescue_from StandardError, with: :default_handler
+  rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
+
   def wishes
     flash[:success] = 'Successful sent' if ApplicationMailer.send_wish(current_employee, params[:wish]).deliver_now
     redirect_to root_path
@@ -48,5 +51,16 @@ class ApplicationController < ActionController::Base
 
   def store_employee_location!
     store_location_for(:employee, request.fullpath)
+  end
+
+  def default_handler(error)
+    Bugsnag.notify error
+    flash[:danger] = error
+    redirect_to(request.referrer || root_path)
+  end
+
+  def user_not_authorized
+    flash[:warning] = 'You are not authorized to perform this action.'
+    redirect_to(request.referrer || root_path)
   end
 end

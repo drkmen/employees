@@ -5,26 +5,23 @@ class ArchiveController < ApplicationController
 
   def index
     authorize :archive, :index?
+
     @grouped_employees = Archives::FetchEmployeesService.perform
   end
 
   def restore
     authorize @employee
-    if @employee.restore!
-      flash[:success] = 'Successful restored'
-    else
-      flash[:danger] = 'Not restored'
-    end
+
+    Archives::RestoreEmployeesService.perform(employee: @employee)
+    flash[:success] = 'Successful restored'
     redirect_to archive_index_path
   end
 
   def destroy
     authorize @employee
-    if @employee.destroy!
-      flash[:success] = 'Successful deleted'
-    else
-      flash[:danger] = 'Not deleted'
-    end
+
+    Archives::DeleteEmployeesService.perform(employee: @employee)
+    flash[:success] = 'Successful deleted'
     redirect_to archive_index_path
   end
 

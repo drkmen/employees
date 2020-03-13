@@ -8,11 +8,7 @@
     = javascript_include_tag 'application', 'data-turbolinks-track': 'reload'
   %body
     = render 'layouts/header'
+    = render 'layouts/notification'
 
-    .notification.fixed-top
-      - flash.each do |_name, message|
-        .alert.alert-secondary.text-center
-          = message
-          %button.float-right.close{ 'data-dismiss': :alert, type: :button } ×
     .container-fluid
       = yield

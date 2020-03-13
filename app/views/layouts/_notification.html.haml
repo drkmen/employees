@@ -1,0 +1,12 @@
+- flash.each do |name, message|
+  .notification
+    .alert.text-center{class: "alert-#{name}"}
+      = message
+      %button.float-right.close{ 'data-dismiss': :alert, type: :button } ×
+
+  :javascript
+    $(function() {
+        setTimeout(function() {
+          $('.notification').fadeOut('slow');
+        }, 7000);
+    });

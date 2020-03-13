@@ -7,7 +7,7 @@ class ProjectsController < ApplicationController
     @project = Project.new(project_params)
     authorize @project
     if @project.save
-      flash[:notice] = 'Successfully created'
+      flash[:success] = 'Successfully created'
     else
       flash[:danger] = 'Is not created'
     end
@@ -17,7 +17,7 @@ class ProjectsController < ApplicationController
   def update
     authorize @project
     if @project.update(project_params)
-      flash[:notice] = 'Successfully updated'
+      flash[:success] = 'Successfully updated'
     else
       flash[:danger] = 'Is not updated'
     end
@@ -27,7 +27,7 @@ class ProjectsController < ApplicationController
   def destroy
     authorize @project
     if @project.destroy
-      flash[:notice] = 'Successfully destroyed'
+      flash[:success] = 'Successfully destroyed'
     else
       flash[:danger] = 'Is not destroyed'
     end

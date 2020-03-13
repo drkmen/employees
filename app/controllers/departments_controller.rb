@@ -5,24 +5,24 @@ class DepartmentsController < ApplicationController
     department = Department.new department_params
     if department.save
       redirect_to offices_path
-      flash[:notice] = 'Successfully created'
+      flash[:success] = 'Successfully created'
     else
       redirect_to offices_path
-      flash[:error] = department.errors.messages
+      flash[:danger] = department.errors.messages
     end
   end
 
   def update
     if @department.update(department_params)
       redirect_to offices_path
-      flash[:notice] = 'Successfully update'
+      flash[:success] = 'Successfully update'
     end
   end
 
   def destroy
     if @department.destroy
       redirect_to offices_path
-      flash[:notice] = 'Successfully deleted'
+      flash[:success] = 'Successfully deleted'
     end
   end
 

@@ -14,21 +14,21 @@ class OfficesController < ApplicationController
   def create
     if Office.create(office_params)
       redirect_to offices_path
-      flash[:notice] = 'Successfully created'
+      flash[:success] = 'Successfully created'
     end
   end
 
   def update
     if @office.update(office_params)
       redirect_to offices_path
-      flash[:notice] = 'Successfully update'
+      flash[:success] = 'Successfully update'
     end
   end
 
   def destroy
     if @office.destroy
       redirect_to offices_path
-      flash[:notice] = 'Successfully deleted'
+      flash[:success] = 'Successfully deleted'
     end
   end
 

@@ -60,13 +60,16 @@ RSpec.describe ArchiveController, type: :controller do
         context 'admin' do
           let(:user) { admin }
 
-          it 'restores employee' do
-            expect do
-              send_request
-            end.to(change { Employee.deleted.count }.by(-1)) &&
-              have_http_status(302) &&
-              render_template('index')
+          before { |example| send_request unless example.metadata[:skip_before] }
+
+          it 'restores employee', :skip_before do
+            expect(Archives::RestoreEmployeesService).to receive(:perform).with(employee: deleted_employee)
+            send_request
           end
+
+          it { expect(flash[:success]).to eq 'Successful restored' }
+          it { expect(response).to have_http_status(302) }
+          it { expect(response).to redirect_to(archive_index_path) }
         end
       end
     end
@@ -94,13 +97,16 @@ RSpec.describe ArchiveController, type: :controller do
         context 'admin' do
           let(:user) { admin }
 
-          it 'deletes employee' do
-            expect do
-              send_request
-            end.to(change { Employee.deleted.count }.by(-1)) &&
-                have_http_status(302) &&
-                render_template('index')
+          before { |example| send_request unless example.metadata[:skip_before] }
+
+          it 'deletes employee', :skip_before do
+            expect(Archives::DeleteEmployeesService).to receive(:perform).with(employee: deleted_employee)
+            send_request
           end
+
+          it { expect(flash[:success]).to eq 'Successful deleted' }
+          it { expect(response).to have_http_status(302) }
+          it { expect(response).to redirect_to(archive_index_path) }
         end
       end
     end

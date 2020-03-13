@@ -122,3 +122,12 @@ b {
 .select2-container {
   width: 100% !important;
 }
+
+.notification {
+  z-index: 9999;
+  position: absolute;
+  top: 50px;
+  right: 22px;
+  width: 500px;
+  height: 200px;
+}

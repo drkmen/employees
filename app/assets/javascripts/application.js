@@ -19,12 +19,6 @@
 //= require select2-full
 //= require_tree .
 
-$(function() {
-    setTimeout(function() {
-        $('.notification').fadeOut('slow');
-    }, 5000);
-});
-
 function showRestore() {
     $(".login-form, .login-footer").addClass('d-none');
     $(".restore-form, .restore-footer").removeClass('d-none');

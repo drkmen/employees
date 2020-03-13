@@ -34,7 +34,7 @@ class EmployeesController < ApplicationController
     authorize @employee
     @employee.additional = employee_params[:additional] || {}
     if @employee.update(employee_params)
-      flash[:notice] = 'Successfully updated'
+      flash[:success] = 'Successfully updated'
     else
       flash[:danger] = "Is not updated: #{@employee.errors.messages}"
     end
@@ -44,7 +44,7 @@ class EmployeesController < ApplicationController
   def destroy
     authorize @employee
     if @employee.delete!
-      flash[:notice] = 'Successfully deleted'
+      flash[:success] = 'Successfully deleted'
     else
       flash[:danger] = 'Is not deleted'
     end

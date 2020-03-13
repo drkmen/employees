@@ -27,7 +27,7 @@ class SkillsController < ApplicationController
   def update
     authorize @skill
     if @skill.update skill_params
-      flash[:notice] = 'Successfully updated'
+      flash[:success] = 'Successfully updated'
     else
       flash[:danger] = 'Is not updated'
     end
@@ -38,7 +38,7 @@ class SkillsController < ApplicationController
     @skill = Skill.new(skill_params)
     authorize @skill
     if @skill.save
-      flash[:notice] = 'Successfully created'
+      flash[:success] = 'Successfully created'
     else
       flash[:danger] = 'Is not created [duplicate]'
     end
@@ -48,7 +48,7 @@ class SkillsController < ApplicationController
   def destroy
     authorize @skill
     if @skill.destroy
-      flash[:notice] = 'Successfully destroyed'
+      flash[:success] = 'Successfully destroyed'
     else
       flash[:danger] = 'Is not destroyed'
     end

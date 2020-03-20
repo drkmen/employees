@@ -10,6 +10,12 @@ RSpec.describe ArchiveController, type: :controller do
   describe 'GET#index' do
     let(:send_request) { get :index }
 
+    it 'check permissions' do
+      sign_in admin
+      expect(controller).to receive(:authorize).with(:archive, :index?).and_call_original
+      send_request
+    end
+
     context 'when user' do
       context 'is not authenticated' do
         before { send_request }
@@ -40,6 +46,12 @@ RSpec.describe ArchiveController, type: :controller do
 
   describe 'PATCH#restore' do
     let(:send_request) { patch :restore, params: { employee_id: deleted_employee.id } }
+
+    it 'check permissions' do
+      sign_in admin
+      expect(controller).to receive(:authorize).with(deleted_employee).and_call_original
+      send_request
+    end
 
     context 'when user' do
       context 'is not authenticated' do
@@ -77,6 +89,12 @@ RSpec.describe ArchiveController, type: :controller do
 
   describe 'DELETE#destroy' do
     let(:send_request) { delete :destroy, params: { employee_id: deleted_employee.id } }
+
+    it 'check permissions' do
+      sign_in admin
+      expect(controller).to receive(:authorize).with(deleted_employee).and_call_original
+      send_request
+    end
 
     context 'when user' do
       context 'is not authenticated' do

@@ -2,28 +2,27 @@ class DepartmentsController < ApplicationController
   before_action :find_department, only: %i[update destroy]
 
   def create
-    department = Department.new department_params
-    if department.save
-      redirect_to offices_path
-      flash[:success] = 'Successfully created'
-    else
-      redirect_to offices_path
-      flash[:danger] = department.errors.messages
-    end
+    authorize :department, :create?
+
+    Departments::CreateService.perform(department_params)
+    flash[:success] = 'Successfully created'
+    redirect_to offices_path
   end
 
   def update
-    if @department.update(department_params)
-      redirect_to offices_path
-      flash[:success] = 'Successfully update'
-    end
+    authorize @department
+
+    Departments::UpdateService.perform(department_params.merge(department: @department))
+    flash[:success] = 'Successfully updated'
+    redirect_to offices_path
   end
 
   def destroy
-    if @department.destroy
-      redirect_to offices_path
-      flash[:success] = 'Successfully deleted'
-    end
+    authorize @department
+
+    Departments::DestroyService.perform(department: @department)
+    flash[:success] = 'Successfully deleted'
+    redirect_to offices_path
   end
 
   private

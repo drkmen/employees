@@ -9,5 +9,5 @@ RSpec.shared_examples 'unauthorized' do
   before { send_request }
 
   it { expect(flash[:warning]).to eq 'You are not authorized to perform this action.' }
-  it { expect(response).to redirect_to(request.referrer || root_path) }
+  it { expect(response).to redirect_to(employee_path(user)) }
 end

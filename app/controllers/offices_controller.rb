@@ -1,8 +1,12 @@
+# frozen_string_literal: true
+
 class OfficesController < ApplicationController
   before_action :find_office, only: %i[update destroy]
 
   def index
-    redirect_to employee_path(current_employee) unless current_employee.admin? || current_employee.manager?
+    authorize :office, :index?
+    # redirect_to employee_path(current_employee) unless current_employee.admin? || current_employee.manager?
+
     @offices = Office.all.order(employees_count: :desc)
     @office = Office.new
 
@@ -12,6 +16,8 @@ class OfficesController < ApplicationController
   end
 
   def create
+    authorize :office, :create?
+
     if Office.create(office_params)
       redirect_to offices_path
       flash[:success] = 'Successfully created'
@@ -19,6 +25,8 @@ class OfficesController < ApplicationController
   end
 
   def update
+    authorize @office
+
     if @office.update(office_params)
       redirect_to offices_path
       flash[:success] = 'Successfully update'
@@ -26,6 +34,8 @@ class OfficesController < ApplicationController
   end
 
   def destroy
+    authorize @office
+
     if @office.destroy
       redirect_to offices_path
       flash[:success] = 'Successfully deleted'

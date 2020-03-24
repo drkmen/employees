@@ -32,13 +32,17 @@ class ApplicationController < ActionController::Base
     @skills = Skill.all.order(skill_type: :asc)
     return if current_employee.developer_without_ap?
 
+    @employees = Employee.all
+    @employees = @employees.public_send("#{current_employee.department.uid}_dep") if current_employee.team_lead? && !current_employee.admin?
+
     if params[:term]
-      @employees = Employee.search(params[:term])
+      @employees = @employees.search(params[:term])
     else
-      @employees = Employee.includes(:skills, :department).filter(params.reject { |_, v| v.blank? }
+      @employees = @employees.includes(:skills, :department).filter(params.reject { |_, v| v.blank? }
                                                          .slice(:role, :office, :department, :status))
-      @employees = Employee.filter_skills(@employees, params[:skills]) if params[:skills]
+      @employees = @employees.filter_skills(@employees, params[:skills]) if params[:skills]
     end
+
     @employees = @employees.to_a.group_by(&:department) unless @employees.empty?
   end
 
@@ -61,6 +65,6 @@ class ApplicationController < ActionController::Base
 
   def user_not_authorized
     flash[:warning] = 'You are not authorized to perform this action.'
-    redirect_to(request.referrer || root_path)
+    redirect_to employee_path(current_employee)
   end
 end

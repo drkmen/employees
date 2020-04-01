@@ -11,13 +11,13 @@
           .col-7
             - able_edit do
               %span.link.pointable{ 'data-target': '#editModal', 'data-toggle': :modal }
-                Edit
+                edit
+              |
               = render 'layouts/modal', { modal_id: 'editModal', modal_title: 'Edit Employee', large: true } do
                 .modal-body
                   = render template: 'employees/edit'
-            - if current_employee&.admin? || current_employee&.manager?
-              |
-              = link_to 'Delete', employee_path(@employee), method: :delete, data: { confirm: 'Are you sure?' }
+            - if current_employee&.admin? || current_employee&.manager? || current_employee.team_lead?
+              = link_to 'delete', employee_path(@employee), method: :delete, data: { confirm: 'Are you sure?' }, class: 'text-danger'
 
             .float-right
               Export to:

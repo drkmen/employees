@@ -3,17 +3,17 @@
 require 'rails_helper'
 
 RSpec.describe ArchiveController, type: :controller do
-  let(:developer) { create(:employee, :developer) }
-  let(:admin) { create(:employee, :admin) }
-  let!(:deleted_employee) { create(:employee, :deleted) }
+  Employee::ROLES.each do |role|
+    let(role) { create(:employee, role: role) }
+  end
+
+  let!(:deleted_employee) { create(:employee, :deleted, department: team_lead.department) }
 
   describe 'GET#index' do
     let(:send_request) { get :index }
 
-    it 'check permissions' do
-      sign_in admin
-      expect(controller).to receive(:authorize).with(:archive, :index?).and_call_original
-      send_request
+    it_behaves_like 'authorizable' do
+      let(:target) { [:archive, :index?] }
     end
 
     context 'when user' do
@@ -26,19 +26,28 @@ RSpec.describe ArchiveController, type: :controller do
       context 'authenticated as' do
         before { sign_in user }
 
-        context 'developer' do
-          let(:user) { developer }
+        common_roles.without('team_lead').each do |role|
+          context role do
+            let(:user) { public_send(role) }
 
-          it_behaves_like 'unauthorized'
+            it_behaves_like 'unauthorized'
+          end
         end
 
-        context 'admin' do
-          let(:user) { admin }
+        (adminable_roles + ['team_lead']).each do |role|
+          context role do
+            let(:user) { public_send(role) }
 
-          before { send_request }
+            before { |example| send_request unless example.metadata[:skip_before] }
 
-          it { expect(response.status).to eq(200) }
-          it { expect(response).to render_template('index') }
+            it 'calls Archives::FetchEmployeesService', :skip_before do
+              expect(Archives::FetchEmployeesService).to receive(:perform).with(current_employee: user)
+              send_request
+            end
+
+            it { expect(response.status).to eq(200) }
+            it { expect(response).to render_template('index') }
+          end
         end
       end
     end
@@ -47,10 +56,8 @@ RSpec.describe ArchiveController, type: :controller do
   describe 'PATCH#restore' do
     let(:send_request) { patch :restore, params: { employee_id: deleted_employee.id } }
 
-    it 'check permissions' do
-      sign_in admin
-      expect(controller).to receive(:authorize).with(deleted_employee).and_call_original
-      send_request
+    it_behaves_like 'authorizable' do
+      let(:target) { deleted_employee }
     end
 
     context 'when user' do
@@ -63,25 +70,30 @@ RSpec.describe ArchiveController, type: :controller do
       context 'authenticated as' do
         before { sign_in user }
 
-        context 'developer' do
-          let(:user) { developer }
+        common_roles.without('team_lead').each do |role|
+          context role do
+            let(:user) { public_send(role) }
 
-          it_behaves_like 'unauthorized'
+            it_behaves_like 'unauthorized'
+          end
         end
 
-        context 'admin' do
-          let(:user) { admin }
+        (adminable_roles + ['team_lead']).each do |role|
+          context role do
+            let(:user) { public_send(role) }
 
-          before { |example| send_request unless example.metadata[:skip_before] }
+            before { |example| send_request unless example.metadata[:skip_before] }
 
-          it 'restores employee', :skip_before do
-            expect(Archives::RestoreEmployeesService).to receive(:perform).with(employee: deleted_employee)
-            send_request
+            it 'restores employee', :skip_before do
+              expect(Archives::RestoreEmployeesService).to receive(:perform).with(employee: deleted_employee)
+              send_request
+            end
+
+            it_behaves_like 'success response' do
+              let(:path) { archive_index_path }
+              let(:message) { 'Successfully restored' }
+            end
           end
-
-          it { expect(flash[:success]).to eq 'Successful restored' }
-          it { expect(response).to have_http_status(302) }
-          it { expect(response).to redirect_to(archive_index_path) }
         end
       end
     end
@@ -90,10 +102,8 @@ RSpec.describe ArchiveController, type: :controller do
   describe 'DELETE#destroy' do
     let(:send_request) { delete :destroy, params: { employee_id: deleted_employee.id } }
 
-    it 'check permissions' do
-      sign_in admin
-      expect(controller).to receive(:authorize).with(deleted_employee).and_call_original
-      send_request
+    it_behaves_like 'authorizable' do
+      let(:target) { [:archive, :destroy?] }
     end
 
     context 'when user' do
@@ -106,25 +116,30 @@ RSpec.describe ArchiveController, type: :controller do
       context 'authenticated as' do
         before { sign_in user }
 
-        context 'developer' do
-          let(:user) { developer }
+        common_roles.each do |role|
+          context role do
+            let(:user) { public_send(role) }
 
-          it_behaves_like 'unauthorized'
+            it_behaves_like 'unauthorized'
+          end
         end
 
-        context 'admin' do
-          let(:user) { admin }
+        adminable_roles.each do |role|
+          context role do
+            let(:user) { public_send(role) }
 
-          before { |example| send_request unless example.metadata[:skip_before] }
+            before { |example| send_request unless example.metadata[:skip_before] }
 
-          it 'deletes employee', :skip_before do
-            expect(Archives::DeleteEmployeesService).to receive(:perform).with(employee: deleted_employee)
-            send_request
+            it 'deletes employee', :skip_before do
+              expect(Archives::DeleteEmployeesService).to receive(:perform).with(employee: deleted_employee)
+              send_request
+            end
+
+            it_behaves_like 'success response' do
+              let(:path) { archive_index_path }
+              let(:message) { 'Successfully deleted' }
+            end
           end
-
-          it { expect(flash[:success]).to eq 'Successful deleted' }
-          it { expect(response).to have_http_status(302) }
-          it { expect(response).to redirect_to(archive_index_path) }
         end
       end
     end

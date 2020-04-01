@@ -5,7 +5,6 @@ class OfficesController < ApplicationController
 
   def index
     authorize :office, :index?
-    # redirect_to employee_path(current_employee) unless current_employee.admin? || current_employee.manager?
 
     @offices = Office.all.order(employees_count: :desc)
     @office = Office.new
@@ -18,28 +17,25 @@ class OfficesController < ApplicationController
   def create
     authorize :office, :create?
 
-    if Office.create(office_params)
-      redirect_to offices_path
-      flash[:success] = 'Successfully created'
-    end
+    Offices::CreateService.perform(office_params)
+    flash[:success] = 'Successfully created'
+    redirect_to offices_path
   end
 
   def update
     authorize @office
 
-    if @office.update(office_params)
-      redirect_to offices_path
-      flash[:success] = 'Successfully update'
-    end
+    Offices::UpdateService.perform(office_params.merge(office: @office))
+    flash[:success] = 'Successfully updated'
+    redirect_to offices_path
   end
 
   def destroy
     authorize @office
 
-    if @office.destroy
-      redirect_to offices_path
-      flash[:success] = 'Successfully deleted'
-    end
+    Offices::DestroyService.perform(office: @office)
+    flash[:success] = 'Successfully deleted'
+    redirect_to offices_path
   end
 
   private

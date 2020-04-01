@@ -5,11 +5,12 @@ class EmployeesController < ApplicationController
   before_action :load_data, only: %i[index show]
 
   def index
-    redirect_to current_employee if current_employee.developer_without_ap?
+    authorize :employee, :index?
   end
 
   def show
-    redirect_to current_employee if current_employee != @employee && current_employee.developer_without_ap?
+    authorize @employee
+
     @employee.build_image unless @employee.image
     @project = @employee.projects.new
     @project.build_image
@@ -32,6 +33,7 @@ class EmployeesController < ApplicationController
 
   def update
     authorize @employee
+
     @employee.additional = employee_params[:additional] || {}
     if @employee.update(employee_params)
       flash[:success] = 'Successfully updated'
@@ -43,6 +45,7 @@ class EmployeesController < ApplicationController
 
   def destroy
     authorize @employee
+
     if @employee.delete!
       flash[:success] = 'Successfully deleted'
     else

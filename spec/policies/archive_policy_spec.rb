@@ -3,8 +3,12 @@
 require 'rails_helper'
 
 RSpec.describe ArchivePolicy do
-  let(:manager) { create(:employee, :manager) }
-  let(:admin) { create(:employee, :admin) }
+  # let(:manager) { create(:employee, :manager) }
+  # let(:admin) { create(:employee, :admin) }
+
+  Employee::ROLES.each do |role|
+    let(role) { FactoryBot.create(:employee, role.to_sym) }
+  end
 
   subject { described_class }
 

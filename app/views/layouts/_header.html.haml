@@ -27,26 +27,25 @@
               .form-group
                 = submit_tag 'Send wish', class: 'btn btn-success'
 
-      - if current_employee&.admin? || current_employee&.manager?
-        = link_to offices_path do
-          %b Offices & Departments
-        |
+        - if current_employee.admin? || current_employee.manager?
+          = link_to offices_path do
+            %b Offices & Departments
+          |
 
-      - if current_employee&.admin? || current_employee&.manager? || current_employee&.team_lead?
-        = link_to '#', { 'data-target': '#inviteModal', 'data-toggle': 'modal' } do
-          %b Invite Employee
-        |
+        - if current_employee.admin? || current_employee.manager? || current_employee.team_lead?
+          = link_to '#', { 'data-target': '#inviteModal', 'data-toggle': 'modal' } do
+            %b Invite Employee
+          |
 
-        = render 'layouts/modal', { modal_id: 'inviteModal', modal_title: 'Send invitation' } do
-          .modal-body
-            = render template: 'devise/invitations/new'
+          = render 'layouts/modal', { modal_id: 'inviteModal', modal_title: 'Send invitation' } do
+            .modal-body
+              = render template: 'devise/invitations/new'
 
-      - if current_employee&.admin? || current_employee&.manager?
-        = link_to archive_index_path do
-          %b Archive
-        |
+        - if current_employee.admin? || current_employee.manager? || current_employee.team_lead?
+          = link_to archive_index_path do
+            %b Archive
+          |
 
-      - if current_employee
         = link_to skills_path do
           %b Skills list
         |

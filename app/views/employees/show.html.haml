@@ -12,11 +12,11 @@
             - able_edit do
               %span.link.pointable{ 'data-target': '#editModal', 'data-toggle': :modal }
                 edit
-              |
               = render 'layouts/modal', { modal_id: 'editModal', modal_title: 'Edit Employee', large: true } do
                 .modal-body
                   = render template: 'employees/edit'
-            - if current_employee&.admin? || current_employee&.manager? || current_employee.team_lead?
+            - if current_employee&.admin? || ((current_employee&.manager? || current_employee.team_lead?) && current_employee != @employee)
+              |
               = link_to 'delete', employee_path(@employee), method: :delete, data: { confirm: 'Are you sure?' }, class: 'text-danger'
 
             .float-right

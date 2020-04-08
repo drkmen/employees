@@ -3,23 +3,44 @@
 require 'rails_helper'
 
 RSpec.describe ArchivePolicy do
-  # let(:manager) { create(:employee, :manager) }
-  # let(:admin) { create(:employee, :admin) }
-
   Employee::ROLES.each do |role|
     let(role) { FactoryBot.create(:employee, role.to_sym) }
   end
 
   subject { described_class }
 
-  permissions :index? do
+  permissions :index?, :restore? do
     context 'grants access for' do
-      it 'manager' do
-        expect(subject).to permit(manager)
+      (adminable_roles + ['team_lead']).each do |role|
+        it role do
+          expect(subject).to permit(public_send(role))
+        end
       end
+    end
 
-      it 'admin' do
-        expect(subject).to permit(admin)
+    context 'denies access for' do
+      common_roles.without('team_lead').each do |role|
+        it role do
+          expect(subject).to_not permit(public_send(role))
+        end
+      end
+    end
+  end
+
+  permissions :destroy? do
+    context 'grants access for' do
+      adminable_roles.each do |role|
+        it role do
+          expect(subject).to permit(public_send(role))
+        end
+      end
+    end
+
+    context 'denies access for' do
+      common_roles.each do |role|
+        it role do
+          expect(subject).to_not permit(public_send(role))
+        end
       end
     end
   end

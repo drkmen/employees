@@ -18,14 +18,22 @@ class ApplicationController < ActionController::Base
 
   protected
 
-  def after_sign_out_path_for(resource_or_scope)
+  def root_path
+    return super unless current_employee
+
+    current_employee.developer_without_ap? ||
+      current_employee.other? ||
+      current_employee.system_administrator? ? employee_path(current_employee) : super
+  end
+
+  def after_sign_out_path_for(_resource_or_scope)
     URI.parse(request.referer).path || root_path
   rescue => _
     root_path
   end
 
   def configure_permitted_parameters
-    devise_parameter_sanitizer.permit(:invite, keys: %i[first_name last_name role])
+    devise_parameter_sanitizer.permit(:invite, keys: %i[first_name last_name role department_id])
   end
 
   def load_data

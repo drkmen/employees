@@ -35,11 +35,8 @@ class EmployeesController < ApplicationController
     authorize @employee
 
     @employee.additional = employee_params[:additional] || {}
-    if @employee.update(employee_params)
-      flash[:success] = 'Successfully updated'
-    else
-      flash[:danger] = "Is not updated: #{@employee.errors.messages}"
-    end
+    @employee.update!(employee_params)
+    flash[:success] = 'Successfully updated'
     redirect_to employee_path(@employee)
   end
 

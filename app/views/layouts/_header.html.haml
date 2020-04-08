@@ -4,12 +4,13 @@
       = image_tag 'ruby.png', size: '20x20', title: 'Powered with RubyOnRails'
       = link_to root_path do
         %b FaceIT
-    - unless current_employee&.developer_without_ap?
-      = form_tag('', method: :get, enforce_utf8: false, class: 'form-inline') do
-        .search
-          = text_field_tag :term, params[:term], class: 'form-control mr-sm-2', aria: { label: 'Search' }
-        .my-2.my-sm-0
-          = submit_tag 'Search', class: 'btn btn-outline-secondary my-2 my-sm-0', name: nil
+    - if current_employee
+      - unless current_employee.developer_without_ap?
+        = form_tag('', method: :get, enforce_utf8: false, class: 'form-inline') do
+          .search
+            = text_field_tag :term, params[:term], class: 'form-control mr-sm-2', aria: { label: 'Search' }
+          .my-2.my-sm-0
+            = submit_tag 'Search', class: 'btn btn-outline-secondary my-2 my-sm-0', name: nil
     %div
       - if current_employee
 

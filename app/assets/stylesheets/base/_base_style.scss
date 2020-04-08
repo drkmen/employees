@@ -131,3 +131,14 @@ b {
   width: 500px;
   height: 200px;
 }
+
+.alert-notice, .alert-alert {
+  @extend .alert-dark !optional;
+}
+
+.form-control {
+  &:disabled {
+    background-color: $default-grey;
+    cursor: not-allowed;
+  }
+}

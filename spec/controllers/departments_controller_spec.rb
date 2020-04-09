@@ -108,7 +108,8 @@ RSpec.describe DepartmentsController, type: :controller do
             before { |example| send_request unless example.metadata[:skip_before] }
 
             it 'calls Departments::UpdateService', :skip_before do
-              expect(Departments::UpdateService).to receive(:perform).with(service_params.merge(department: department))
+              expect(Departments::UpdateService).to receive(:perform).with(department: department,
+                                                                           department_params: service_params)
               send_request
             end
 

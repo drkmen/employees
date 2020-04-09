@@ -34,8 +34,7 @@ class EmployeesController < ApplicationController
   def update
     authorize @employee
 
-    @employee.additional = employee_params[:additional] || {}
-    @employee.update!(employee_params)
+    Employees::UpdateService.perform(employee: @employee, employee_params: employee_params)
     flash[:success] = 'Successfully updated'
     redirect_to employee_path(@employee)
   end
@@ -43,11 +42,8 @@ class EmployeesController < ApplicationController
   def destroy
     authorize @employee
 
-    if @employee.delete!
-      flash[:success] = 'Successfully deleted'
-    else
-      flash[:danger] = 'Is not deleted'
-    end
+    Employees::DeleteService.perform(employee: @employee)
+    flash[:success] = 'Successfully deleted'
     redirect_to employees_path
   end
 

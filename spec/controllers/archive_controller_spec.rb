@@ -131,7 +131,7 @@ RSpec.describe ArchiveController, type: :controller do
             before { |example| send_request unless example.metadata[:skip_before] }
 
             it 'deletes employee', :skip_before do
-              expect(Archives::DeleteEmployeesService).to receive(:perform).with(employee: deleted_employee)
+              expect(Employees::DestroyService).to receive(:perform).with(employee: deleted_employee)
               send_request
             end
 

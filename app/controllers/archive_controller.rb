@@ -20,7 +20,7 @@ class ArchiveController < ApplicationController
   def destroy
     authorize :archive, :destroy?
 
-    Archives::DeleteEmployeesService.perform(employee: @employee)
+    Employees::DestroyService.perform(employee: @employee)
     flash[:success] = 'Successfully deleted'
     redirect_to archive_index_path
   end

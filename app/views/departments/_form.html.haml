@@ -6,7 +6,7 @@
   .row
     .col
       .form-group
-        = f.select :team_lead_id, Employee.team_lead.map { |team_lead| [team_lead.name, team_lead.id] }, { prompt: 'Team Leader' }, class: 'custom-select'
+        = f.select :team_lead_id, team_leads_for_select, { prompt: 'Team Leader' }, class: 'custom-select'
   .row
     .col
       .form-group

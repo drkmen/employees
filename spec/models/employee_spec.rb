@@ -142,6 +142,12 @@ RSpec.describe Employee, type: :model do
     end
   end
 
+  describe 'validations' do
+    %i[first_name last_name email].each do |field|
+      it { is_expected.to validate_presence_of(field) }
+    end
+  end
+
   describe 'methods' do
     describe '#name' do
       subject { employee.name }
@@ -183,14 +189,78 @@ RSpec.describe Employee, type: :model do
       it { is_expected.to eq employee.email.split('@').first.tr('.', '_') }
     end
 
-    describe '.filter by first_name' do
-      before do
-        employee.skills << skill
-      end
+    describe '.filter_skills' do
+      before { employee.skills << skill }
 
       subject { described_class.filter_skills(described_class.all, skill.name) }
 
       it { is_expected.to contain_exactly(*employee) }
+    end
+
+    describe '#admin?' do
+      subject { user.admin? }
+
+      context 'when grant_admin_permissions field is' do
+        let(:user) { build(:employee, role: role, grant_admin_permissions: permission) }
+
+        context 'true' do
+          let(:permission) { true }
+
+          context 'and role is' do
+            context 'developer' do
+              let(:role) { :developer }
+
+              it { is_expected.to be_truthy }
+            end
+
+            context 'admin' do
+              let(:role) { :admin }
+
+              it { is_expected.to be_truthy }
+            end
+          end
+        end
+
+        context 'false' do
+          let(:permission) { false }
+
+          context 'and role is' do
+            context 'developer' do
+              let(:role) { :developer }
+
+              it { is_expected.to be_falsey }
+            end
+
+            context 'admin' do
+              let(:role) { :admin }
+
+              it { is_expected.to be_truthy }
+            end
+          end
+        end
+      end
+    end
+
+    employee_roles.without('admin').each do |role|
+      describe "##{role}_without_ap?" do
+        let(:employee) { build(:employee, role: role, grant_admin_permissions: permission) }
+
+        subject { employee.public_send("#{role}_without_ap?") }
+
+        context 'when grant_admin_permissions field is' do
+          context 'true' do
+            let(:permission) { true }
+
+            it { is_expected.to be_falsey }
+          end
+
+          context 'false' do
+            let(:permission) { false }
+
+            it { is_expected.to be_truthy }
+          end
+        end
+      end
     end
   end
 end

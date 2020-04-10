@@ -4,8 +4,9 @@ module Departments
   class UpdateService < ApplicationService
     # @attr_reader params [Hash]:
     # - department: [Department]
-    # - name: [String]
-    # - team_lead_id: [Integer] (optional)
+    # - department_params: [Hash]
+    #   - name: [String]
+    #   - team_lead_id: [Integer] (optional)
 
     def call
       raise ArgumentError, '`department` is missing' unless department
@@ -20,7 +21,7 @@ module Departments
     end
 
     def department_params
-      params.except(:department)
+      params[:department_params].presence
     end
   end
 end

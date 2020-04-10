@@ -12,7 +12,7 @@ class DepartmentsController < ApplicationController
   def update
     authorize @department
 
-    Departments::UpdateService.perform(department_params.merge(department: @department))
+    Departments::UpdateService.perform(department: @department, department_params: department_params)
     flash[:success] = 'Successfully updated'
     redirect_to offices_path
   end

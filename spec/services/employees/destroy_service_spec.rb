@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Archives::DeleteEmployeesService do
+RSpec.describe Employees::DestroyService do
   let(:employee) { create(:employee, :deleted) }
   let(:params) { { employee: employee } }
 

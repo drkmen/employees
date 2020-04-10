@@ -8,8 +8,10 @@ RSpec.describe Departments::UpdateService do
   let(:params) do
     {
       department: department,
-      name: 'name',
-      team_lead_id: team_lead.id
+      department_params: {
+        name: 'name',
+        team_lead_id: team_lead.id
+      }
     }
   end
 
@@ -17,7 +19,7 @@ RSpec.describe Departments::UpdateService do
 
   describe '#call' do
     it 'updates department' do
-      expect(department).to receive(:update_attributes!).with(params.except(:department))
+      expect(department).to receive(:update_attributes!).with(params[:department_params])
       subject
     end
 

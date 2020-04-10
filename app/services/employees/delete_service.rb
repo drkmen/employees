@@ -1,14 +1,14 @@
 # frozen_string_literal: true
 
-module Archives
-  class DeleteEmployeesService < ApplicationService
+module Employees
+  class DeleteService < ApplicationService
     # @attr_reader params [Hash]:
     # - employee: [Employee]
 
     def call
-      raise ArgumentError, 'Employee not found' unless employee
+      raise ArgumentError, '`employee` is missing' unless employee
 
-      employee.destroy!
+      employee.delete!
     end
 
     private

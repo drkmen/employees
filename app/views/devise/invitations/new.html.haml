@@ -7,8 +7,11 @@
     = f.text_field :last_name, class: 'form-control', required: true
   .form-group
     = f.label :role
-    = f.select(:role, Employee.roles.keys.map { |r| [r.humanize, r] }, {}, class: 'form-control', include_blank: false)
+    = f.select :role, roles_for_select, {}, class: 'form-control', include_blank: false
+  .form-group
+    = f.label :department
+    = f.select :department_id, departments_for_select, { selected: current_employee.department_id }, class: 'form-control', include_blank: false
   .form-group
     = f.label :email
     = f.email_field :email, class: 'form-control', required: true
-  = f.submit t("devise.invitations.new.submit_button"), class: 'btn btn-success'
+  = f.submit t('devise.invitations.new.submit_button'), class: 'btn btn-success'

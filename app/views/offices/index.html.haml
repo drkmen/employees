@@ -32,7 +32,7 @@
                   = render 'layouts/modal', { modal_id: "editOfficeModal_#{office.id}", modal_title: "Edit office [#{office.name}]" } do
                     .modal-body
                       = render 'offices/form', office: office
-                  = link_to 'delete', office_path(office), method: :delete, class: 'delete'
+                  = link_to 'delete', office_path(office), method: :delete, data: { confirm: 'Are you sure?' }, class: 'delete'
 
         = render template: 'departments/index'
 

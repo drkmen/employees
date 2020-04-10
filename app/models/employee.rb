@@ -53,6 +53,8 @@ class Employee < ApplicationRecord
     where("(first_name ILIKE ?) OR ((first_name || ' ' || last_name) ILIKE ?)", "%#{term}%", "%#{term}%")
   end
 
+  validates_presence_of :first_name, :last_name, :email
+
   accepts_nested_attributes_for :image, :skills, :resource_skills
 
   def self.filter_skills(employee, skills_array)
@@ -87,8 +89,10 @@ class Employee < ApplicationRecord
     super || self.grant_admin_permissions
   end
 
-  def developer_without_ap?
-    self.developer? && !admin?
+  ROLES.without('admin').each do |role|
+    define_method "#{role}_without_ap?" do
+      self.public_send("#{role}?") && !admin?
+    end
   end
 
   def self.me

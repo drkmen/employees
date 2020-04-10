@@ -15,11 +15,12 @@
       %ul
         - @employees.each do |department, employees|
           %h4
-            %span{id: department}= department&.name
+            %span{id: department&.name&.downcase}= department&.name
             .float-right= employees.size
 
           - employees.each do |employee|
-            %li{class: "#{employee.status}"}= link_to_with_filters employee.name, employee_path(employee)
+            %li{class: "#{employee.status}"}
+              = link_to_with_filters employee.name, employee_path(employee)
           &nbsp;
     - else
       %h3.text-center No one found :(

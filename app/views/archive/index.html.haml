@@ -36,4 +36,6 @@
                   %td= employee.phone
                   %td= time_ago_in_words(employee.created_at)
                   %td= link_to 'Restore', restore_archive_index_path(employee), method: :patch, data: { confirm: 'Are you sure?' }, class: 'btn btn-outline-success'
-                  %td= link_to 'Delete', destroy_archive_index_path(employee), method: :delete, data: { confirm: 'Are you sure? It\'s can\'t be undone' }, class: 'btn btn-outline-danger'
+                  %td
+                    - unless current_employee.team_lead? && !current_employee.admin?
+                      = link_to 'Delete', destroy_archive_index_path(employee), method: :delete, data: { confirm: 'Are you sure? It\'s can\'t be undone' }, class: 'btn btn-outline-danger'

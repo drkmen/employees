@@ -30,7 +30,7 @@
           = render 'layouts/modal', { modal_id: "editDepartmentModal_#{department.id}", modal_title: "Edit department [#{department.name}]" } do
             .modal-body
               = render 'departments/form', department: department
-          = link_to 'delete', department_path(department), method: :delete, class: 'delete'
+          = link_to 'delete', department_path(department), method: :delete, data: { confirm: 'Are you sure?' }, class: 'delete'
 
 = render 'layouts/modal', { modal_id: 'newDepartmentModal', modal_title: 'New department' } do
   .modal-body

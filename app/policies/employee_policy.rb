@@ -9,33 +9,28 @@ class EmployeePolicy < ApplicationPolicy
   end
 
   def index?
-    true
+    employee.manager? || employee.team_lead? || employee.admin?
   end
 
   def show?
-    true
-  end
-
-  def edit?
-    false
-  end
-
-  def create?
-    employee.present? && (employee.admin? || employee.manager?)
+    employee == else_employee || employee.admin? || employee.manager? ||
+      (employee.team_lead? && employee.department == else_employee.department)
   end
 
   def update?
-    employee.present? && (employee == else_employee ||
-      employee.admin? || (employee.manager? && (else_employee.developer? || else_employee.team_lead?)) ||
-      (employee.team_lead? && employee.department == else_employee.department && else_employee.developer?))
+    employee == else_employee || employee.admin? ||
+      (employee.manager? && (else_employee.developer? || else_employee.team_lead?)) ||
+      (employee.team_lead? && employee.department == else_employee.department && else_employee.developer?)
   end
 
   def destroy?
-    create?
+    employee.admin? || employee.manager? ||
+      (employee.team_lead? && employee.department == else_employee.department)
   end
 
   def restore?
-    employee.admin? || employee.manager?
+    employee.admin? || employee.manager? ||
+      (employee.team_lead? && employee.department == else_employee.department)
   end
 
   class Scope < Scope

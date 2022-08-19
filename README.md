@@ -1,1 +1,1 @@
-A service for internal usage to keep records of employees. The main purpose is to provide useful information about any employee.
+A service for internal usage to keep records of employees. The main purpose is to provide useful information about any employee. 
